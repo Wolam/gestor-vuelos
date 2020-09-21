@@ -1,4 +1,4 @@
-# Proyecto-I-Lenguajes <img src=https://plazareal.co.cr/wp-content/uploads/2015/11/Logo-TEC-Color.png width =125 height=100 style="float:right">
+# Proyecto-I-Lenguajes / Lenguaje Imperativo
 Sistema de gestión de vuelos <img src=https://seeklogo.com/images/A/airplane-logo-6885950420-seeklogo.com.png width =20 height=20>
 
 
@@ -45,6 +45,8 @@ deben habilitar las siguientes funcionalidades (Menú General):
 ### Diseño del programa
 
 La implementacion del proyecto se utilizo un modelo de BD que permitiera asociar las entidades necesarias.
+
+<img src= "https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/Gestor_Vuelos-ER.png" width =900 height=700>
 
 ### Librerías usadas
 
