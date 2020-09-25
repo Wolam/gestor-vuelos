@@ -10,10 +10,10 @@ void mostrar_menu(char* tipo_menu);
 int
 main()
 {
-    mostrar_menu("principal");   
-    ejecutar_opcion_menu_principal(solicitar_opcion());
+   mostrar_menu("principal");   
+   ejecutar_opcion_menu_principal(solicitar_opcion());
    return 0;
- }
+}
 
 
 void
