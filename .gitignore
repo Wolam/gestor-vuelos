@@ -2,3 +2,5 @@
 #Archivos objeto de C
 *.o
 Sistema_vuelos
+.vscode/settings.json
+src/test_connect
