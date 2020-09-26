@@ -1,6 +1,9 @@
 
 #Archivos objeto de C
-*.o
-Sistema_vuelos
-.vscode/settings.json
+src/*.o
+src/Sistema_vuelos
 src/test_connect
+
+#Archivos de configuracion de IDE
+.vscode/settings.json
+
