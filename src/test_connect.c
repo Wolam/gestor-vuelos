@@ -1,14 +1,15 @@
 #include <mysql.h>
 #include <stdio.h>
 
+int
 main() {
 	MYSQL *conn;
 	MYSQL_RES *res;
 	MYSQL_ROW row;
 	
-	char *server = "192.168.0.10";
-	char *user = "JosephV27";
-	char *password = "Saprisista47"; /* set me first */
+	char *server = "localhost";
+    char *user = "wil_bd";
+    char *password = "wid_bd_psswrd";
 	char *database = "bd_aviones";
 	
 	conn = mysql_init(NULL);
