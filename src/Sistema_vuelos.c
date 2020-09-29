@@ -3,15 +3,23 @@
 #include <string.h>
 #include "constantes.h"
 
-int abrir_archivo();
+FILE* abrir_archivo(char* ruta);
+void cargar_usuarios(FILE* ref_archivo_usuarios);
+void insertar_usuario();
+char* formatear_fecha(char* fecha);
+char* formatear_usuario(char* usuario);
+
 int solicitar_opcion();
 void mostrar_menu(char* tipo_menu);
+void ejecutar_opcion_menu_principal(int opcion);
+void ejecutar_opcion_submenu_general(int opcion);
+void ejecutar_opcion_submenu_operativo(int opcion);
 
 int
 main()
 {
-   mostrar_menu("principal");   
-   ejecutar_opcion_menu_principal(solicitar_opcion());
+   FILE* usr = abrir_archivo("usuarios.txt");
+   cargar_usuarios(usr);
    return 0;
 }
 
@@ -94,9 +102,7 @@ ejecutar_opcion_submenu_operativo(int opcion)
         case OPCION_SALIR_OPERATIVO:
             exit(TRUE);
         default:
-            printf(ROJO,
-            ERROR_OPCION,
-            ENDCOLOR);
+            printf(ERROR_OPCION);
             //return CODIGO_ERROR;
     }ejecutar_opcion_submenu_operativo(solicitar_opcion());
 }
@@ -113,8 +119,66 @@ mostrar_menu(char* tipo_menu)
 int
 solicitar_opcion()
 {
-    int opcion;
+    unsigned int opcion;
     printf("\nFavor digite una opción > ");
     scanf(" %d",&opcion);
     return opcion;
+}
+
+
+FILE *
+abrir_archivo(char* ruta)
+{
+    FILE *ref_archivo;
+    ref_archivo = fopen(ruta,"r");
+    if (!ref_archivo)
+    {
+        printf("%s %s\n", ERROR_ARCHIVO,ruta);
+        return NULL;
+    
+    }return ref_archivo;
+   
+}
+
+
+void cargar_usuarios
+(FILE* ref_archivo_usuarios)
+{
+    char usuario [TAM_USUARIO];
+    unsigned int line_count = 0;
+    while (fgets(usuario, TAM_USUARIO, ref_archivo_usuarios))
+    {
+        if (usuario[strlen(usuario) - 1] == '\n')
+            usuario[strlen(usuario)-1] = '\0';
+        insertar_usuario(usuario);   
+    }
+}
+
+
+
+void 
+insertar_usuario(char* usuario)
+{
+    char cons[TAM_CONSULTA] = "INSERT INTO usuario VALUES(";
+    char* usuario_formateado = formatear_usuario(usuario); 
+    char* fecha  = formatear_fecha(strcat(strrchr(usuario, ','),",'%Y-%m-%d'))"));
+    strcat(cons,usuario_formateado);
+    strcat(cons,fecha);
+}
+
+char* formatear_fecha(char* fecha)
+{
+    char* func_fecha  = calloc(TAM_FECHA,sizeof(char));
+    strcpy(func_fecha,"STR_TO_DATE(");
+    fecha[0] = ' ';
+    strcat(func_fecha,fecha);
+    return func_fecha;
+}
+
+char* formatear_usuario(char* usuario)
+{
+    char* usuario_formateado = calloc(TAM_USUARIO,sizeof(char));
+    strncpy(usuario_formateado,usuario,strlen(usuario)-12);
+    printf("FORMATED USR %s\n",usuario_formateado);
+    return usuario_formateado;
 }

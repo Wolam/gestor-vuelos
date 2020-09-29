@@ -1,10 +1,8 @@
 //Gama de colores para mensajes
-#define ROJO "\033[1;31m"
+//#define ROJO "\033[1;31m"
 #define Azul "\033[0;34m"
 #define Amarillo "\033[0;33m"
 #define ENDCOLOR "\033[0m"
-
-
 
 #define TRUE 0
 #define FALSE 1
@@ -32,5 +30,15 @@
 #define OPCION_CAMBIO_SUBMENU 1
 #define OPCION_MENU_PRNCIPAL 2
 
-#define ERROR_OPCION "\033[1;31mREINGRESE LA OPCION NUEVAMENTE\033[0m"
+
+//Tamaños de variables
+#define TAM_USUARIO 200 
+#define ATRIBS_USUARIO 6
+#define TAM_CONSULTA 300
+#define TAM_FECHA 40    
+
+//ERRORES del programa
+#define ERROR_ARCHIVO "\033[1;31m NO SE ENCONTRO EL ARCHIVO: \033[0m"
+#define ERROR_OPCION "\033[1;31m REINGRESE LA OPCION NUEVAMENTE \033[0m"
 #define CODIGO_ERROR -1
+
