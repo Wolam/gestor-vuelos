@@ -1,10 +1,11 @@
 # show databases;
 
-create database bd_aviones;
+#create database bd_aviones;
 
 use bd_aviones;
 
-# show tables;
+#show tables;
+
 # CREACION DE TABLAS
 
 create table vuelo 
@@ -140,7 +141,7 @@ values
     (4510, 'Boeing', 747, 2011),
     (1035, 'Airbus', 320, 2007);
     
-  
+
 insert into vuelo (id_vuelo, origen, destino, matricula_avion, salida, llegada)
 values 
 	(1, 'NYC', 'SJO', 7835, '2020/05/12 10:05', '2020/05/12 16:10'),
@@ -154,10 +155,12 @@ values
     (9, 'FL', 'MAD', 1035, '2019/05/29 9:45', '2019/05/30 02:50'),
     (10, 'RJ', 'LUX', 5647, '2016/10/12 2:32', '2016/10/12 23:40');
 
+
 insert into aerolinea (id_aerolinea, nombre_aerolinea, hub, usuario_aerolinea, contrasenia)
 values 
 	(416, 'Avianca', 'BOG', 'dba_avi', 'rastreo416');
     
+  
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
 	('A', 'BL', 1, NULL, NULL, 1),
@@ -187,6 +190,40 @@ values
     (1, 'EI', 100);
     
     
+# CONSULTAS PARA VER ESTADO DE VUELO    
+select origen, salida, destino, llegada, matricula_avion
+	from vuelo 
+    where id_vuelo = 1;
+    
+select tipo_asiento, costo
+	from costo 
+    where id_vuelo = 1;
+    
+select fila, tipo_asiento 
+	from asiento 
+    where id_vuelo = 1;
+    
+
+# CONSULTAS DE ESTADISTICAS DE VUELOS
+select v.id_vuelo, sum(m.monto_total) as suma_total
+		from vuelo v
+		inner join reservacion r
+			on v.id_vuelo = r.id_vuelo
+		inner join monto_reservacion m
+			on r.id_reservacion = m.id_reservacion
+		group by v.id_vuelo
+		order by suma_total desc 
+        LIMIT 3;
+	
+select v.id_vuelo, count(r.id_reservacion) as reservas
+	from vuelo v
+    inner join reservacion r
+		on v.id_vuelo = r.id_vuelo
+	group by v.id_vuelo
+	order by reservas desc
+	LIMIT 3;
+
+
 # DROP TABLAS 
 # drop table costo;
 # drop table asiento;
@@ -199,7 +236,6 @@ values
 # drop table ciudad;
 # drop table avion;
 
- 
 
 
 
