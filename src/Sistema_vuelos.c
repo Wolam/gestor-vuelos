@@ -103,7 +103,6 @@ ejecutar_opcion_submenu_operativo(int opcion)
             exit(TRUE);
         default:
             printf(ERROR_OPCION);
-            //return CODIGO_ERROR;
     }ejecutar_opcion_submenu_operativo(solicitar_opcion());
 }
 
@@ -111,7 +110,7 @@ ejecutar_opcion_submenu_operativo(int opcion)
 void 
 mostrar_menu(char* tipo_menu)
 {
-    char abrir_menu[20] = "cat menu_";
+    char abrir_menu[20] = "cat menus/menu_";
     strcat(abrir_menu,tipo_menu);
     system(abrir_menu);
 }
