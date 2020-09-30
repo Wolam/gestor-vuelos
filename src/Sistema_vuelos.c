@@ -1,14 +1,13 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "constantes.h"
+#include "Datos_sistema.h"
 
-FILE* abrir_archivo(char* ruta);
-void cargar_usuarios(FILE* ref_archivo_usuarios);
-void insertar_usuario();
+FILE* abrir_archivo(char* ruta,char* modo);
+void cargar_usuarios (FILE* ref_archivo_usuarios,char* nombre_archivo);
+const char* insertar_usuario();
 char* formatear_fecha(char* fecha);
 char* formatear_usuario(char* usuario);
-
+char* obtener_reporte(const char* res_consulta);
 int solicitar_opcion();
 void mostrar_menu(char* tipo_menu);
 void ejecutar_opcion_menu_principal(int opcion);
@@ -18,8 +17,10 @@ void ejecutar_opcion_submenu_operativo(int opcion);
 int
 main()
 {
-   FILE* usr = abrir_archivo("usuarios.txt");
-   cargar_usuarios(usr);
+   realizar_conexion();
+   FILE* usr = abrir_archivo("usuarios/usuarios.txt","r");
+   cargar_usuarios(usr,"usuarios");
+   cerrar_conexion();
    return 0;
 }
 
@@ -91,6 +92,7 @@ ejecutar_opcion_submenu_operativo(int opcion)
             printf("3\n");
             break;
         case OPCION_CARGAR_USRIO:
+            //ajustar la ruta del usuario 
             printf("4\n");
             break;
         case OPCION_ESTADO_VLO:
@@ -126,10 +128,10 @@ solicitar_opcion()
 
 
 FILE *
-abrir_archivo(char* ruta)
+abrir_archivo(char* ruta,char* modo)
 {
     FILE *ref_archivo;
-    ref_archivo = fopen(ruta,"r");
+    ref_archivo = fopen(ruta,modo);
     if (!ref_archivo)
     {
         printf("%s %s\n", ERROR_ARCHIVO,ruta);
@@ -141,21 +143,25 @@ abrir_archivo(char* ruta)
 
 
 void cargar_usuarios
-(FILE* ref_archivo_usuarios)
+(FILE* ref_archivo_usuarios,char* nombre_archivo)
 {
     char usuario [TAM_USUARIO];
-    unsigned int line_count = 0;
+    char ruta_reporte[TAM_RUTA] = {"reportes/reporte_"};
+    strcat(ruta_reporte,nombre_archivo);
+    FILE* ref_archivo_reporte = abrir_archivo(ruta_reporte,"w+");
     while (fgets(usuario, TAM_USUARIO, ref_archivo_usuarios))
     {
         if (usuario[strlen(usuario) - 1] == '\n')
             usuario[strlen(usuario)-1] = '\0';
-        insertar_usuario(usuario);   
+
+        fseek(ref_archivo_reporte,0,SEEK_END);
+        fputs(obtener_reporte(insertar_usuario(usuario)), ref_archivo_reporte);
     }
+    fclose(ref_archivo_reporte);
+    fclose(ref_archivo_usuarios);
 }
 
-
-
-void 
+const char* 
 insertar_usuario(char* usuario)
 {
     char cons[TAM_CONSULTA] = "INSERT INTO usuario VALUES(";
@@ -163,7 +169,24 @@ insertar_usuario(char* usuario)
     char* fecha  = formatear_fecha(strcat(strrchr(usuario, ','),",'%Y-%m-%d'))"));
     strcat(cons,usuario_formateado);
     strcat(cons,fecha);
+    return realizar_consulta(cons);
 }
+
+char*
+obtener_reporte(const char* res_consulta)
+{
+
+    char* reporte = calloc(11,sizeof(char));
+    if(res_consulta == NULL)
+        strcpy(reporte,"AGREGADO\n");
+    else if(strncmp(ERROR_SINTX,res_consulta,strlen(ERROR_SINTX)) == 0)
+        strcpy(reporte,"ERROR\n");
+    else{
+        strcpy(reporte,"DUPLICADO\n");
+    }
+    return reporte;
+}
+
 
 char* formatear_fecha(char* fecha)
 {
@@ -178,6 +201,5 @@ char* formatear_usuario(char* usuario)
 {
     char* usuario_formateado = calloc(TAM_USUARIO,sizeof(char));
     strncpy(usuario_formateado,usuario,strlen(usuario)-12);
-    printf("FORMATED USR %s\n",usuario_formateado);
     return usuario_formateado;
 }

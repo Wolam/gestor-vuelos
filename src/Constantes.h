@@ -1,11 +1,5 @@
-//Gama de colores para mensajes
-//#define ROJO "\033[1;31m"
-#define Azul "\033[0;34m"
-#define Amarillo "\033[0;33m"
-#define ENDCOLOR "\033[0m"
-
-#define TRUE 0
-#define FALSE 1
+#define TRUE 1
+#define FALSE 0
 
 //Opciones del menu principal
 #define OPCIONES_OPERATIVAS 1
@@ -33,12 +27,20 @@
 
 //Tamaños de variables
 #define TAM_USUARIO 200 
-#define ATRIBS_USUARIO 6
 #define TAM_CONSULTA 300
 #define TAM_FECHA 40    
+#define TAM_RUTA 40
+#define ATRIBS_USUARIO 6
 
 //ERRORES del programa
 #define ERROR_ARCHIVO "\033[1;31m NO SE ENCONTRO EL ARCHIVO: \033[0m"
 #define ERROR_OPCION "\033[1;31m REINGRESE LA OPCION NUEVAMENTE \033[0m"
-#define CODIGO_ERROR -1
+#define ERROR_CONEXION "\033[1;31m ERROR EN LA CONEXION:\033[0m "
+#define ERROR_CONSULTA "\033[1;31m ERROR AL REALIZAR CONSULTA:\033[0m "
+
+//#define CODIGO_ERROR -1
+
+// ERRORES SQL en consultas
+#define ERROR_DUP "Duplicate entry"
+#define ERROR_SINTX "You have an error in your SQL syntax"
 
