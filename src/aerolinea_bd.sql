@@ -4,7 +4,7 @@
 
 use bd_aviones;
 
-#show tables;
+# show tables;
 
 # CREACION DE TABLAS
 
@@ -43,7 +43,7 @@ create table aerolinea
 nombre_aerolinea varchar(30) not null,
 hub varchar(20) not null,
 usuario_aerolinea varchar(20) not null,
-contrasenia varchar(20) not null,
+contrasenia BLOB not null,
 primary key (id_aerolinea));
 
 create table reservacion 
@@ -57,6 +57,7 @@ primary key (pasaporte, id_reservacion));
 create table monto_reservacion
 (id_reservacion int not null,
 monto_total int not null,
+id_vuelo int not null,
 primary key (id_reservacion));
 
 create table asiento 
@@ -158,15 +159,15 @@ values
 
 insert into aerolinea (id_aerolinea, nombre_aerolinea, hub, usuario_aerolinea, contrasenia)
 values 
-	(416, 'Avianca', 'BOG', 'dba_avi', 'rastreo416');
+	(416, 'Avianca', 'BOG', 'dba_avi', AES_ENCRYPT('rastreo416', 'fjm'));
     
   
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
-	('A', 'BL', 1, NULL, NULL, 1),
-    ('A', 'BL', 2, NULL, NULL, 1),
-    ('A', 'BL', 3, NULL, NULL, 1),
-    ('A', 'BL', 4, NULL, NULL, 1),
+	('A', 'BL', 1, 2019039864, 78, 1),
+    ('A', 'BL', 2, 2019344555, 78, 1),
+    ('A', 'BL', 3, 2018874521, 78, 1),
+    ('A', 'BL', 4, 2048395209, 78, 1),
     ('B', 'BL', 1, NULL, NULL, 1),
     ('B', 'BL', 2, NULL, NULL, 1),
     ('C', 'SL', 1, NULL, NULL, 1),
@@ -178,6 +179,40 @@ values
     ('E', 'EL', 2, NULL, NULL, 1),
     ('E', 'EL', 3, NULL, NULL, 1),
     ('E', 'EL', 4, NULL, NULL, 1);
+    
+
+
+    
+insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
+values 
+	('A', 'BL', 1, NULL, NULL, 2),
+    ('A', 'BL', 2, NULL, NULL, 2),
+    ('B', 'BL', 1, NULL, NULL, 2),
+    ('B', 'BL', 2, NULL, NULL, 2),
+    ('C', 'SL', 1, NULL, NULL, 2),
+    ('C', 'SL', 2, NULL, NULL, 2),
+    ('D', 'SL', 1, NULL, NULL, 2),
+    ('D', 'SL', 2, NULL, NULL, 2),
+    ('E', 'EL', 1, NULL, NULL, 2),
+    ('E', 'EL', 2, NULL, NULL, 2);
+    
+insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
+values 
+	('A', 'BL', 1, NULL, NULL, 3),
+    ('A', 'BL', 2, NULL, NULL, 3),
+    ('A', 'BL', 3, NULL, NULL, 3),
+    ('B', 'BL', 1, NULL, NULL, 3),
+    ('B', 'BL', 2, NULL, NULL, 3),
+    ('B', 'BL', 4, NULL, NULL, 3),
+    ('C', 'SL', 1, NULL, NULL, 3),
+    ('C', 'SL', 2, NULL, NULL, 3),
+    ('C', 'SL', 3, NULL, NULL, 3),
+    ('D', 'SL', 1, NULL, NULL, 3),
+    ('D', 'SL', 2, NULL, NULL, 3),
+    ('D', 'SL', 3, NULL, NULL, 3),
+    ('E', 'EL', 1, NULL, NULL, 3),
+    ('E', 'EL', 2, NULL, NULL, 3),
+    ('E', 'EL', 3, NULL, NULL, 3);
 
 
 insert into costo (id_vuelo, tipo_asiento, costo)
@@ -187,56 +222,168 @@ values
     (1, 'SA', 750),
     (1, 'SI', 200),
     (1, 'EA', 500),
-    (1, 'EI', 100);
+    (1, 'EI', 100),
+    (2, 'BA', 2000),
+    (2, 'BI', 500),
+    (2, 'SA', 1750),
+    (2, 'SI', 300),
+    (2, 'EA', 700),
+    (2, 'EI', 250),
+    (3, 'BA', 700),
+    (3, 'BI', 200),
+    (3, 'SA', 550),
+    (3, 'SI', 100),
+    (3, 'EA', 300),
+    (3, 'EI', 75);
+  
+
+  
+  insert into usuario (pasaporte, nombre_cliente, primer_apellido, segundo_apellido, sexo, fecha_nacimiento)
+  values 
+	(2019039864, 'Joseph', 'Valenciano', 'Madrigal', 'M', sysdate()),
+    (2019344555, 'Wilhelm', 'Carstens', 'Soto', 'M', sysdate()),
+    (2018874521, 'Jeremy', 'Valenciano', 'Madrigal', 'M', sysdate()),
+    (2048395209, 'Randox', 'Valenciano', 'Madrigal', 'M', sysdate());
+  
+
+insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_aerolinea, fecha_reserva)
+values 
+	(2019039864, 78, 1, 416, sysdate()),
+    (2019344555, 78, 1, 416, sysdate()),
+    (2018874521, 78, 1, 416, sysdate()),
+    (2048395209, 78, 1, 416, sysdate());
+    
+
+insert into monto_reservacion (id_reservacion, monto_total, id_vuelo)
+values 
+	(78, 55000, 1);
     
     
-# CONSULTAS PARA VER ESTADO DE VUELO    
-select origen, salida, destino, llegada, matricula_avion
-	from vuelo 
-    where id_vuelo = 1;
-    
-select tipo_asiento, costo
+  
+  # STORE PROCEDURES
+  
+DELIMITER //
+create procedure consVuelo (in v_id_vuelo int)
+begin  
+	select origen, salida, destino, llegada, matricula_avion
+		from vuelo 
+		where id_vuelo = v_id_vuelo;
+end 
+//
+
+CALL consVuelo(1);
+
+
+DELIMITER //
+create procedure costo_asiento (in v_id_vuelo int)
+begin  
+	select tipo_asiento, costo
 	from costo 
-    where id_vuelo = 1;
-    
-select fila, tipo_asiento 
+    where id_vuelo = v_id_vuelo;
+end 
+//
+
+CALL costo_asiento(1);
+
+
+DELIMITER //
+create procedure fila_asiento (in v_id_vuelo int)
+begin  
+	select fila, tipo_asiento, id_reservacion
 	from asiento 
-    where id_vuelo = 1;
-    
+    where id_vuelo = v_id_vuelo;
+end 
+//
 
-# CONSULTAS DE ESTADISTICAS DE VUELOS
-select v.id_vuelo, sum(m.monto_total) as suma_total
-		from vuelo v
-		inner join reservacion r
-			on v.id_vuelo = r.id_vuelo
-		inner join monto_reservacion m
-			on r.id_reservacion = m.id_reservacion
-		group by v.id_vuelo
-		order by suma_total desc 
-        LIMIT 3;
-	
-select v.id_vuelo, count(r.id_reservacion) as reservas
-	from vuelo v
-    inner join reservacion r
-		on v.id_vuelo = r.id_vuelo
-	group by v.id_vuelo
-	order by reservas desc
-	LIMIT 3;
+CALL fila_asiento(1);
 
 
-# DROP TABLAS 
+DELIMITER //
+create procedure cant_asientos(in v_id_vuelo int)
+select count(a.tipo_asiento) as cantidad_asientos
+	from asiento a
+    where a.tipo_asiento LIKE '%_L' and a.id_vuelo = v_id_vuelo
+UNION 
+select count(a.tipo_asiento) as cantidad_asientos
+	from asiento a
+    where a.tipo_asiento = '%_O' and a.id_vuelo = v_id_vuelo;
+//
+
+CALL cant_asientos(1);
+
+DELIMITER //
+create procedure reservacion()
+begin
+select mr.id_reservacion, a.fila, a.tipo_asiento, a.num_asiento, a.pasaporte, u.nombre_cliente
+	from monto_reservacion mr 
+    inner join asiento a
+		on mr.id_reservacion = a.id_reservacion
+	inner join usuario u
+		on a.pasaporte = u.pasaporte;
+end
+//
+
+CALL reservacion;
+
+DELIMITER //
+create procedure monto_reservacion()
+begin
+select mr.id_reservacion, mr.monto_total , count(a.num_asiento) as asientos_adquiridos
+	from monto_reservacion mr 
+    inner join asiento a
+		on mr.id_reservacion = a.id_reservacion
+	group by mr.id_reservacion;
+end
+//
+
+CALL monto_reservacion;
+
+
+# PROCEDIMIENTOS CON ESTADISTICAS DE VUELOS
+
+DELIMITER //
+create procedure estadistica_ventas()
+begin
+	select  v.id_vuelo, sum(mr.monto_total) as suma_total
+			from monto_reservacion mr
+            inner join vuelo v
+				on mr.id_vuelo = v.id_vuelo
+			group by v.id_vuelo
+			order by suma_total desc 
+			LIMIT 3;
+end
+//
+
+CALL estadistica_ventas;
+
+
+DELIMITER //
+create procedure estadistica_personas()
+begin
+	select v.id_vuelo, count(r.id_reservacion) as reservas
+			from vuelo v
+			inner join reservacion r
+				on v.id_vuelo = r.id_vuelo
+			group by v.id_vuelo
+			order by reservas desc
+			LIMIT 3;
+end 
+//
+
+CALL estadistica_personas;
+
+
+DROP TABLAS 
 # drop table costo;
 # drop table asiento;
 # drop table monto_reservacion;
-# drop table asiento;
 # drop table reservacion;
+# drop table asiento;
 # drop table aerolinea;
 # drop table usuario;
 # drop table vuelo;
 # drop table ciudad;
 # drop table avion;
-
-
 
 
 
