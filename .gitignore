@@ -6,4 +6,4 @@ src/test_connect
 
 #Archivos de configuracion de IDE
 .vscode/settings.json
-
+.vscode/c_cpp_properties.json
