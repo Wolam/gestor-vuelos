@@ -161,60 +161,6 @@ insert into aerolinea (id_aerolinea, nombre_aerolinea, hub, usuario_aerolinea, c
 values 
 	(416, 'Avianca', 'BOG', 'dba_avi', AES_ENCRYPT('rastreo416', 'fjm'));
     
-  
-insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
-values 
-	('A', 'BL', 1, 2019039864, 78, 1),
-    ('A', 'BL', 2, 2019344555, 78, 1),
-    ('A', 'BL', 3, 2018874521, 78, 1),
-    ('A', 'BL', 4, 2048395209, 78, 1),
-    ('B', 'BL', 1, NULL, NULL, 1),
-    ('B', 'BL', 2, NULL, NULL, 1),
-    ('C', 'SL', 1, NULL, NULL, 1),
-    ('C', 'SL', 2, NULL, NULL, 1),
-    ('D', 'SL', 1, NULL, NULL, 1),
-    ('D', 'SL', 2, NULL, NULL, 1),
-    ('D', 'SL', 3, NULL, NULL, 1),
-    ('E', 'EL', 1, NULL, NULL, 1),
-    ('E', 'EL', 2, NULL, NULL, 1),
-    ('E', 'EL', 3, NULL, NULL, 1),
-    ('E', 'EL', 4, NULL, NULL, 1);
-    
-
-
-    
-insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
-values 
-	('A', 'BL', 1, NULL, NULL, 2),
-    ('A', 'BL', 2, NULL, NULL, 2),
-    ('B', 'BL', 1, NULL, NULL, 2),
-    ('B', 'BL', 2, NULL, NULL, 2),
-    ('C', 'SL', 1, NULL, NULL, 2),
-    ('C', 'SL', 2, NULL, NULL, 2),
-    ('D', 'SL', 1, NULL, NULL, 2),
-    ('D', 'SL', 2, NULL, NULL, 2),
-    ('E', 'EL', 1, NULL, NULL, 2),
-    ('E', 'EL', 2, NULL, NULL, 2);
-    
-insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
-values 
-	('A', 'BL', 1, NULL, NULL, 3),
-    ('A', 'BL', 2, NULL, NULL, 3),
-    ('A', 'BL', 3, NULL, NULL, 3),
-    ('B', 'BL', 1, NULL, NULL, 3),
-    ('B', 'BL', 2, NULL, NULL, 3),
-    ('B', 'BL', 4, NULL, NULL, 3),
-    ('C', 'SL', 1, NULL, NULL, 3),
-    ('C', 'SL', 2, NULL, NULL, 3),
-    ('C', 'SL', 3, NULL, NULL, 3),
-    ('D', 'SL', 1, NULL, NULL, 3),
-    ('D', 'SL', 2, NULL, NULL, 3),
-    ('D', 'SL', 3, NULL, NULL, 3),
-    ('E', 'EL', 1, NULL, NULL, 3),
-    ('E', 'EL', 2, NULL, NULL, 3),
-    ('E', 'EL', 3, NULL, NULL, 3);
-
-
 insert into costo (id_vuelo, tipo_asiento, costo)
 values 
 	(1, 'BA', 1000),
@@ -258,9 +204,58 @@ insert into monto_reservacion (id_reservacion, monto_total, id_vuelo)
 values 
 	(78, 55000, 1);
     
+insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
+values 
+	('A', 'BL', 1, 2019039864, 78, 1),
+    ('A', 'BL', 2, 2019344555, 78, 1),
+    ('A', 'BL', 3, 2018874521, 78, 1),
+    ('A', 'BL', 4, 2048395209, 78, 1),
+    ('B', 'BL', 1, NULL, NULL, 1),
+    ('B', 'BL', 2, NULL, NULL, 1),
+    ('C', 'SL', 1, NULL, NULL, 1),
+    ('C', 'SL', 2, NULL, NULL, 1),
+    ('D', 'SL', 1, NULL, NULL, 1),
+    ('D', 'SL', 2, NULL, NULL, 1),
+    ('D', 'SL', 3, NULL, NULL, 1),
+    ('E', 'EL', 1, NULL, NULL, 1),
+    ('E', 'EL', 2, NULL, NULL, 1),
+    ('E', 'EL', 3, NULL, NULL, 1),
+    ('E', 'EL', 4, NULL, NULL, 1);
     
-  
-  # STORE PROCEDURES
+    
+insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
+values 
+	('A', 'BL', 1, NULL, NULL, 2),
+    ('A', 'BL', 2, NULL, NULL, 2),
+    ('B', 'BL', 1, NULL, NULL, 2),
+    ('B', 'BL', 2, NULL, NULL, 2),
+    ('C', 'SL', 1, NULL, NULL, 2),
+    ('C', 'SL', 2, NULL, NULL, 2),
+    ('D', 'SL', 1, NULL, NULL, 2),
+    ('D', 'SL', 2, NULL, NULL, 2),
+    ('E', 'EL', 1, NULL, NULL, 2),
+    ('E', 'EL', 2, NULL, NULL, 2);
+    
+insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
+values 
+	('A', 'BL', 1, NULL, NULL, 3),
+    ('A', 'BL', 2, NULL, NULL, 3),
+    ('A', 'BL', 3, NULL, NULL, 3),
+    ('B', 'BL', 1, NULL, NULL, 3),
+    ('B', 'BL', 2, NULL, NULL, 3),
+    ('B', 'BL', 4, NULL, NULL, 3),
+    ('C', 'SL', 1, NULL, NULL, 3),
+    ('C', 'SL', 2, NULL, NULL, 3),
+    ('C', 'SL', 3, NULL, NULL, 3),
+    ('D', 'SL', 1, NULL, NULL, 3),
+    ('D', 'SL', 2, NULL, NULL, 3),
+    ('D', 'SL', 3, NULL, NULL, 3),
+    ('E', 'EL', 1, NULL, NULL, 3),
+    ('E', 'EL', 2, NULL, NULL, 3),
+    ('E', 'EL', 3, NULL, NULL, 3);
+    
+    
+# PROCEDURES
   
 DELIMITER //
 create procedure consVuelo (in v_id_vuelo int)
@@ -312,31 +307,33 @@ select count(a.tipo_asiento) as cantidad_asientos
 CALL cant_asientos(1);
 
 DELIMITER //
-create procedure reservacion()
+create procedure reservacion(in v_id_vuelo int)
 begin
 select mr.id_reservacion, a.fila, a.tipo_asiento, a.num_asiento, a.pasaporte, u.nombre_cliente
 	from monto_reservacion mr 
     inner join asiento a
 		on mr.id_reservacion = a.id_reservacion
 	inner join usuario u
-		on a.pasaporte = u.pasaporte;
+		on a.pasaporte = u.pasaporte
+	where mr.id_vuelo = v_id_vuelo;
 end
 //
 
-CALL reservacion;
+CALL reservacion(1);
 
 DELIMITER //
-create procedure monto_reservacion()
+create procedure monto_reservacion(in v_id_vuelo int)
 begin
 select mr.id_reservacion, mr.monto_total , count(a.num_asiento) as asientos_adquiridos
 	from monto_reservacion mr 
     inner join asiento a
 		on mr.id_reservacion = a.id_reservacion
+	where mr.id_vuelo = v_id_vuelo
 	group by mr.id_reservacion;
 end
 //
 
-CALL monto_reservacion;
+CALL monto_reservacion(1);
 
 
 # PROCEDIMIENTOS CON ESTADISTICAS DE VUELOS
@@ -372,8 +369,48 @@ end
 
 CALL estadistica_personas;
 
+# funciones para validar usuario y contrasena
 
-DROP TABLAS 
+DELIMITER //
+create function valida_usuario (v_usuario varchar(20)) returns boolean
+BEGIN 
+	DECLARE usuario varchar(20);
+
+	select usuario_aerolinea into usuario
+		from aerolinea;
+	
+    if (strcmp(usuario, v_usuario) <=> 0) then
+		return True;
+	else
+		return False;
+	end if;
+end; //
+
+DELIMITER ;
+
+select valida_usuario ('dba_avi');
+
+DELIMITER //
+create function valida_contrasenia (v_contrasenia varchar(20)) returns boolean
+BEGIN 
+	DECLARE contra BLOB;
+	
+    select contrasenia into contra from aerolinea where AES_DECRYPT(contrasenia, 'fjm') = v_contrasenia;
+	
+	
+    if contra is NULL then
+		return False;
+	else
+		return True;
+	end if;
+end; //
+
+DELIMITER ;
+
+select valida_contrasenia('rastreo416');
+
+
+# DROP TABLAS 
 # drop table costo;
 # drop table asiento;
 # drop table monto_reservacion;
