@@ -1,5 +1,7 @@
-//Cod. de status
-#define SALIDA 0
+
+//Status del programa
+#define SALIDA_EXITOSA 0
+#define TIEMPO_EJECUCION 1
 
 //Opciones del menu principal
 #define OPCIONES_OPERATIVAS '1'
@@ -22,7 +24,7 @@
 
 //Opciones de ambos submenus
 #define OPCION_CAMBIO_SUBMENU '1'
-#define OPCION_MENU_PRNCIPAL '2'
+#define OPCION_MENU_PRINCIPAL '2'
 
 
 //Tamaños de variables
@@ -35,12 +37,14 @@
 //ERRORES del programa
 #define ERROR_ARCHIVO "\033[1;31m NO SE ENCONTRO EL ARCHIVO: \033[0m"
 #define ERROR_OPCION "\033[1;31m REINGRESE LA OPCION NUEVAMENTE \033[0m"
-#define ERROR_CONEXION "\033[1;31m ERROR EN LA CONEXION:\033[0m "
-#define ERROR_CONSULTA "\033[1;31m ERROR AL REALIZAR CONSULTA:\033[0m "
+#define ERROR_CONEXION "\033[1;31m ERROR EN LA CONEXION: \033[0m"
+#define ERROR_CONSULTA "\033[1;31m ERROR AL REALIZAR CONSULTA: \033[0m"
 
-#define TIEMPO_EJECUCCION 1
 
-// ERRORES SQL en consultas
+// CODIGOS MySQL en consultas
+#define COD_ERROR_DUP 1062
+#define COD_ERROR_SINTX 1064
+
+// NOMBRES DE ERRORES MySQL en consultas
 #define ERROR_DUP "Duplicate entry"
 #define ERROR_SINTX "You have an error in your SQL syntax"
-

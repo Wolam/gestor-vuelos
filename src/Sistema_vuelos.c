@@ -1,13 +1,13 @@
 #include <stdlib.h>
-#include <string.h>
 #include "Datos_sistema.h"
 
 FILE* abrir_archivo(char* ruta,char* modo);
-void cargar_usuarios (FILE* ref_archivo_usuarios,char* nombre_archivo);
-const char* insertar_usuario();
+void cargar_usuarios (char* nombre_archivo);
+int insertar_usuario(char* usuario);
 char* formatear_fecha(char* fecha);
 char* formatear_usuario(char* usuario);
-char* obtener_reporte(const char* res_consulta);
+char* obtener_reporte(int res_consulta);
+char *especificar_ruta();
 char solicitar_opcion();
 void mostrar_menu(char* tipo_menu);
 void ejecutar_opcion_menu_principal();
@@ -17,10 +17,7 @@ void ejecutar_opcion_submenu_operativo();
 int
 main()
 {
-   //realizar_conexion();
-  // FILE* usr = abrir_archivo("usuarios/usuarios.txt","r");
-  // cargar_usuarios(usr,"usuarios");
-  // cerrar_conexion();
+   realizar_conexion();
    ejecutar_opcion_menu_principal();
    return 0;
 }
@@ -39,11 +36,11 @@ ejecutar_opcion_menu_principal()
             ejecutar_opcion_submenu_general();
             break;
         case OPCION_SALIR:
-            exit(SALIDA);
+            cerrar_conexion();
         default:
             printf(ERROR_OPCION);
             break;
-    }}while(TIEMPO_EJECUCCION);
+    }}while(TIEMPO_EJECUCION);
 }
 
 
@@ -57,7 +54,7 @@ ejecutar_opcion_submenu_general()
         case OPCION_CAMBIO_SUBMENU:
             ejecutar_opcion_submenu_operativo();
             break;
-        case OPCION_MENU_PRNCIPAL:
+        case OPCION_MENU_PRINCIPAL:
             ejecutar_opcion_menu_principal();
             break;
         case OPCION_RESERVAR_VLOS:
@@ -67,7 +64,7 @@ ejecutar_opcion_submenu_general()
             printf("4\n");
             break;
         case OPCION_SALIR_GENERAL:
-            exit(SALIDA);
+            cerrar_conexion();
         default:
             printf(ERROR_OPCION);
             break;
@@ -82,24 +79,24 @@ ejecutar_opcion_submenu_operativo()
         case OPCION_CAMBIO_SUBMENU:
             ejecutar_opcion_submenu_general();
             break;
-        case OPCION_MENU_PRNCIPAL:
+        case OPCION_MENU_PRINCIPAL:
             ejecutar_opcion_menu_principal();
             break;
         case OPCION_REGISTRO_AVIONES:
             printf("3\n");
             break;
         case OPCION_CARGAR_USRIO:
-            //ajustar la ruta del usuario 
-            printf("4\n");
+            cargar_usuarios(especificar_ruta());
             break;
         case OPCION_ESTADO_VLO:
             printf("5\n");
             break;
         case OPCION_ESTADISTICAS:
-            printf("6\n");
+            mostrar_estadisticas_reservaciones();
+            mostrar_estadisticas_ventas();
             break;
         case OPCION_SALIR_OPERATIVO:
-            exit(SALIDA);
+            cerrar_conexion();
         default:
             printf(ERROR_OPCION);
     }}while(opcion != OPCION_SALIR_OPERATIVO);
@@ -139,26 +136,38 @@ abrir_archivo(char* ruta,char* modo)
 }
 
 
-void cargar_usuarios
-(FILE* ref_archivo_usuarios,char* nombre_archivo)
+void 
+cargar_usuarios
+(char* nombre_archivo)
 {
-    char usuario [TAM_USUARIO];
-    char ruta_reporte[TAM_RUTA] = {"reportes/reporte_"};
-    strcat(ruta_reporte,nombre_archivo);
-    FILE* ref_archivo_reporte = abrir_archivo(ruta_reporte,"w+");
-    while (fgets(usuario, TAM_USUARIO, ref_archivo_usuarios))
-    {
-        if (usuario[strlen(usuario) - 1] == '\n')
-            usuario[strlen(usuario)-1] = '\0';
 
-        fseek(ref_archivo_reporte,0,SEEK_END);
-        fputs(obtener_reporte(insertar_usuario(usuario)), ref_archivo_reporte);
+    char ruta_archivo[TAM_RUTA] = {"usuarios/"};
+    strcat(ruta_archivo,nombre_archivo); 
+    FILE *ref_archivo_usuarios;
+    ref_archivo_usuarios = abrir_archivo(ruta_archivo,"r");
+
+    if (ref_archivo_usuarios != NULL){
+        char usuario [TAM_USUARIO];
+        char ruta_reporte[TAM_RUTA] = {"reportes/reporte_"};
+        strcat(ruta_reporte,nombre_archivo);
+        FILE* ref_archivo_reporte = abrir_archivo(ruta_reporte,"w+");
+        while (fgets(usuario, TAM_USUARIO, ref_archivo_usuarios))
+        {
+            if (usuario[strlen(usuario) - 1] == '\n')
+                usuario[strlen(usuario)-1] = '\0';
+
+            fseek(ref_archivo_reporte,0,SEEK_END);
+            fputs(obtener_reporte(insertar_usuario(usuario)), ref_archivo_reporte);
+        }
+        fclose(ref_archivo_reporte);
+        fclose(ref_archivo_usuarios);
+    }else{
+        printf("\n<ASEGURESE QUE EL ARCHIVO EXISTA>\n");
+        return;
     }
-    fclose(ref_archivo_reporte);
-    fclose(ref_archivo_usuarios);
 }
 
-const char* 
+int
 insertar_usuario(char* usuario)
 {
     char cons[TAM_CONSULTA] = "INSERT INTO usuario VALUES(";
@@ -170,13 +179,12 @@ insertar_usuario(char* usuario)
 }
 
 char*
-obtener_reporte(const char* res_consulta)
+obtener_reporte(int res_consulta)
 {
-
-    char* reporte = calloc(11,sizeof(char));
-    if(res_consulta == NULL)
+    char * reporte = calloc(13,sizeof(char));
+    if(!res_consulta)
         strcpy(reporte,"AGREGADO\n");
-    else if(strncmp(ERROR_SINTX,res_consulta,strlen(ERROR_SINTX)) == 0)
+    else if(res_consulta==COD_ERROR_SINTX)
         strcpy(reporte,"ERROR\n");
     else{
         strcpy(reporte,"DUPLICADO\n");
@@ -199,4 +207,16 @@ char* formatear_usuario(char* usuario)
     char* usuario_formateado = calloc(TAM_USUARIO,sizeof(char));
     strncpy(usuario_formateado,usuario,strlen(usuario)-12);
     return usuario_formateado;
+}
+
+
+char *especificar_ruta()
+{
+    getchar();
+    char* buffer = malloc(TAM_RUTA*sizeof(char));
+    printf("Digite el nombre del archivo -> ");
+    fgets(buffer, TAM_RUTA, stdin);
+    if ((strlen(buffer) > 0) && (buffer[strlen (buffer) - 1] == '\n'))
+        buffer[strlen (buffer) - 1] = '\0';
+    return buffer;
 }
