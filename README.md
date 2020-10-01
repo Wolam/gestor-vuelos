@@ -6,6 +6,44 @@ Sistema de gestión de vuelos <img src=https://seeklogo.com/images/A/airplane-lo
 
 ### Manual de Usuario <img src= https://raw.githubusercontent.com/fabiospampinato/vscode-terminals/master/resources/logo.png width =20 height=20>
 
+Para iniciar a trabajar con nuestro proyecto se debe tener en cuenta que fue desarrollado en ubuntu linux,
+por lo que seguramente si se utiliza en otra arquitectura puede que dé problemas. Además se utiliza como
+motor de base de datos mysql, por lo que sino está instalado en nuestro sistema operativo, debemos seguir
+los siguientes pasos en nuestra terminal:
+
+``` 
+$ sudo apt-get install mysql-server
+$ sudo mysql -u root -p
+$ sudo apt-get install libmysqlclient-dev
+```
+Y ya estaría disponible este motor de base de datos en nuestro computador, luego de esto se puede crear
+un usuario, pero es opcional, se puede trabajar con el "root" tranquilamente. Para crear el usuario se deben hacer
+los siguientes pasos:
+```
+$ sudo mysql -u root -p
+> CREATE USER 'nombre_usuario'@'localhost' IDENTIFIED BY 'tu_contrasena';
+> GRANT ALL PRIVILEGES ON * . * TO 'nombre_usuario'@'localhost';
+> FLUSH PRIVILEGES;
+```
+Posteriormente se deben ejecutar los scripts sql, para tener dicha información almacenada en nuestro computador, 
+puede ser desde terminal, aunque puede ser más tedioso, o una mejor opción ejecutarlo de algun IDE 
+como por ejemplo WorkBench. 
+
+Si se cambió de usuario en mysql, se debe ingresar al archivo `Datos_sistema.h` y ubicar donde están estas variables,
+cambiar por las nuevas credenciales y ya se podría ejecutar el código.
+
+Para ejecutar este programa, se debe ingresar al directorio del proyecto y con el comando:
+``` 
+$ make run 
+```   
+ya debería de correr, este comando fue definido en un make file almacenado en nuestro directorio de proyecto. En caso
+de no compilar se puede hacer manualmente con los siguientes pasos:
+```
+gcc -o Sistema_vuelos $(mysql_config --cflags) Sistema_vuelos.c $(mysql_config --libs)
+./Sistema_vuelos
+```
+Con esto nuestro sistema ya estaría disponible para el uso del usuario.
+
 ### Pruebas de funcionalidad
 
 ### Descripción del problema
