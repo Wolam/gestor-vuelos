@@ -42,7 +42,13 @@ de no compilar se puede hacer manualmente con los siguientes pasos:
 gcc -o Sistema_vuelos $(mysql_config --cflags) Sistema_vuelos.c $(mysql_config --libs)
 ./Sistema_vuelos
 ```
-Con esto nuestro sistema ya estaría disponible para el uso del usuario.
+Con esto nuestro sistema ya estaría disponible para el uso del usuario. Para ingresar al menú operativo,
+ya existe un usuario y una contraseña predefinidos, los cuales son:
+```
+usuario: dba_avi
+contraseña: rastreo416
+```
+En caso de ingresar datos inválidos, no podrá insegresar al sistema de este menú.
 
 ### Pruebas de funcionalidad
 
@@ -86,12 +92,46 @@ La implementacion del proyecto se utilizo un modelo de BD que permitiera asociar
 
 <img src= "https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/Gestor_Vuelos-ER.png" width =900 height=700>
 
-### Librerías usadas
+##### Procedimientos utilizados en la base de datos
+La mayor cantidad de procedimientos utilizados en esta proyecto fue para consultar el estado de vuelos, 
+para que a la hora de consultarlo desde C sea todo más sencillo, estos se describen a continuación:
+```
+consVuelo (in v_id_vuelo int)
+costo_asiento (in v_id_vuelo int)
+fila_asiento (in v_id_vuelo int)
+cant_asientos (in v_id_vuelo int)
+reservacion (in v_id_vuelo int)
+monto_reservacion (in v_id_vuelo int)
+```
+Reciben como parámetro un entero, que en este caso sería el id del vuelo a consultar, 
+devolviendo así la consulta, que será mostrada al usuario posteriormente desde C.
 
+También se crearon dos procedimientos aparte, para mostrar las estadísticas de los vuelos,
+los cuales no tienen parámetros.
+```
+estadistica_ventas()
+estadistica_personas()
+```
+Se creó una función para lo que es la validación del usuario y contraseña ingresadas por el usuario
+en el menú operativo, la cual recibe como parámetros dos `varchar` y retorna un `boolean`.
+```
+valida_usuarios (v_usuario varchar(20), v_contrasenia varchar(20))
+```
+
+##### Funciones en C
+
+
+### Librerías usadas
+Para la correcta funcionalidad de este proyecto, son necesarias las siguientes librerías:
+```
+#include <stdio.h>
+#include <string.h>
+#include <mysql.h>
+#include <stdlib.h>
+```
 ### Análisis de resultados
 
 ### Bitácora
-
 
 ---
 Autores:
