@@ -8,57 +8,57 @@ const char* insertar_usuario();
 char* formatear_fecha(char* fecha);
 char* formatear_usuario(char* usuario);
 char* obtener_reporte(const char* res_consulta);
-int solicitar_opcion();
+char solicitar_opcion();
 void mostrar_menu(char* tipo_menu);
-void ejecutar_opcion_menu_principal(int opcion);
-void ejecutar_opcion_submenu_general(int opcion);
-void ejecutar_opcion_submenu_operativo(int opcion);
+void ejecutar_opcion_menu_principal();
+void ejecutar_opcion_submenu_general();
+void ejecutar_opcion_submenu_operativo();
 
 int
 main()
 {
-   realizar_conexion();
-   FILE* usr = abrir_archivo("usuarios/usuarios.txt","r");
-   cargar_usuarios(usr,"usuarios");
-   cerrar_conexion();
+   //realizar_conexion();
+  // FILE* usr = abrir_archivo("usuarios/usuarios.txt","r");
+  // cargar_usuarios(usr,"usuarios");
+  // cerrar_conexion();
+   ejecutar_opcion_menu_principal();
    return 0;
 }
 
 
 void
-ejecutar_opcion_menu_principal(int opcion)
-{
-    switch (opcion)
-    {
+ejecutar_opcion_menu_principal()
+{   
+    mostrar_menu("principal");
+    do { char opcion = solicitar_opcion();
+        switch (opcion){
         case OPCIONES_OPERATIVAS:
-            mostrar_menu("operativo");
-            ejecutar_opcion_submenu_operativo(solicitar_opcion());
+            ejecutar_opcion_submenu_operativo();
             break;
         case OPCIONES_GENERALES:
-            mostrar_menu("general");
-            ejecutar_opcion_submenu_general(solicitar_opcion());
+            ejecutar_opcion_submenu_general();
             break;
         case OPCION_SALIR:
-            exit(TRUE);
+            exit(SALIDA);
         default:
             printf(ERROR_OPCION);
             break;
-    }ejecutar_opcion_menu_principal(solicitar_opcion());
+    }}while(TIEMPO_EJECUCCION);
 }
 
 
 void
-ejecutar_opcion_submenu_general(int opcion)
+ejecutar_opcion_submenu_general()
 {
-    switch (opcion)
-    {
+    mostrar_menu("general");
+    char opcion = '\0';
+    do { opcion = solicitar_opcion();
+     switch (opcion){
         case OPCION_CAMBIO_SUBMENU:
-            mostrar_menu("operativo");
-            ejecutar_opcion_submenu_operativo(solicitar_opcion());
+            ejecutar_opcion_submenu_operativo();
             break;
         case OPCION_MENU_PRNCIPAL:
-            mostrar_menu("principal");
-            ejecutar_opcion_menu_principal(solicitar_opcion());
+            ejecutar_opcion_menu_principal();
             break;
         case OPCION_RESERVAR_VLOS:
             printf("3\n");
@@ -67,26 +67,23 @@ ejecutar_opcion_submenu_general(int opcion)
             printf("4\n");
             break;
         case OPCION_SALIR_GENERAL:
-            exit(TRUE);
+            exit(SALIDA);
         default:
             printf(ERROR_OPCION);
-            ejecutar_opcion_submenu_operativo(solicitar_opcion());
             break;
-    }ejecutar_opcion_submenu_general(solicitar_opcion());
+    }} while(opcion != OPCION_SALIR_GENERAL);
 }
-
 void
-ejecutar_opcion_submenu_operativo(int opcion)
-{
-    switch (opcion)
-    {
+ejecutar_opcion_submenu_operativo()
+{   
+    mostrar_menu("operativo");
+    char opcion = '\0';
+    do { opcion = solicitar_opcion(); switch (opcion){
         case OPCION_CAMBIO_SUBMENU:
-            mostrar_menu("general");
-            ejecutar_opcion_submenu_general(solicitar_opcion());
+            ejecutar_opcion_submenu_general();
             break;
         case OPCION_MENU_PRNCIPAL:
-            mostrar_menu("principal");
-            ejecutar_opcion_menu_principal(solicitar_opcion());
+            ejecutar_opcion_menu_principal();
             break;
         case OPCION_REGISTRO_AVIONES:
             printf("3\n");
@@ -102,10 +99,10 @@ ejecutar_opcion_submenu_operativo(int opcion)
             printf("6\n");
             break;
         case OPCION_SALIR_OPERATIVO:
-            exit(TRUE);
+            exit(SALIDA);
         default:
             printf(ERROR_OPCION);
-    }ejecutar_opcion_submenu_operativo(solicitar_opcion());
+    }}while(opcion != OPCION_SALIR_OPERATIVO);
 }
 
 
@@ -117,12 +114,12 @@ mostrar_menu(char* tipo_menu)
     system(abrir_menu);
 }
 
-int
+char
 solicitar_opcion()
 {
-    unsigned int opcion;
-    printf("\nFavor digite una opción > ");
-    scanf(" %d",&opcion);
+    char opcion;
+    printf("\n <OPCION A ELEGIR> ");
+    scanf(" %c",&opcion);
     return opcion;
 }
 

@@ -30,7 +30,7 @@ void realizar_conexion()
                                 CONTR, NMB_BD, 0, NULL, 0)) {
 		fprintf(stderr,ERROR_CONEXION "%s\n", mysql_error(conexion));
         cerrar_conexion();
-		exit(TRUE);
+		exit(SALIDA);
 	}
 
 }
