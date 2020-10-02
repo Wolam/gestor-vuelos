@@ -1,4 +1,4 @@
-# PROCEDIMIENTOS
+# PROCEDIMIENTOS PARA MOSTRAR EL ESTADO DE VUELO
   
 DELIMITER //
 create procedure consVuelo (in v_id_vuelo int)
@@ -115,7 +115,7 @@ end
 CALL estadistica_personas;
 
 
-# funcion para validar usuario y contrasena
+# FUNCION QUE VALIDA EL USUARIO Y LA CONSTRASEÑA
 
 SET GLOBAL log_bin_trust_function_creators = 1;
 
@@ -145,7 +145,7 @@ DELIMITER ;
 select valida_usuarios('dba_avi', 'rastreo416');
 
 
-# funcion para validar pasajeros 
+# FUNCION PARA VALIDAR PASAJEROS
 
 DELIMITER //
 create function valida_pasajeros (v_pasaporte int) returns boolean
@@ -167,7 +167,7 @@ DELIMITER ;
 
 select valida_pasajeros(2019039864);
 
-# funcion para verificar edad
+# FUNCION PARA EXTRAER LA EDAD DEL CLIENTE
 DELIMITER //
 create function conocer_edad (v_pasaporte int) returns varchar(2)
 BEGIN 
@@ -188,8 +188,10 @@ DELIMITER ;
 
 select conocer_edad(2048395209);
 
+# FUNCION PARA VALIDAR LA CANTIDAD DE ASIENTOS INGRESADOS POR EL USUARIO EN LA RESERVA
+
 DELIMITER //
-create function valida_asientos (v_cantidad_asientos int, v_id_vuelo int) returns boolean 
+create function valida_cantidad_asientos (v_cantidad_asientos int, v_id_vuelo int) returns boolean 
 BEGIN 
 	DECLARE cantidad_asientos int;
     
@@ -206,8 +208,87 @@ end; //
 
 DELIMITER ;
 
-select valida_asientos (3, 1);
+select valida_cantidad_asientos (3, 1);
+
+# VALIDA LAS POSICIONES DE LOS ASIENTOS INGRESADOS POR EL USUARIO PARA LA RESERVA
+
+DELIMITER //
+create function valida_pos_asiento (v_fila varchar(2), v_num_asiento int, v_id_vuelo int) returns boolean 
+BEGIN 
+	DECLARE f_fila varchar(2);
+    DECLARE f_num_asiento int;
     
+    select fila, num_asiento into f_fila, f_num_asiento
+		from asiento
+		where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo and tipo_asiento LIKE '%_L';
+    
+	if f_fila is null or f_num_asiento is null then 
+		return false;
+	else 
+		return true;
+	end if;
+end; //
+
+DELIMITER ;
+
+select valida_pos_asiento('A', 1, 1);
+
+# PROCEDIMIENTOS PARA LA INFORMACION DE LA RESERVA QUE ALIMENTA EL PDF
+
+DELIMITER //
+create procedure info_reservacion_pdf (in v_pasaporte int)
+begin  
+
+	select r.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.fecha_reserva, mr.monto_total, v.id_aerolinea, a.nombre_aerolinea, a.hub
+		from vuelo v
+		inner join reservacion r
+			on v.id_vuelo = r.id_vuelo
+		inner join monto_reservacion mr
+			on r.id_reservacion = mr.id_reservacion
+		inner join aerolinea a
+			on mr.id_aerolinea = a.id_aerolinea
+			where r.pasaporte = v_pasaporte;
+
+end 
+//
+
+call info_reservacion_pdf(2019344555);
+
+DELIMITER //
+create procedure  clientes_reservacion (in v_id_reservacion int)
+begin  
+
+select a.fila, a.num_asiento, a.pasaporte, u.nombre_cliente, u.primer_apellido, u.segundo_apellido
+	from monto_reservacion mr 
+    inner join asiento a
+		on mr.id_reservacion = a.id_reservacion
+	inner join usuario u
+		on a.pasaporte = u.pasaporte
+	where mr.id_reservacion = v_id_reservacion;
+		
+end 
+//
+
+call clientes_reservacion(1);
+
+# PROCEDIMIENTO DE INFORMACION DE RESERVA PARA C
+
+DELIMITER //
+create procedure info_reservacion_c (in v_id_reservacion int)
+begin  
+
+	select mr.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.fecha_reserva, mr.monto_total, v.id_aerolinea, a.nombre_aerolinea, a.hub
+		from vuelo v
+		inner join monto_reservacion mr
+			on v.id_vuelo = mr.id_vuelo
+		inner join aerolinea a
+			on mr.id_aerolinea = a.id_aerolinea
+			where mr.id_reservacion = v_id_reservacion;
+            
+end 
+//
+
+call info_reservacion_c(1);
 
 # DROPS DE PROCEDIMIENTOS
 
