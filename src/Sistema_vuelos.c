@@ -1,19 +1,6 @@
 #include <stdlib.h>
 #include "Datos_sistema.h"
 
-FILE *abrir_archivo(char *ruta, char *modo);
-int insertar_usuario(char *usuario);
-char *formatear_fecha(char *fecha);
-char *formatear_usuario(char *usuario);
-char *obtener_reporte(int res_consulta);
-char *pedir_str_input(char *msj);
-char pedir_caracter_input(char *msj);
-void mostrar_menu(char *tipo_menu);
-void ejecutar_opcion_menu_principal();
-void ejecutar_opcion_submenu_general();
-void ejecutar_opcion_submenu_operativo();
-void cargar_usuarios(char *nombre_archivo);
-void estado_vuelo();
 
 int main()
 {

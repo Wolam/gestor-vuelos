@@ -3,22 +3,20 @@
 #include <mysql.h>
 #include "Constantes.h"
 
-#define USR_DBA "wil_bd"
-#define NMB_BD "bd_aviones"
-#define CONTR "wil_bd_psswrd"
-#define SRVR "localhost"
-
-//Llamadas a funcionalidades de la bd
-#define ESTADISTICAS_VENTAS "CALL estadistica_ventas"
-#define ESTADISTICAS_RESERVACIONES "CALL estadistica_personas"
-
-#define CONSULTA_VUELO "CALL consVuelo("
-#define CONSULTA_COSTO_ASIENTOS "CALL costo_asiento("
-#define CONSULTA_POS_ASIENTOS "CALL fila_asiento("
-#define CONSULTA_CANT_ASIENTOS "CALL cant_asientos("
-#define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
-//#define CONSULTA_INFO_RESRV_POR_ID "CALL reservacion("
-#define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
+// Funciones de prototipo
+FILE *abrir_archivo(char *ruta, char *modo);
+int insertar_usuario(char *usuario);
+char *formatear_fecha(char *fecha);
+char *formatear_usuario(char *usuario);
+char *obtener_reporte(int res_consulta);
+char *pedir_str_input(char *msj);
+char pedir_caracter_input(char *msj);
+void mostrar_menu(char *tipo_menu);
+void ejecutar_opcion_menu_principal();
+void ejecutar_opcion_submenu_general();
+void ejecutar_opcion_submenu_operativo();
+void cargar_usuarios(char *nombre_archivo);
+void estado_vuelo();
 
 MYSQL *conexion;
 MYSQL_RES *resultado;
@@ -50,7 +48,6 @@ int realizar_consulta(char *consulta)
 	/* enviar consulta SQL */
 	if (mysql_query(conexion, consulta))
 	{
-		//fprintf(stderr, ERROR_CONSULTA "%s\n", mysql_error(conexion));
 		if (!strncmp(mysql_error(conexion), ERROR_DUP, strlen(ERROR_DUP)))
 			return COD_ERROR_DUP;
 		else
@@ -65,125 +62,99 @@ int realizar_consulta(char *consulta)
 	}
 }
 
-void mostrar_estadisticas_ventas()
+
+void mostrar_registros()
 {
-	if (realizar_consulta(ESTADISTICAS_VENTAS) == 1)
+	resultado = mysql_store_result(conexion);
+	int num_reg = mysql_num_rows(resultado);
+	if (num_reg)
 	{
-		resultado = mysql_store_result(conexion);
+		int i = 0; int col = mysql_field_count(conexion);
 		while ((reg = mysql_fetch_row(resultado)) != NULL)
 		{
-			printf("VUELOS MAS VENDIDOS\n\nCOD.VUELO [%s] VENTAS: %s\n\n", reg[0], reg[1]);
+			for (i=0; i<col; i++)
+				printf("%s \t", reg[i]);
+			printf("\n\n");
 		}
 	}
 	else
 	{
-		printf(ERROR_CONSULTA "[ Verificar estadisticas de ventas ] \n");
-		//mysql_free_result(resultado);
+		printf(REG_VACIOS);
 	}
+	mysql_free_result(resultado);
 	mysql_next_result(conexion);
+}
+
+void mostrar_estadisticas_ventas()
+{
+	if (!realizar_consulta(ESTADISTICAS_VENTAS))
+	{
+		printf("VUELOS MAS VENDIDOS\n\nCOD.VUELO \tVENTAS \n");
+		mostrar_registros();
+	}
+	else
+	{
+		printf(ERROR_CONSULTA "[ Verificar estadisticas de ventas ] \n");
+	}
 }
 
 void mostrar_estadisticas_reservaciones()
 {
-	if (realizar_consulta(ESTADISTICAS_RESERVACIONES) == 1)
+	if (!realizar_consulta(ESTADISTICAS_RESERVACIONES))
 	{
-		resultado = mysql_store_result(conexion);
-		while ((reg = mysql_fetch_row(resultado)) != NULL)
-		{
-			printf("VUELOS MAS RESERVADOS\n\nCOD.VUELO [%s] RESERVACIONES: %s\n\n", reg[0], reg[1]);
-		}
+		printf("VUELOS MAS RESERVADOS\n\nCOD.VUELO \tRESERVACIONES \n");
+		mostrar_registros();
 	}
 	else
 	{
 		printf(ERROR_CONSULTA "[ Verificar estadisticas de reservaciones ] \n");
 	}
-	//mysql_free_result(resultado);
-	mysql_next_result(conexion);
 }
 
-char* formatear_cons_vuelo(char* consulta,char *id_vuelo)
+char *formatear_cons_vuelo(char *consulta, char *id_vuelo)
 {
-	char* cons = calloc(TAM_CONSULTA,sizeof(char));
-	strcpy(cons,consulta);
-    strcat(cons,id_vuelo);
-    strcat(cons,")");
-    return cons;
+	char *cons = calloc(TAM_CONSULTA, sizeof(char));
+	strcpy(cons, consulta);
+	strcat(cons, id_vuelo);
+	strcat(cons, ")");
+	return cons;
 }
 
 void mostrar_info_vuelo(char *id_vuelo)
 {
 
+	printf("MOSTRANDO INFO VUELO\n");
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_VUELO, id_vuelo));
-	resultado = mysql_store_result(conexion);
-	if (!mysql_num_rows(resultado))
-		printf("<VUELO NO ENCONTRADO>\n");
-
-	else
-	{
-		while ((reg = mysql_fetch_row(resultado)) != NULL)
-		{
-			printf("MOSTRANDO INFO VUELO\n");
-		}
-	}
-
-	mysql_free_result(resultado);
-	mysql_next_result(conexion);
+	mostrar_registros();
 }
 
 void mostrar_asientos_en_vuelo(char *id_vuelo)
 {
+	printf("MOSTRANDO INFO ASIENTOS\n");
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_ASIENTOS, id_vuelo));
-	resultado = mysql_store_result(conexion);
-	while ((reg = mysql_fetch_row(resultado)) != NULL)
-	{
-		printf("MOSTRANDO INFO ASIENTOS\n");
-	}
+	mostrar_registros();
+	
 
-	mysql_free_result(resultado);
-	mysql_next_result(conexion);
-
+	printf("MOSTRANDO POS ASIENTOS\n");
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_POS_ASIENTOS, id_vuelo));
-	resultado = mysql_store_result(conexion);
-	while ((reg = mysql_fetch_row(resultado)) != NULL)
-	{
-		printf("MOSTRANDO POS ASIENTOS\n");
-	}
+	mostrar_registros();
 
-	mysql_free_result(resultado);
-	mysql_next_result(conexion);
-
+	printf("MOSTRANDO POS ASIENTOS\n");
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_CANT_ASIENTOS, id_vuelo));
-	resultado = mysql_store_result(conexion);
-	while ((reg = mysql_fetch_row(resultado)) != NULL)
-	{
-		printf("MOSTRANDO CANTIDAD ASIENTOS\n");
-	}
+	mostrar_registros();
 
-	mysql_free_result(resultado);
-	mysql_next_result(conexion);
+	
 }
 
 void mostrar_reservaciones_en_vuelo(char *id_vuelo)
 {
 
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_INFO_RESRV_POR_VUELO, id_vuelo));
-	resultado = mysql_store_result(conexion);
-	while ((reg = mysql_fetch_row(resultado)) != NULL)
-	{
-		printf("MOSTRANDO INFO RESERVA\n");
-	}
+	printf("MOSTRANDO INFO RESERVA\n");
+	mostrar_registros();
 
-	mysql_free_result(resultado);
-	mysql_next_result(conexion);
 
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_RESRV_POR_VUELO, id_vuelo));
-	resultado = mysql_store_result(conexion);
-	while ((reg = mysql_fetch_row(resultado)) != NULL)
-	{
-		printf("MOSTRANDO COSTO RESERVA\n");
-	}
-
-	mysql_free_result(resultado);
-	mysql_next_result(conexion);
-
+	printf("MOSTRANDO COSTO RESERVA\n");
+	mostrar_registros();
 }
