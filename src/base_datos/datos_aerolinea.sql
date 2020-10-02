@@ -2,7 +2,7 @@
 
 #create database bd_aviones;
 
-# use bd_aviones;
+use bd_aviones;
 
 # show tables;
 
@@ -50,14 +50,15 @@ create table reservacion
 (pasaporte int not null,
 id_reservacion int not null,
 id_vuelo int not null,
-id_aerolinea int not null,  
-fecha_reserva date not null,
+id_edad varchar(2) not null,
 primary key (pasaporte, id_reservacion));
 
 create table monto_reservacion
 (id_reservacion int not null,
 monto_total int not null,
 id_vuelo int not null,
+fecha_reserva date not null,
+id_aerolinea int not null,
 primary key (id_reservacion));
 
 create table asiento 
@@ -97,7 +98,7 @@ alter table reservacion
 add foreign key (id_vuelo)
 references vuelo (id_vuelo);
 
-alter table reservacion 
+alter table monto_reservacion 
 add foreign key (id_aerolinea)
 references aerolinea (id_aerolinea);
 
@@ -189,30 +190,32 @@ values
   
   insert into usuario (pasaporte, nombre_cliente, primer_apellido, segundo_apellido, sexo, fecha_nacimiento)
   values 
-	(2019039864, 'Joseph', 'Valenciano', 'Madrigal', 'M', sysdate()),
-    (2019344555, 'Wilhelm', 'Carstens', 'Soto', 'M', sysdate()),
-    (2018874521, 'Jeremy', 'Valenciano', 'Madrigal', 'M', sysdate()),
-    (2048395209, 'Randox', 'Valenciano', 'Madrigal', 'M', sysdate());
+	(2019039864, 'Joseph', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2015-5-01','%Y-%m-%d')),
+    (2019344555, 'Wilhelm', 'Carstens', 'Soto', 'M', STR_TO_DATE('2001-5-01','%Y-%m-%d')),
+    (2018874521, 'Jeremy', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2017-5-01','%Y-%m-%d')),
+    (2048395209, 'Randox', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2020-5-01','%Y-%m-%d'));
+    
+	insert into usuario values (2018252, 'Randy', 'Conejo', 'herrera', 'M', STR_TO_DATE('2001-5-01','%Y-%m-%d'));
+    insert into usuario values (20201874, 'Rogelio', 'Tinoco', 'herrera', 'M', STR_TO_DATE('2002-11-12','%Y-%m-%d'));
   
-
-insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_aerolinea, fecha_reserva)
+insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad)
 values 
-	(2019039864, 78, 1, 416, sysdate()),
-    (2019344555, 78, 1, 416, sysdate()),
-    (2018874521, 78, 1, 416, sysdate()),
-    (2048395209, 78, 1, 416, sysdate());
+	(2019039864, 1, 1, 'A'),
+    (2019344555, 1, 1, 'A'),
+    (2018874521, 1, 1, 'A'),
+    (2048395209, 1, 1, 'I');
+        
+insert into monto_reservacion (id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea)
+values 
+	(1, 55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
     
 
-insert into monto_reservacion (id_reservacion, monto_total, id_vuelo)
-values 
-	(78, 55000, 1);
-    
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
-	('A', 'BL', 1, 2019039864, 78, 1),
-    ('A', 'BL', 2, 2019344555, 78, 1),
-    ('A', 'BL', 3, 2018874521, 78, 1),
-    ('A', 'BL', 4, 2048395209, 78, 1),
+	('A', 'BL', 1, 2019039864, 1, 1),
+    ('A', 'BL', 2, 2019344555, 1, 1),
+    ('A', 'BL', 3, 2018874521, 1, 1),
+    ('A', 'BL', 4, 2048395209, 1, 1),
     ('B', 'BL', 1, NULL, NULL, 1),
     ('B', 'BL', 2, NULL, NULL, 1),
     ('C', 'SL', 1, NULL, NULL, 1),
@@ -258,12 +261,12 @@ values
     ('E', 'EL', 3, NULL, NULL, 3);
     
 # DROP TABLAS 
-# drop table costo;
-# drop table asiento;
-# drop table monto_reservacion;
-# drop table reservacion;
-# drop table aerolinea;
-# drop table usuario;
-# drop table vuelo;
-# drop table ciudad;
-# drop table avion;
+drop table costo;
+drop table asiento;
+drop table monto_reservacion;
+drop table reservacion;
+drop table aerolinea;
+drop table usuario;
+drop table vuelo;
+drop table ciudad;
+drop table avion;
