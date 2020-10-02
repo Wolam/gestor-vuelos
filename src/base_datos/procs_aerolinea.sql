@@ -142,6 +142,71 @@ DELIMITER ;
 
 select valida_usuarios('dba_avi', 'rastreo416');
 
+
+# funcion para validar pasajeros 
+
+DELIMITER //
+create function valida_pasajeros (v_pasaporte int) returns boolean
+BEGIN 
+	DECLARE pasajero int;
+    
+    select pasaporte into pasajero
+		from usuario
+	where pasaporte = v_pasaporte;
+
+	if pasajero is NULL then 
+		return false;
+	else
+		return true;
+	end if;
+end; //
+
+DELIMITER ;
+
+select valida_pasajeros(2019039864);
+
+# funcion para verificar edad
+DELIMITER //
+create function conocer_edad (v_pasaporte int) returns varchar(2)
+BEGIN 
+	DECLARE edad int;
+    
+    SELECT TIMESTAMPDIFF(YEAR,fecha_nacimiento,CURDATE()) into edad
+     FROM usuario
+		where pasaporte = v_pasaporte;
+
+	if edad >= 18 then
+		return 'A';
+	else
+		return 'I';
+	end if;
+end; //
+
+DELIMITER ;
+
+select conocer_edad(2018252);
+
+DELIMITER //
+create function valida_asientos (v_cantidad_asientos int, v_id_vuelo int) returns boolean 
+BEGIN 
+	DECLARE cantidad_asientos int;
+    
+    select count(a.tipo_asiento) into cantidad_asientos 
+	from asiento a
+    where a.tipo_asiento LIKE '%_L' and a.id_vuelo = v_id_vuelo;
+    
+    if cantidad_asientos >= v_cantidad_asientos then 
+		return true;
+	else 
+		return false;
+	end if;
+end; //
+
+DELIMITER ;
+
+select valida_asientos (3, 1);
+    
+
 # DROPS DE PROCEDIMIENTOS
 
 # drop procedure consVuelo;
