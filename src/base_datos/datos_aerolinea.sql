@@ -15,6 +15,7 @@ destino varchar(5) not null,
 matricula_avion int not null,
 salida varchar(40) not null,
 llegada varchar(40) not null,
+id_aerolinea int not null,
 primary key(id_vuelo));
 
 create table ciudad
@@ -54,7 +55,7 @@ id_edad varchar(2) not null,
 primary key (pasaporte, id_reservacion));
 
 create table monto_reservacion
-(id_reservacion int not null,
+(id_reservacion int(10) not null auto_increment,
 monto_total int not null,
 id_vuelo int not null,
 fecha_reserva date not null,
@@ -89,6 +90,10 @@ references ciudad (id_ciudad);
 alter table vuelo
 add foreign key (matricula_avion)
 references avion (matricula);
+
+alter table vuelo
+add foreign key (id_aerolinea)
+references aerolinea (id_aerolinea);
 
 alter table reservacion 
 add foreign key (pasaporte)
@@ -146,24 +151,25 @@ values
     (4510, 'Boeing', 747, 2011),
     (1035, 'Airbus', 320, 2007);
     
-
-insert into vuelo (id_vuelo, origen, destino, matricula_avion, salida, llegada)
-values 
-	(1, 'NYC', 'SJO', 7835, '2020/05/12 10:05', '2020/05/12 16:10'),
-    (2, 'BOG', 'BER', 1035, '2020/07/02 11:15', '2020/07/03 02:35'),
-    (3, 'SYD', 'RJ', 3289, '2020/02/15 16:15', '2020/02/16 10:15'),
-    (4, 'MAD', 'SJO', 9741, '2019/04/19 14:25', '2019/04/19 23:15'),
-    (5, 'PAR', 'MAD', 4510, '2020/08/11 08:32', '2020/08/11 11:40'),
-    (6, 'LUX', 'BER', 2532, '2018/11/14 03:45', '2018/11/14 14:35'),
-    (7, 'SJO', 'FL', 6812, '2020/01/23 11:25', '2020/01/23 02:35'),
-    (8, 'TOK', 'PEK', 2532, '2017/02/27 13:12', '2017/02/27 20:15'),
-    (9, 'FL', 'MAD', 1035, '2019/05/29 9:45', '2019/05/30 02:50'),
-    (10, 'RJ', 'LUX', 5647, '2016/10/12 2:32', '2016/10/12 23:40');
-
-
 insert into aerolinea (id_aerolinea, nombre_aerolinea, hub, usuario_aerolinea, contrasenia)
 values 
 	(416, 'Avianca', 'BOG', 'dba_avi', AES_ENCRYPT('rastreo416', 'fjm'));
+    
+
+insert into vuelo (id_vuelo, origen, destino, matricula_avion, salida, llegada, id_aerolinea)
+values 
+	(1, 'NYC', 'SJO', 7835, '2020/05/12 10:05', '2020/05/12 16:10', 416),
+    (2, 'BOG', 'BER', 1035, '2020/07/02 11:15', '2020/07/03 02:35', 416),
+    (3, 'SYD', 'RJ', 3289, '2020/02/15 16:15', '2020/02/16 10:15', 416),
+    (4, 'MAD', 'SJO', 9741, '2019/04/19 14:25', '2019/04/19 23:15', 416),
+    (5, 'PAR', 'MAD', 4510, '2020/08/11 08:32', '2020/08/11 11:40', 416),
+    (6, 'LUX', 'BER', 2532, '2018/11/14 03:45', '2018/11/14 14:35', 416),
+    (7, 'SJO', 'FL', 6812, '2020/01/23 11:25', '2020/01/23 02:35', 416),
+    (8, 'TOK', 'PEK', 2532, '2017/02/27 13:12', '2017/02/27 20:15', 416),
+    (9, 'FL', 'MAD', 1035, '2019/05/29 9:45', '2019/05/30 02:50', 416),
+    (10, 'RJ', 'LUX', 5647, '2016/10/12 2:32', '2016/10/12 23:40', 416);
+
+
     
 insert into costo (id_vuelo, tipo_asiento, costo)
 values 
@@ -186,7 +192,6 @@ values
     (3, 'EA', 300),
     (3, 'EI', 75);
   
-
   
   insert into usuario (pasaporte, nombre_cliente, primer_apellido, segundo_apellido, sexo, fecha_nacimiento)
   values 
@@ -205,9 +210,10 @@ values
     (2018874521, 1, 1, 'A'),
     (2048395209, 1, 1, 'I');
         
-insert into monto_reservacion (id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea)
+insert into monto_reservacion (monto_total, id_vuelo, fecha_reserva, id_aerolinea)
 values 
-	(1, 55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
+	(55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
+    
     
 
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
@@ -261,12 +267,12 @@ values
     ('E', 'EL', 3, NULL, NULL, 3);
     
 # DROP TABLAS 
-drop table costo;
-drop table asiento;
-drop table monto_reservacion;
-drop table reservacion;
-drop table aerolinea;
-drop table usuario;
-drop table vuelo;
-drop table ciudad;
-drop table avion;
+# drop table costo;
+# drop table asiento;
+# drop table monto_reservacion;
+# drop table reservacion;
+# drop table aerolinea;
+# drop table usuario;
+# drop table vuelo;
+# drop table ciudad;
+# drop table avion;
