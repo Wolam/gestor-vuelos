@@ -38,13 +38,15 @@ CALL fila_asiento(1);
 
 DELIMITER //
 create procedure cant_asientos(in v_id_vuelo int)
-select count(a.tipo_asiento) as cantidad_asientos
+select l.cantidad_asientos_libres, o.cantidad_asientos_ocupados
+from 
+(select count(a.tipo_asiento) as cantidad_asientos_libres
 	from asiento a
-    where a.tipo_asiento LIKE '%_L' and a.id_vuelo = v_id_vuelo
-UNION 
-select count(a.tipo_asiento) as cantidad_asientos
+    where a.tipo_asiento LIKE '%_L' and a.id_vuelo = v_id_vuelo) as l
+NATURAL JOIN
+(select count(a.tipo_asiento) as cantidad_asientos_ocupados
 	from asiento a
-    where a.tipo_asiento = '%_O' and a.id_vuelo = v_id_vuelo;
+    where a.tipo_asiento = '%_O' and a.id_vuelo = v_id_vuelo) as o;
 //
 
 CALL cant_asientos(1);
@@ -175,7 +177,7 @@ BEGIN
      FROM usuario
 		where pasaporte = v_pasaporte;
 
-	if edad >= 18 then
+	if edad >= 3 then
 		return 'A';
 	else
 		return 'I';
@@ -184,7 +186,7 @@ end; //
 
 DELIMITER ;
 
-select conocer_edad(2018252);
+select conocer_edad(2048395209);
 
 DELIMITER //
 create function valida_asientos (v_cantidad_asientos int, v_id_vuelo int) returns boolean 
