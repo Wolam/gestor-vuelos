@@ -85,6 +85,32 @@ void mostrar_registros()
 	mysql_next_result(conexion);
 }
 
+void mostrar_registros_asientos()
+{
+	resultado = mysql_store_result(conexion);
+//	int num_reg = mysql_num_rows(resultado);
+	int i_asiento = 1; int i_fila = 0;
+	char* fil_ant = "\0"; 
+	while ((reg = mysql_fetch_row(resultado)) != NULL)
+	{
+		
+		if(!strcmp(fil_ant,reg[i_fila]))
+			printf("\t %s \t", reg[i_asiento]);
+		else
+		{	
+			
+			printf("\n\n%s\t%s",reg[i_fila],reg[i_asiento]);
+		}
+		fil_ant = reg[i_fila];
+	}
+		
+	printf("\n");
+	
+	mysql_free_result(resultado);
+	mysql_next_result(conexion);
+}
+
+
 void mostrar_estadisticas_ventas()
 {
 	if (!realizar_consulta(ESTADISTICAS_VENTAS))
@@ -135,11 +161,11 @@ void mostrar_asientos_en_vuelo(char *id_vuelo)
 	mostrar_registros();
 	
 
-	printf("MOSTRANDO POS ASIENTOS\n");
+	printf(VERDE "[FILA] [ASIENTOS]\n" END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_POS_ASIENTOS, id_vuelo));
-	mostrar_registros();
+	mostrar_registros_asientos();
 
-	printf(VERDE"[Est. Asiento] [Cantidad]\n"END_CLR);
+	printf(VERDE"   Asientos\n[Libres] [Ocupados]\n"END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_CANT_ASIENTOS, id_vuelo));
 	mostrar_registros();
 
@@ -158,3 +184,6 @@ void mostrar_reservaciones_en_vuelo(char *id_vuelo)
 	printf(VERDE"[ID_Rsv] [Monto] [Num asientos]\n"END_CLR);
 	mostrar_registros();
 }
+/// iterar columnas
+	/// fila ant == actual : siga impr	
+	// imprimir doble linea y filaant = actual
