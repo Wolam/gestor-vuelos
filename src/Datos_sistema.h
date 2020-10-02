@@ -89,7 +89,7 @@ void mostrar_estadisticas_ventas()
 {
 	if (!realizar_consulta(ESTADISTICAS_VENTAS))
 	{
-		printf("VUELOS MAS VENDIDOS\n\nCOD.VUELO \tVENTAS \n");
+		printf(VERDE "VUELOS MAS VENDIDOS\n\nCOD.VUELO \tVENTAS \n"END_CLR);
 		mostrar_registros();
 	}
 	else
@@ -102,7 +102,7 @@ void mostrar_estadisticas_reservaciones()
 {
 	if (!realizar_consulta(ESTADISTICAS_RESERVACIONES))
 	{
-		printf("VUELOS MAS RESERVADOS\n\nCOD.VUELO \tRESERVACIONES \n");
+		printf(VERDE"VUELOS MAS RESERVADOS\n\nCOD.VUELO \tRESERVACIONES \n"END_CLR);
 		mostrar_registros();
 	}
 	else
@@ -123,14 +123,14 @@ char *formatear_cons_vuelo(char *consulta, char *id_vuelo)
 void mostrar_info_vuelo(char *id_vuelo)
 {
 
-	printf("MOSTRANDO INFO VUELO\n");
+	printf(VERDE"[Org] \t[Hora de Salida]\t[Dest]\t[Hora  de llegada] [Matricula]\n"END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_VUELO, id_vuelo));
 	mostrar_registros();
 }
 
 void mostrar_asientos_en_vuelo(char *id_vuelo)
 {
-	printf("MOSTRANDO INFO ASIENTOS\n");
+	printf(VERDE"[ Tipo  ]  [Costo]\n[Asiento]\n"END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_ASIENTOS, id_vuelo));
 	mostrar_registros();
 	
@@ -139,7 +139,7 @@ void mostrar_asientos_en_vuelo(char *id_vuelo)
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_POS_ASIENTOS, id_vuelo));
 	mostrar_registros();
 
-	printf("MOSTRANDO POS ASIENTOS\n");
+	printf(VERDE"[Est. Asiento] [Cantidad]\n"END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_CANT_ASIENTOS, id_vuelo));
 	mostrar_registros();
 
@@ -150,11 +150,11 @@ void mostrar_reservaciones_en_vuelo(char *id_vuelo)
 {
 
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_INFO_RESRV_POR_VUELO, id_vuelo));
-	printf("MOSTRANDO INFO RESERVA\n");
+	printf(VERDE"[ID_Rsv] [Fila] [Tipo] [Numero] [Pasaporte] [Nombre]\n"END_CLR);
 	mostrar_registros();
 
 
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_RESRV_POR_VUELO, id_vuelo));
-	printf("MOSTRANDO COSTO RESERVA\n");
+	printf(VERDE"[ID_Rsv] [Monto] [Num asientos]\n"END_CLR);
 	mostrar_registros();
 }

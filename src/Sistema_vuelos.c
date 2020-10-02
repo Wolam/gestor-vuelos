@@ -160,11 +160,9 @@ void cargar_usuarios(char *nombre_archivo)
 
 int insertar_usuario(char *usuario)
 {
-    char cons[TAM_CONSULTA] = "INSERT INTO usuario VALUES(";
-    char *usuario_formateado = formatear_usuario(usuario);
-    char *fecha_formateada = formatear_fecha(strcat(strrchr(usuario, ','), ",'%Y-%m-%d'))"));
-    strcat(cons, usuario_formateado);
-    strcat(cons, fecha_formateada);
+    char cons[TAM_CONSULTA] = CONSULTA_INSERCION_USR;
+    strcat(cons, formatear_usuario(usuario));
+    strcat(cons, formatear_fecha(strcat(strrchr(usuario, ','), "','%Y-%m-%d'))")));
     return realizar_consulta(cons);
 }
 
@@ -185,9 +183,9 @@ obtener_reporte(int res_consulta)
 
 char *formatear_fecha(char *fecha)
 {
+    fecha[0] = '\'';
     char *func_fecha = calloc(TAM_FECHA, sizeof(char));
     strcpy(func_fecha, "STR_TO_DATE(");
-    fecha[0] = ' ';
     strcat(func_fecha, fecha);
     return func_fecha;
 }
@@ -195,7 +193,18 @@ char *formatear_fecha(char *fecha)
 char *formatear_usuario(char *usuario)
 {
     char *usuario_formateado = calloc(TAM_USUARIO, sizeof(char));
-    strncpy(usuario_formateado, usuario, strlen(usuario) - 12);
+    char *usuario_sin_fecha = calloc(TAM_USUARIO-10, sizeof(char));
+    strncpy(usuario_sin_fecha,usuario,strlen(usuario)-10);
+    char *palabra_actual = strtok(usuario_sin_fecha, ",");
+    while (palabra_actual != NULL)
+    {
+        char tmp[15] = {"\'"};
+        strcat(tmp, palabra_actual);
+        strcat(tmp,"\'");
+        strcat(usuario_formateado, tmp);
+        palabra_actual = strtok(NULL, ",");
+        usuario_formateado[strlen(usuario_formateado)] = ',';
+    }
     return usuario_formateado;
 }
 
