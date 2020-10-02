@@ -27,7 +27,7 @@ CALL costo_asiento(1);
 DELIMITER //
 create procedure fila_asiento (in v_id_vuelo int)
 begin  
-	select fila, tipo_asiento, id_reservacion
+	select fila, tipo_asiento
 	from asiento 
     where id_vuelo = v_id_vuelo;
 end 
