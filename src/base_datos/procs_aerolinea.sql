@@ -12,6 +12,29 @@ end
 
 CALL muestra_aviones('Boeing');
 
+# FUNCION PARA ELIMINAR AVION
+
+DELIMITER //
+create function eliminar_avion (v_matricula int) returns varchar(30)
+BEGIN 
+	DECLARE avion int;
+    
+    select matricula into avion
+		from avion
+	where matricula = v_matricula;
+
+	if avion is NULL then 
+		return 'NO ENCONTRADO';
+	else
+		delete from avion where matricula = v_matricula;
+		return 'ELIMINADO';
+	end if;
+end; //
+
+DELIMITER ;
+
+select eliminar_avion(1234);
+
 # PROCEDIMIENTOS PARA MOSTRAR EL ESTADO DE VUELO
   
 DELIMITER //
@@ -24,7 +47,6 @@ end
 //
 
 CALL consVuelo(1);
-
 
 DELIMITER //
 create procedure costo_asiento (in v_id_vuelo int)
@@ -303,7 +325,6 @@ end
 //
 
 call info_reservacion_c(1);
-
 
 # DROPS DE PROCEDIMIENTOS
 
