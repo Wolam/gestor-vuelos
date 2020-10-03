@@ -48,9 +48,10 @@ ya existe un usuario y una contraseña predefinidos, los cuales son:
 usuario: dba_avi
 contraseña: rastreo416
 ```
-En caso de ingresar datos inválidos, no podrá insegresar al sistema de este menú.
+En caso de ingresar datos inválidos, no podrá acceder al sistema de este menú.
 
 ### Pruebas de funcionalidad
+Se encuentra en el directorio del proyecto /documentacion/screenshots .
 
 ### Descripción del problema
 
@@ -117,6 +118,20 @@ en el menú operativo, la cual recibe como parámetros dos `varchar` y retorna u
 ```
 valida_usuarios (v_usuario varchar(20), v_contrasenia varchar(20))
 ```
+Para las validaciones en la funcionalidad de reservacion, se utilizaron distintas funciones 
+que retornan booleanos, también se desarrolló una función para conocer si la persona es adulta o infante, retornando un varchar para identificarlos.
+```
+valida_pasajeros (v_pasaporte int)
+conocer_edad (v_pasaporte int)
+valida_cantidad_asientos
+valida_pos_asiento
+```
+Algunos de los últimos procedimientos fueron para brindarle la información al usuario de la reserva ya sea tanto c, como en el pdf.
+```
+info_reservacion_pdf (in v_pasaporte int)
+clientes_reservacion (in v_id_reservacion int)
+info_reservacion_c (in v_id_reservacion int)
+```
 
 ##### Funciones en C
 
@@ -130,6 +145,14 @@ Para la correcta funcionalidad de este proyecto, son necesarias las siguientes l
 #include <stdlib.h>
 ```
 ### Análisis de resultados
+
+##### Objetivos logrados 
+* Funcionalidad del menú
+* Registro de Aviones
+* Carga de usuarios
+* Estado de vuelos
+* Estadisticas
+* Estas funcionalidades con sus respectivas validaciones
 
 ### Bitácora
 
