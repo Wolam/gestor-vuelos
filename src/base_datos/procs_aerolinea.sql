@@ -18,10 +18,14 @@ DELIMITER //
 create function eliminar_avion (v_matricula int) returns varchar(30)
 BEGIN 
 	DECLARE avion int;
-    
+    DECLARE EXIT HANDLER FOR 1451
+    begin 
+		return 'AVION EN VUELO';
+	end;
+
     select matricula into avion
 		from avion
-	where matricula = v_matricula;
+		where matricula = v_matricula;
 
 	if avion is NULL then 
 		return 'NO ENCONTRADO';
@@ -33,7 +37,9 @@ end; //
 
 DELIMITER ;
 
-select eliminar_avion(1234);
+select eliminar_avion(1035);
+
+
 
 # PROCEDIMIENTOS PARA MOSTRAR EL ESTADO DE VUELO
   
