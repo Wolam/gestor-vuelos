@@ -1,6 +1,6 @@
 
 //Status del programa
-#define SALIDA_EXITOSA 0
+
 #define TIEMPO_EJECUCION 1
 
 //Opciones del menu principal
@@ -32,7 +32,6 @@
 #define TAM_CONSULTA 300
 #define TAM_FECHA 40    
 #define TAM_RUTA 40
-#define ATRIBS_USUARIO 6
 
 //ERRORES del programa
 #define ERROR_ARCHIVO "\033[1;31m NO SE ENCONTRO EL ARCHIVO: \033[0m"
@@ -46,11 +45,15 @@
 // CODIGOS MySQL en consultas
 #define COD_ERROR_DUP 1062
 #define COD_ERROR_SINTX 1064
+#define COD_ERROR_FK 1451
+#define CONSULTA_EXITOSA 0
 
 // NOMBRES DE ERRORES/Msjs MySQL en consultas
 #define ERROR_DUP "Duplicate entry"
 #define ERROR_SINTX "You have an error in your SQL syntax"
+#define ERROR_FK "Cannot delete or update a parent row"
 #define REG_VACIOS "\033[0;34m NO HAY DATOS\n \033[0m"
+
 // Datos a la conexion de MySQL
 
 #define USR_DBA "wil_bd"
@@ -59,17 +62,23 @@
 #define SRVR "localhost"
 
 //Llamadas a funcionalidades de la bd
+
 #define ESTADISTICAS_VENTAS "CALL estadistica_ventas"
 #define ESTADISTICAS_RESERVACIONES "CALL estadistica_personas"
-
 #define CONSULTA_VUELO "CALL consVuelo("
 #define CONSULTA_COSTO_ASIENTOS "CALL costo_asiento("
 #define CONSULTA_POS_ASIENTOS "CALL fila_asiento("
 #define CONSULTA_CANT_ASIENTOS "CALL cant_asientos("
 #define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
-//#define CONSULTA_INFO_RESRV_POR_ID "CALL reservacion("
 #define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
+
+//Llamadas de CRUD
+
 #define CONSULTA_INSERCION_USR "INSERT INTO usuario VALUES("
+#define CONSULTA_INSERCION_AVION "INSERT INTO avion VALUES("
+//#define CONSULTA_MOSTRAR_AVION "SELECT * FROM avion WHERE matricula ="
+#define CONSULTA_ELIMINAR_AVION "DELETE FROM avion WHERE matricula ="
+#define CONSULTA_MOSTRAR_AVIONES "SELECT * FROM avion"
 
 //Macros adicionales
 #define VERDE "\033[0;32m"

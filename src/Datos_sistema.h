@@ -17,17 +17,23 @@ void ejecutar_opcion_submenu_general();
 void ejecutar_opcion_submenu_operativo();
 void cargar_usuarios(char *nombre_archivo);
 void estado_vuelo();
+void solicitar_opcion_registro_av();
+void eliminar_avion();
+void mostrar_avion();
+
+
+typedef struct avion{
+	char* marca;
+	char* modelo;
+	char* anio;
+	char* matricula;
+}avion;
+
+avion* solicitar_datos_av();
 
 MYSQL *conexion;
 MYSQL_RES *resultado;
 MYSQL_ROW reg;
-
-void cerrar_conexion()
-{
-	//Terminar resultados y conexion
-	mysql_close(conexion);
-	exit(SALIDA_EXITOSA);
-}
 
 void realizar_conexion()
 {
@@ -37,9 +43,13 @@ void realizar_conexion()
 							CONTR, NMB_BD, 0, NULL, 0))
 	{
 		fprintf(stderr, ERROR_CONEXION "%s\n", mysql_error(conexion));
-		cerrar_conexion();
-		exit(TIEMPO_EJECUCION);
+		exit(EXIT_SUCCESS);
 	}
+}
+
+void finalizar_conexion()
+{
+	mysql_close(conexion);
 }
 
 int realizar_consulta(char *consulta)
@@ -50,6 +60,10 @@ int realizar_consulta(char *consulta)
 	{
 		if (!strncmp(mysql_error(conexion), ERROR_DUP, strlen(ERROR_DUP)))
 			return COD_ERROR_DUP;
+		else if(!strncmp(mysql_error(conexion), ERROR_FK, strlen(ERROR_FK)))
+		{
+			return COD_ERROR_FK;
+		}	
 		else
 		{
 			// error de sintaxis de consulta
@@ -58,7 +72,7 @@ int realizar_consulta(char *consulta)
 	}
 	else
 	{
-		return SALIDA_EXITOSA;
+		return CONSULTA_EXITOSA;
 	}
 }
 
@@ -109,7 +123,32 @@ void mostrar_registros_asientos()
 	mysql_free_result(resultado);
 	mysql_next_result(conexion);
 }
+char* formatear_cons_insercion_avion(avion* av_nuevo)
+{
+	char* cons;
+	cons = calloc(TAM_CONSULTA,sizeof(char));
+	strcpy(cons,CONSULTA_INSERCION_AVION);
+	strcat(cons,av_nuevo->matricula);
+	strcat(cons,av_nuevo->marca);
+	strcat(cons,av_nuevo->modelo);
+	strcat(cons,av_nuevo->anio);
+	strcat(cons,")");
+	return cons;
+}
 
+void insertar_avion(avion* av_nuevo)
+{	
+	int res = realizar_consulta(formatear_cons_insercion_avion(av_nuevo));
+	if (!res)
+		printf(VERDE"<Insertado avion %s>"END_CLR,av_nuevo->matricula);
+	else 
+	{
+		printf(ERROR_CONSULTA"<Avion %s ya insertado> \n",av_nuevo->matricula);	
+	}
+	av_nuevo->anio = NULL; av_nuevo->marca=NULL; av_nuevo->modelo=NULL; av_nuevo->matricula=NULL;
+	free(av_nuevo);
+
+}
 
 void mostrar_estadisticas_ventas()
 {
@@ -184,6 +223,3 @@ void mostrar_reservaciones_en_vuelo(char *id_vuelo)
 	printf(VERDE"[ID_Rsv] [Monto] [Num asientos]\n"END_CLR);
 	mostrar_registros();
 }
-/// iterar columnas
-	/// fila ant == actual : siga impr	
-	// imprimir doble linea y filaant = actual
