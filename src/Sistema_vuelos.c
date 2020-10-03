@@ -139,42 +139,42 @@ abrir_archivo(char *ruta, char *modo)
 void ejecutar_opcion_registro_av()
 {
     char opcion_crud_av = pedir_caracter_input("<¿Insertar,eliminar,mostrar,salir?> [I/E/M/S] ");
-    if (opcion_crud_av==OPCION_INSERTAR)
+    if (opcion_crud_av == OPCION_INSERTAR)
     {
         insertar_avion(solicitar_datos_av());
-
     }
-    else if(opcion_crud_av == OPCION_ELIMINAR){
+    else if (opcion_crud_av == OPCION_ELIMINAR)
+    {
         eliminar_avion();
-
     }
-    else if(opcion_crud_av == OPCION_MOSTRAR){
+    else if (opcion_crud_av == OPCION_MOSTRAR)
+    {
         mostrar_aviones();
-
     }
-
 }
-
 
 avion *solicitar_datos_av()
 {
-    avion* ref_av;
-    ref_av = (avion* )malloc(sizeof(avion));
+    avion *ref_av;
+    ref_av = (avion *)malloc(sizeof(avion));
 
     char *matricula = pedir_str_input("<MATRICULA AVION> ");
     strcat(matricula, ",");
     ref_av->matricula = matricula;
 
     char *marca = pedir_str_input("\n<MARCA AVION> ");
-    strcat(marca, ",");
-    ref_av->marca = marca;
+    char tmp[15] = {"\'"};
+    strcat(tmp,marca);
+    strcat(tmp,"\'");
+    strcat(tmp, ",");
+    ref_av->marca = tmp;
 
     char *modelo = pedir_str_input("\n<MODELO AVION> ");
     strcat(modelo, ",");
-    ref_av->modelo=modelo;
+    ref_av->modelo = modelo;
 
     char *anio = pedir_str_input("\n<AÑO AVION> ");
-    ref_av->anio=anio;
+    ref_av->anio = anio;
 
     return ref_av;
 }
@@ -211,8 +211,6 @@ void cargar_usuarios(char *nombre_archivo)
         return;
     }
 }
-
-
 
 char *
 obtener_reporte(int res_consulta)
@@ -261,7 +259,7 @@ char *formatear_usuario(char *usuario)
 void estado_vuelo()
 {
     char *id_vuelo;
-    id_vuelo = (char*)calloc(10,sizeof(char));
+    id_vuelo = (char *)calloc(10, sizeof(char));
     strcpy(id_vuelo, pedir_str_input("<ID DEL VUELO> "));
 
     mostrar_info_vuelo(id_vuelo);

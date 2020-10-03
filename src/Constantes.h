@@ -1,6 +1,5 @@
 
 //Status del programa
-
 #define TIEMPO_EJECUCION 1
 
 //Opciones del menu principal
@@ -53,6 +52,7 @@
 #define ERROR_DUP "Duplicate entry"
 #define ERROR_SINTX "You have an error in your SQL syntax"
 #define ERROR_FK "Cannot delete or update a parent row"
+#define ERROR_ELIMINACION "Entry not found"
 
 // Datos a la conexion de MySQL
 
@@ -81,9 +81,10 @@
 
 #define CONSULTA_INSERCION_USR "INSERT INTO usuario VALUES("
 #define CONSULTA_INSERCION_AVION "INSERT INTO avion VALUES("
-#define CONSULTA_ELIMINAR_AVION "DELETE FROM avion WHERE matricula ="
+#define CONSULTA_ELIMINAR_AVION "SELECT eliminar_avion("
 #define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
 
 //Macros adicionales
 #define VERDE "\033[0;32m"
 #define END_CLR "\033[0m"
+#define BLUE "\033[0;34m"
