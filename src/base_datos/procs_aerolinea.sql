@@ -1,3 +1,17 @@
+#PROCEDURE PARA MOTRAR AVIONES FILTRADOS POR MARCA
+
+DELIMITER //
+create procedure muestra_aviones(v_marca varchar(20))
+BEGIN
+	select matricula, modelo, anio
+		from avion
+		where marca = v_marca;
+        
+end
+//
+
+CALL muestra_aviones('Boeing');
+
 # PROCEDIMIENTOS PARA MOSTRAR EL ESTADO DE VUELO
   
 DELIMITER //
@@ -289,6 +303,7 @@ end
 //
 
 call info_reservacion_c(1);
+
 
 # DROPS DE PROCEDIMIENTOS
 
