@@ -5,7 +5,6 @@
 
 // Funciones de prototipo
 FILE *abrir_archivo(char *ruta, char *modo);
-int insertar_usuario(char *usuario);
 char *formatear_fecha(char *fecha);
 char *formatear_usuario(char *usuario);
 char *obtener_reporte(int res_consulta);
@@ -17,9 +16,7 @@ void ejecutar_opcion_submenu_general();
 void ejecutar_opcion_submenu_operativo();
 void cargar_usuarios(char *nombre_archivo);
 void estado_vuelo();
-void solicitar_opcion_registro_av();
-void eliminar_avion();
-void mostrar_avion();
+void ejecutar_opcion_registro_av();
 
 
 typedef struct avion{
@@ -102,7 +99,6 @@ void mostrar_registros()
 void mostrar_registros_asientos()
 {
 	resultado = mysql_store_result(conexion);
-//	int num_reg = mysql_num_rows(resultado);
 	int i_asiento = 1; int i_fila = 0;
 	char* fil_ant = "\0"; 
 	while ((reg = mysql_fetch_row(resultado)) != NULL)
@@ -149,6 +145,40 @@ void insertar_avion(avion* av_nuevo)
 	free(av_nuevo);
 
 }
+
+void eliminar_avion()
+{
+    char *cons = calloc(TAM_CONSULTA,sizeof(char));
+    strcpy(cons,CONSULTA_ELIMINAR_AVION);
+    strcat(cons,pedir_str_input("<Matricula a eliminar> "));
+    int res = realizar_consulta(cons);
+    if (res== COD_ERROR_FK){
+        printf(ERROR_CONSULTA "<Avion se encuentra en vuelo>\n");
+    }
+    else if(!res){
+        printf(VERDE "<Avion removido>\n" END_CLR);
+    }
+    else{
+         printf(ERROR_CONSULTA "<Avion no registrado>\n");
+    }
+	free(cons);
+}
+
+void mostrar_aviones()
+{
+    char *cons = calloc(TAM_CONSULTA,sizeof(char));
+    strcpy(cons, CONSULTA_MOSTRAR_AVIONES);
+	char tmp[15]= {"\'"}; 
+    strcat(tmp,pedir_str_input("<MARCA A MOSTRAR> "));
+    strcat(tmp,"\'"); 
+	strcat(cons,tmp);
+	strcat(cons,")");
+    printf(VERDE "[MATRICULA]\t[MOD]\t[ANIO]\n"END_CLR);
+    realizar_consulta(cons);
+    mostrar_registros();
+	free(cons);
+}
+
 
 void mostrar_estadisticas_ventas()
 {
@@ -222,4 +252,12 @@ void mostrar_reservaciones_en_vuelo(char *id_vuelo)
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_RESRV_POR_VUELO, id_vuelo));
 	printf(VERDE"[ID_Rsv] [Monto] [Num asientos]\n"END_CLR);
 	mostrar_registros();
+}
+
+int insertar_usuario(char *usuario)
+{
+    char cons [TAM_CONSULTA] = CONSULTA_INSERCION_USR;
+    strcat(cons, formatear_usuario(usuario));
+    strcat(cons, formatear_fecha(strcat(strrchr(usuario, ','), "','%Y-%m-%d'))")));
+    return realizar_consulta(cons);
 }

@@ -77,7 +77,7 @@ void ejecutar_opcion_submenu_operativo()
             ejecutar_opcion_menu_principal();
             break;
         case OPCION_REGISTRO_AVIONES:
-            solicitar_opcion_registro_av();
+            ejecutar_opcion_registro_av();
             break;
         case OPCION_CARGAR_USRIO:
             cargar_usuarios(pedir_str_input("<NOMBRE DEL ARCHIVO> "));
@@ -109,6 +109,7 @@ char pedir_caracter_input(char *msj)
     char opcion;
     printf("%s", msj);
     scanf(" %c", &opcion);
+    getchar();
     return opcion;
 }
 char *pedir_str_input(char *msj)
@@ -135,52 +136,24 @@ abrir_archivo(char *ruta, char *modo)
     return ref_archivo;
 }
 
-void solicitar_opcion_registro_av()
+void ejecutar_opcion_registro_av()
 {
     char opcion_crud_av = pedir_caracter_input("<¿Insertar,eliminar,mostrar,salir?> [I/E/M/S] ");
-    if (opcion_crud_av=='I')
+    if (opcion_crud_av==OPCION_INSERTAR)
     {
         insertar_avion(solicitar_datos_av());
 
     }
-    else if(opcion_crud_av == 'E'){
+    else if(opcion_crud_av == OPCION_ELIMINAR){
         eliminar_avion();
 
     }
-    else if(opcion_crud_av == 'M'){
-        mostrar_avion();
+    else if(opcion_crud_av == OPCION_MOSTRAR){
+        mostrar_aviones();
 
     }
 
 }
-void eliminar_avion()
-{
-    char *cons = calloc(TAM_CONSULTA,sizeof(char));
-    strcpy(cons,CONSULTA_ELIMINAR_AVION);
-    strcat(cons,pedir_str_input("<Matricula a eliminar> "));
-    strcat(cons,")");
-    int res = realizar_consulta(cons);
-    if (res== COD_ERROR_FK){
-        printf(ERROR_CONSULTA "<Avion se encuentra en vuelo>\n");
-    }
-    else if(!res){
-        printf(VERDE "<Avion removido>\n" END_CLR);
-    }
-    else{
-         printf(ERROR_CONSULTA "<Avion no registrado>\n");
-    }
-}
-
-void mostrar_avion()
-{
-    char *cons = calloc(TAM_CONSULTA,sizeof(char));
-    strcpy(cons,CONSULTA_MOSTRAR_AVIONES);
-    realizar_consulta(cons);
-    printf(VERDE "[MATRICULA]  [MARCA]  [MOD]  [ANIO]\n"END_CLR,(char)164);
-    mostrar_registros();
-
-}
-
 
 
 avion *solicitar_datos_av()
@@ -239,13 +212,7 @@ void cargar_usuarios(char *nombre_archivo)
     }
 }
 
-int insertar_usuario(char *usuario)
-{
-    char cons[TAM_CONSULTA] = CONSULTA_INSERCION_USR;
-    strcat(cons, formatear_usuario(usuario));
-    strcat(cons, formatear_fecha(strcat(strrchr(usuario, ','), "','%Y-%m-%d'))")));
-    return realizar_consulta(cons);
-}
+
 
 char *
 obtener_reporte(int res_consulta)

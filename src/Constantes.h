@@ -38,6 +38,7 @@
 #define ERROR_OPCION "\033[1;31m REINGRESE LA OPCION NUEVAMENTE\n \033[0m"
 #define ERROR_CONEXION "\033[1;31m ERROR EN LA CONEXION: \033[0m"
 #define ERROR_CONSULTA "\033[1;31m ERROR AL REALIZAR CONSULTA: \033[0m"
+#define REG_VACIOS "\033[0;34mNO HAY DATOS\n \033[0m"
 
 // --- Constantes de MySQL ---
 
@@ -52,7 +53,6 @@
 #define ERROR_DUP "Duplicate entry"
 #define ERROR_SINTX "You have an error in your SQL syntax"
 #define ERROR_FK "Cannot delete or update a parent row"
-#define REG_VACIOS "\033[0;34m NO HAY DATOS\n \033[0m"
 
 // Datos a la conexion de MySQL
 
@@ -72,13 +72,17 @@
 #define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
 #define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
 
+//Opciones de registro de aviones
+#define OPCION_INSERTAR 'I'
+#define OPCION_ELIMINAR 'E'
+#define OPCION_MOSTRAR 'M'
+
 //Llamadas de CRUD
 
 #define CONSULTA_INSERCION_USR "INSERT INTO usuario VALUES("
 #define CONSULTA_INSERCION_AVION "INSERT INTO avion VALUES("
-//#define CONSULTA_MOSTRAR_AVION "SELECT * FROM avion WHERE matricula ="
 #define CONSULTA_ELIMINAR_AVION "DELETE FROM avion WHERE matricula ="
-#define CONSULTA_MOSTRAR_AVIONES "SELECT * FROM avion"
+#define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
 
 //Macros adicionales
 #define VERDE "\033[0;32m"
