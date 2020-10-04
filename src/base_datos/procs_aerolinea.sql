@@ -259,7 +259,7 @@ DELIMITER //
 create procedure info_reservacion_pdf (in v_pasaporte int)
 begin  
 
-	select r.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.fecha_reserva, mr.monto_total, v.id_aerolinea, a.nombre_aerolinea, a.hub
+	select r.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.monto_total, v.id_aerolinea, a.nombre_aerolinea, a.hub
 		from vuelo v
 		inner join reservacion r
 			on v.id_vuelo = r.id_vuelo
@@ -272,24 +272,37 @@ begin
 end 
 //
 
-call info_reservacion_pdf(2019344555);
+call info_reservacion_pdf(2019039864);
 
 DELIMITER //
-create procedure  clientes_reservacion (in v_id_reservacion int)
+create procedure  adultos_reservacion (in v_id_reservacion int)
 begin  
 
-select a.fila, a.num_asiento, a.pasaporte, u.nombre_cliente, u.primer_apellido, u.segundo_apellido
+select a.fila, a.num_asiento, a.pasaporte
 	from monto_reservacion mr 
     inner join asiento a
 		on mr.id_reservacion = a.id_reservacion
-	inner join usuario u
-		on a.pasaporte = u.pasaporte
 	where mr.id_reservacion = v_id_reservacion;
 		
 end 
 //
 
-call clientes_reservacion(1);
+call adultos_reservacion(1);
+
+DELIMITER //
+create procedure  infantes_reservacion (in v_id_reservacion int)
+begin  
+
+select r.pasaporte
+	from reservacion r
+    inner join usuario u
+		on r.pasaporte = u.pasaporte
+	where year(curdate())-year(u.fecha_nacimiento) < 3 and r.id_reservacion = v_id_reservacion;
+		
+end 
+//
+
+call infantes_reservacion(1);
 
 # PROCEDIMIENTO DE INFORMACION DE RESERVA PARA C
 
@@ -335,7 +348,6 @@ end
 //
 
 call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
-
 
 
 
