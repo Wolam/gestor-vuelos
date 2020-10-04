@@ -31,6 +31,7 @@
 #define TAM_CONSULTA 300
 #define TAM_FECHA 40    
 #define TAM_RUTA 40
+#define MAX_PASAPORTES 10
 
 //ERRORES del programa
 #define ERROR_ARCHIVO "\033[1;31m NO SE ENCONTRO EL ARCHIVO: \033[0m"
@@ -70,12 +71,13 @@
 #define CONSULTA_COSTO_ASIENTOS "CALL costo_asiento("
 #define CONSULTA_POS_ASIENTOS "CALL fila_asiento("
 #define CONSULTA_CANT_ASIENTOS "CALL cant_asientos("
-#define CONSULTA_VALID_ASIENTO "SELECT valida_pos_asiento("
+#define CONSULTA_VALID_ASIENTO "SELECT valida_pos_asiento('"
 #define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
 #define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
 #define CONSULTA_VALID_PASPT "SELECT valida_pasajeros("
 #define CONSULTA_TIPO_PASPT "SELECT conocer_edad("
 #define CONSULTA_CREDENCIALES "SELECT valida_usuarios('"
+#define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
 
 //Opciones de registro de aviones
 #define OPCION_INSERTAR 'I'
@@ -87,10 +89,22 @@
 #define CONSULTA_INSERCION_USR "INSERT INTO usuario VALUES("
 #define CONSULTA_INSERCION_AVION "INSERT INTO avion VALUES("
 #define CONSULTA_ELIMINAR_AVION "SELECT eliminar_avion("
-#define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
-
 
 //Macros adicionales
 #define VERDE "\033[0;32m"
 #define END_CLR "\033[0m"
 #define BLUE "\033[0;34m"
+#define GENERAR_PDF "make pdf archivo_txt="
+
+// Funciones de prototipo
+FILE *abrir_archivo(char *ruta, char *modo);
+char *formatear_fecha(char *fecha);
+char *formatear_usuario(char *usuario);
+char *obtener_reporte(int res_consulta);
+char *pedir_str_input(char *msj);
+char pedir_caracter_input(char *msj);
+void mostrar_menu(char *tipo_menu);
+void ejecutar_opcion_menu_principal();
+void ejecutar_opcion_submenu_general();
+void ejecutar_opcion_submenu_operativo();
+void cargar_usuarios(char *nombre_archivo);
