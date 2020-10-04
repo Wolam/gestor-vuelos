@@ -41,11 +41,11 @@
 
 // --- Constantes de MySQL ---
 
-
 // CODIGOS MySQL en consultas
 #define COD_ERROR_DUP 1062
 #define COD_ERROR_SINTX 1064
 #define COD_ERROR_FK 1451
+#define COD_ERROR_RESRV -1
 #define CONSULTA_EXITOSA 0
 
 // NOMBRES DE ERRORES/Msjs MySQL en consultas
@@ -69,8 +69,11 @@
 #define CONSULTA_COSTO_ASIENTOS "CALL costo_asiento("
 #define CONSULTA_POS_ASIENTOS "CALL fila_asiento("
 #define CONSULTA_CANT_ASIENTOS "CALL cant_asientos("
+#define CONSULTA_VALID_ASIENTO "select valida_pos_asiento("
 #define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
 #define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
+#define CONSULTA_VALID_PASPT "SELECT valida_pasajeros("
+#define CONSULTA_TIPO_PASPT "SELECT conocer_edad("
 
 //Opciones de registro de aviones
 #define OPCION_INSERTAR 'I'
@@ -83,6 +86,7 @@
 #define CONSULTA_INSERCION_AVION "INSERT INTO avion VALUES("
 #define CONSULTA_ELIMINAR_AVION "SELECT eliminar_avion("
 #define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
+
 
 //Macros adicionales
 #define VERDE "\033[0;32m"

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <mysql.h>
+#include <stdlib.h>
+
 #include "Constantes.h"
 
 // Funciones de prototipo
@@ -16,6 +18,8 @@ void ejecutar_opcion_submenu_general();
 void ejecutar_opcion_submenu_operativo();
 void cargar_usuarios(char *nombre_archivo);
 void estado_vuelo();
+void realizar_reservacion();
+int valida_pasajero(char *pasajero);
 void ejecutar_opcion_registro_av();
 
 typedef struct avion
@@ -96,11 +100,13 @@ void mostrar_registros()
 	mysql_next_result(conexion);
 }
 
-void mostrar_registros_asientos()
+
+int mostrar_registros_asientos()
 {
 	resultado = mysql_store_result(conexion);
 	int i_asiento = 1;
 	int i_fila = 0;
+	int num_reg = mysql_num_rows(resultado);
 	char *fil_ant = "\0";
 	while ((reg = mysql_fetch_row(resultado)) != NULL)
 	{
@@ -109,7 +115,6 @@ void mostrar_registros_asientos()
 			printf("\t %s \t", reg[i_asiento]);
 		else
 		{
-
 			printf("\n\n%s\t%s", reg[i_fila], reg[i_asiento]);
 		}
 		fil_ant = reg[i_fila];
@@ -119,6 +124,7 @@ void mostrar_registros_asientos()
 
 	mysql_free_result(resultado);
 	mysql_next_result(conexion);
+	return num_reg;
 }
 char *formatear_cons_insercion_avion(avion *av_nuevo)
 {
@@ -233,7 +239,7 @@ void mostrar_info_vuelo(char *id_vuelo)
 	mostrar_registros();
 }
 
-void mostrar_asientos_en_vuelo(char *id_vuelo)
+int mostrar_asientos_en_vuelo(char *id_vuelo)
 {
 	printf(VERDE "[ Tipo  ]  [Costo]\n[Asiento]\n" END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_ASIENTOS, id_vuelo));
@@ -241,11 +247,13 @@ void mostrar_asientos_en_vuelo(char *id_vuelo)
 
 	printf(VERDE "[FILA] [ASIENTOS]\n" END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_POS_ASIENTOS, id_vuelo));
-	mostrar_registros_asientos();
+	int asientos = mostrar_registros_asientos();
 
 	printf(VERDE "   Asientos\n[Libres] [Ocupados]\n" END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_CANT_ASIENTOS, id_vuelo));
 	mostrar_registros();
+
+	return asientos;
 }
 
 void mostrar_reservaciones_en_vuelo(char *id_vuelo)

@@ -1,5 +1,4 @@
-#include <stdlib.h>
-#include "Datos_sistema.h"
+#include "Reservacion.h"
 
 int main()
 {
@@ -48,7 +47,8 @@ void ejecutar_opcion_submenu_general()
             ejecutar_opcion_menu_principal();
             break;
         case OPCION_RESERVAR_VLOS:
-            printf("3\n");
+            //printf("3\n");
+            realizar_reservacion();
             break;
         case OPCION_INFO_RESERV:
             printf("4\n");
@@ -136,6 +136,7 @@ abrir_archivo(char *ruta, char *modo)
     return ref_archivo;
 }
 
+
 void ejecutar_opcion_registro_av()
 {
     char opcion_crud_av = pedir_caracter_input("<¿Insertar,eliminar,mostrar,salir?> [I/E/M/S] ");
@@ -164,8 +165,8 @@ avion *solicitar_datos_av()
 
     char *marca = pedir_str_input("\n<MARCA AVION> ");
     char tmp[15] = {"\'"};
-    strcat(tmp,marca);
-    strcat(tmp,"\'");
+    strcat(tmp, marca);
+    strcat(tmp, "\'");
     strcat(tmp, ",");
     ref_av->marca = tmp;
 
