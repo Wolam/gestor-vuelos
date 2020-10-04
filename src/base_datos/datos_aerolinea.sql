@@ -51,11 +51,10 @@ create table reservacion
 (pasaporte int not null,
 id_reservacion int not null,
 id_vuelo int not null,
-id_edad varchar(2) not null,
 primary key (pasaporte, id_reservacion));
 
 create table monto_reservacion
-(id_reservacion int(10) not null auto_increment,
+(id_reservacion int not null,
 monto_total int not null,
 id_vuelo int not null,
 fecha_reserva date not null,
@@ -108,10 +107,6 @@ add foreign key (id_aerolinea)
 references aerolinea (id_aerolinea);
 
 alter table asiento 
-add foreign key (pasaporte, id_reservacion)
-references reservacion (pasaporte, id_reservacion);
-
-alter table asiento 
 add foreign key (id_vuelo)
 references vuelo (id_vuelo);
 
@@ -151,6 +146,7 @@ values
     (4510, 'Boeing', 747, 2011),
     (1035, 'Airbus', 320, 2007);
     
+
 insert into aerolinea (id_aerolinea, nombre_aerolinea, hub, usuario_aerolinea, contrasenia)
 values 
 	(416, 'Avianca', 'BOG', 'dba_avi', AES_ENCRYPT('rastreo416', 'fjm'));
@@ -200,20 +196,17 @@ values
     (2018874521, 'Jeremy', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2017-5-01','%Y-%m-%d')),
     (2048395209, 'Randox', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2020-5-01','%Y-%m-%d'));
     
-	insert into usuario values (2018252, 'Randy', 'Conejo', 'herrera', 'M', STR_TO_DATE('2001-5-01','%Y-%m-%d'));
-    insert into usuario values (20201874, 'Rogelio', 'Tinoco', 'herrera', 'M', STR_TO_DATE('2002-11-12','%Y-%m-%d'));
+    insert into monto_reservacion (id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea)
+	values 
+	(1, 55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
+
   
-insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad)
+insert into reservacion (pasaporte, id_reservacion, id_vuelo)
 values 
-	(2019039864, 1, 1, 'A'),
-    (2019344555, 1, 1, 'A'),
-    (2018874521, 1, 1, 'A'),
-    (2048395209, 1, 1, 'I');
-        
-insert into monto_reservacion (monto_total, id_vuelo, fecha_reserva, id_aerolinea)
-values 
-	(55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
-    
+	(2019039864, 1, 1),
+    (2019344555, 1, 1),
+    (2018874521, 1, 1),
+    (2048395209, 1, 1);
     
 
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
@@ -266,13 +259,14 @@ values
     ('E', 'EL', 2, NULL, NULL, 3),
     ('E', 'EL', 3, NULL, NULL, 3);
     
+
 # DROP TABLAS 
 # drop table costo;
 # drop table asiento;
 # drop table monto_reservacion;
 # drop table reservacion;
+# drop table vuelo;
 # drop table aerolinea;
 # drop table usuario;
-# drop table vuelo;
 # drop table ciudad;
 # drop table avion;
