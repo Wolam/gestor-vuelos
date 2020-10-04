@@ -51,7 +51,35 @@ contraseña: rastreo416
 En caso de ingresar datos inválidos, no podrá acceder al sistema de este menú.
 
 ### Pruebas de funcionalidad
-Se encuentra en el directorio del proyecto /documentacion/screenshots .
+
+Cargar Usuarios
+
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-10-32.png width =200 height=100>
+
+
+
+
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-09.png width =100 height=150>
+
+
+
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-49.png width =200 height=100>
+
+
+
+Estado de vuelo
+
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-20-51.png width =180 height=200>
+
+
+
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-21-18.png width =200 height=130>
+
+
+Estadisticas 
+
+
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/estadisticas.png width =200 height=170>
 
 ### Descripción del problema
 
