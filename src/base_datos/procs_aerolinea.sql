@@ -1,3 +1,7 @@
+SET SQL_SAFE_UPDATES = 0;
+
+SET GLOBAL log_bin_trust_function_creators = 1;
+
 #PROCEDURE PARA MOTRAR AVIONES FILTRADOS POR MARCA
 
 DELIMITER //
@@ -38,8 +42,6 @@ end; //
 DELIMITER ;
 
 select eliminar_avion(1035);
-
-
 
 # PROCEDIMIENTOS PARA MOSTRAR EL ESTADO DE VUELO
   
@@ -159,10 +161,8 @@ CALL estadistica_personas;
 
 # FUNCION QUE VALIDA EL USUARIO Y LA CONSTRASEÑA
 
-SET GLOBAL log_bin_trust_function_creators = 1;
-
 DELIMITER //
-create function valida_usuarios (v_usuario varchar(20), v_contrasenia varchar(20)) returns boolean
+create function valida_usuarios (v_usuario varchar(20), v_contrasenia varchar(20)) returns varchar(20)
 BEGIN 
 	DECLARE usuario varchar(20);
     DECLARE contra BLOB;
@@ -173,12 +173,12 @@ BEGIN
 	
     if usuario is not NULL then
 		if contra is NULL then 
-			return false;
+			return 'CONTRASEÑA INCORRECTA';
 		else
-			return true;
+			return 'CONTRASEÑA CORRECTA';
 		end if;
 	else
-		return False;
+		return 'USUARIO INCORRECTO';
 	end if;
 end; //
 
@@ -229,28 +229,6 @@ end; //
 DELIMITER ;
 
 select conocer_edad(2048395209);
-
-# FUNCION PARA VALIDAR LA CANTIDAD DE ASIENTOS INGRESADOS POR EL USUARIO EN LA RESERVA
-
-DELIMITER //
-create function valida_cantidad_asientos (v_cantidad_asientos int, v_id_vuelo int) returns boolean 
-BEGIN 
-	DECLARE cantidad_asientos int;
-    
-    select count(a.tipo_asiento) into cantidad_asientos 
-	from asiento a
-    where a.tipo_asiento LIKE '%_L' and a.id_vuelo = v_id_vuelo;
-    
-    if cantidad_asientos >= v_cantidad_asientos then 
-		return true;
-	else 
-		return false;
-	end if;
-end; //
-
-DELIMITER ;
-
-select valida_cantidad_asientos (3, 1);
 
 # VALIDA LAS POSICIONES DE LOS ASIENTOS INGRESADOS POR EL USUARIO PARA LA RESERVA
 
@@ -331,6 +309,79 @@ end
 //
 
 call info_reservacion_c(1);
+
+
+# PROCEDIMIENTOS PARA REALIZAR UNA RESERVACION
+
+DELIMITER //
+create procedure actualizar_tipo_asiento (in v_id_vuelo int, in v_fila varchar(2), in v_num_asiento int)
+begin  
+	update asiento 
+		set tipo_asiento = replace(tipo_asiento, "L", "O")
+		where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo;
+end 
+//
+
+call actualizar_tipo_asiento(1, 'B', 2);
+
+DELIMITER //
+create procedure actualiza_reserva_asiento (in v_fila varchar(2), in v_num_asiento int, in v_id_vuelo int, in v_pasaporte int, in v_id_reservacion int)
+begin  
+	update asiento 
+			set pasaporte = v_pasaporte, id_reservacion = v_id_reservacion
+			where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo;
+		
+end 
+//
+
+call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
+
+
+
+
+# PROCEDIMIENTOS PARA CANCELAR RESERVACION
+DELIMITER //
+create procedure cambiar_tipo_asiento (in v_id_reservacion int)
+begin  
+	update asiento 
+		set tipo_asiento = replace(tipo_asiento, "O", "L")
+		where id_reservacion = v_id_reservacion;
+end 
+//
+
+call cambiar_tipo_asiento(3);
+
+DELIMITER //
+create procedure eliminar_reserva_asiento (in v_id_reservacion int)
+begin  
+	update asiento 
+			set pasaporte = NULL, id_reservacion = NULL
+			where id_reservacion = v_id_reservacion;
+		
+end 
+//
+
+call eliminar_reserva_asiento(3);
+
+DELIMITER //
+create procedure eliminar_pasajeros_reserva (in v_id_reservacion int)
+begin  
+	delete from reservacion
+		where id_reservacion = v_id_reservacion;
+end 
+//
+
+call eliminar_pasajeros_reserva(1);
+
+DELIMITER //
+create procedure eliminar_reservacion (in v_id_reservacion int)
+begin  
+	delete from monto_reservacion
+		where id_reservacion = v_id_reservacion;
+end 
+//
+
+call eliminar_reservacion(1);
 
 # DROPS DE PROCEDIMIENTOS
 
