@@ -14,22 +14,22 @@ typedef struct reservacion
 reservacion *ref_reservacion;
 
 int incluir_pasaportes_reserv(char *pasaportes);
-int incluir_asientos_reserv(char* asientos);
+int incluir_asientos_reserv(char *asientos);
 int valida_pasaporte();
 int valida_asiento();
 char *tipo_pasaporte();
 void formatear_pasaporte(char *consulta, char *pasaporte);
-void formatear_asiento(char* asiento);
+void formatear_asiento(char *asiento);
 
 char *pedir_datos_reserv(char *msj)
 {
     fflush(stdin);
-    char *buffer = malloc(TAM_USUARIO * sizeof(char));
+    char *buffer_datos = malloc(TAM_USUARIO * sizeof(char));
     printf("%s", msj);
-    fgets(buffer, TAM_USUARIO, stdin);
-    if ((strlen(buffer) > 0) && (buffer[strlen(buffer) - 1] == '\n'))
-        buffer[strlen(buffer) - 1] = '\0';
-    return buffer;
+    fgets(buffer_datos, TAM_USUARIO, stdin);
+    if ((strlen(buffer_datos) > 0) && (buffer_datos[strlen(buffer_datos) - 1] == '\n'))
+        buffer_datos[strlen(buffer_datos) - 1] = '\0';
+    return buffer_datos;
 }
 
 void realizar_reservacion()
@@ -44,27 +44,27 @@ void realizar_reservacion()
     }
     else
     {
-        char* paspt = pedir_datos_reserv("<Escriba los pasaportes> ");
+        char *paspt = pedir_datos_reserv("<Escriba los pasaportes> ");
         int datos_pasaportes = incluir_pasaportes_reserv(paspt);
         paspt = NULL;
         free(paspt);
-        if (datos_pasaportes == COD_ERROR_RESRV)
-         {
-        return;
-         }
-        char* asientos_ingresados;
-        asientos_ingresados= pedir_str_input("<Escriba los asientos> ");
-        int datos_asientos = incluir_asientos_reserv(asientos_ingresados);
+        //if (datos_pasaportes == COD_ERROR_RESRV)
+       // {
+        //    return;
+       // }else
+      //  {
+        int datos_asientos = incluir_asientos_reserv(pedir_str_input("<Escriba los asientos>"));
+     //   }
+        
     }
 }
 
 int incluir_pasaportes_reserv(char *pasaportes)
 {
-
     char *pasaporte = strtok(pasaportes, ",");
     int total_pasaportes = 0;
     int pasaportes_incluidos = 0;
-    while (pasaporte != NULL )
+    while (pasaporte != NULL)
     {
         formatear_pasaporte(CONSULTA_VALID_PASPT, pasaporte);
         pasaportes_incluidos = valida_pasaporte();
@@ -95,13 +95,13 @@ int incluir_asientos_reserv(char *asientos)
     char *asiento = strtok(asientos, ",");
     int total_asientos = 0;
     int asientos_incluidos = 0;
-    while (asiento != NULL )
+    while (asiento != NULL)
     {
         formatear_asiento(asiento);
         asientos_incluidos = valida_asiento();
         if (!asientos_incluidos)
         {
-            printf(ERROR_CONSULTA "Asiento [%s] no encontrado\n", asiento );
+            printf(ERROR_CONSULTA "Asiento [%s] no encontrado\n", asiento);
             return COD_ERROR_RESRV;
         }
         else if (total_asientos > MAX_PASAPORTES)
@@ -116,7 +116,6 @@ int incluir_asientos_reserv(char *asientos)
     }
     return total_asientos;
 }
-
 
 int valida_pasaporte()
 {
@@ -133,7 +132,6 @@ int valida_asiento()
     mysql_free_result(resultado);
     mysql_next_result(conexion);
     return asiento_valido;
-
 }
 char *tipo_pasaporte()
 {
@@ -155,20 +153,19 @@ void formatear_pasaporte(char *consulta, char *pasaporte)
     //free(cons_temp_formt);
 }
 
-void formatear_asiento(char* asiento)
+void formatear_asiento(char *asiento)
 {
     char fila[3] = {"\'"};
-    strncat(fila,asiento,1);
+    strncat(fila, asiento, 1);
     fila[2] = '\'';
-    char *cons_temp_formt = calloc(TAM_CONSULTA, sizeof(char));
+    char *cons_temp_formt = calloc(50, sizeof(char));
     strcpy(cons_temp_formt, CONSULTA_VALID_ASIENTO);
-    strcat(cons_temp_formt, strcat(fila,","));
-    cons_temp_formt[strlen(cons_temp_formt)]=asiento[1];
-    strcat(cons_temp_formt,",");
+    strcat(cons_temp_formt, strcat(fila, ","));
+    cons_temp_formt[strlen(cons_temp_formt)] = asiento[1];
+    strcat(cons_temp_formt, ",");
     strcat(cons_temp_formt, ref_reservacion->id_vuelo);
     strcat(cons_temp_formt, ")");
     realizar_consulta(cons_temp_formt);
     resultado = mysql_store_result(conexion);
     reg = mysql_fetch_row(resultado);
-
 }

@@ -21,6 +21,8 @@ void estado_vuelo();
 void realizar_reservacion();
 int valida_pasajero(char *pasajero);
 void ejecutar_opcion_registro_av();
+int verificar_credenciales(char *credenciales);
+char* solicitar_credenciales();
 
 typedef struct avion
 {

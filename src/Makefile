@@ -4,8 +4,9 @@
 var_mysql_LIBS := $(shell mysql_config --libs_r)
 var_mysql_FLAGS := $(shell mysql_config --cflags)
 var_gcc_FLAGS := -g -o
+var_ld_FLAGS := -lmcheck
 compile:
-	@gcc $(var_gcc_FLAGS) Sistema_vuelos $(var_mysql_FLAGS) Sistema_vuelos.c $(var_mysql_LIBS)
+	@gcc $(var_gcc_FLAGS) Sistema_vuelos $(var_mysql_FLAGS) Sistema_vuelos.c $(var_mysql_LIBS) $(var_ld_FLAGS)
 run: compile
 	@./Sistema_vuelos
 debug:

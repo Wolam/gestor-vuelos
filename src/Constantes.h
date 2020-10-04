@@ -38,6 +38,7 @@
 #define ERROR_CONEXION "\033[1;31m ERROR EN LA CONEXION: \033[0m"
 #define ERROR_CONSULTA "\033[1;31m ERROR AL REALIZAR CONSULTA: \033[0m"
 #define REG_VACIOS "\033[0;34mNO HAY DATOS\n \033[0m"
+#define ERROR_CREDENCIALES "\033[1;31mERROR EN LOS CREDENCIALES\033[0m \n"
 
 // --- Constantes de MySQL ---
 
@@ -69,11 +70,12 @@
 #define CONSULTA_COSTO_ASIENTOS "CALL costo_asiento("
 #define CONSULTA_POS_ASIENTOS "CALL fila_asiento("
 #define CONSULTA_CANT_ASIENTOS "CALL cant_asientos("
-#define CONSULTA_VALID_ASIENTO "select valida_pos_asiento("
+#define CONSULTA_VALID_ASIENTO "SELECT valida_pos_asiento("
 #define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
 #define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
 #define CONSULTA_VALID_PASPT "SELECT valida_pasajeros("
 #define CONSULTA_TIPO_PASPT "SELECT conocer_edad("
+#define CONSULTA_CREDENCIALES "SELECT valida_usuarios('"
 
 //Opciones de registro de aviones
 #define OPCION_INSERTAR 'I'

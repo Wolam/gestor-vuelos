@@ -17,7 +17,7 @@ void ejecutar_opcion_menu_principal()
         switch (opcion)
         {
         case OPCIONES_OPERATIVAS:
-            ejecutar_opcion_submenu_operativo();
+            verificar_credenciales(solicitar_credenciales());
             break;
         case OPCIONES_GENERALES:
             ejecutar_opcion_submenu_general();
@@ -41,7 +41,7 @@ void ejecutar_opcion_submenu_general()
         switch (opcion)
         {
         case OPCION_CAMBIO_SUBMENU:
-            ejecutar_opcion_submenu_operativo();
+            verificar_credenciales(solicitar_credenciales());
             break;
         case OPCION_MENU_PRINCIPAL:
             ejecutar_opcion_menu_principal();
@@ -115,7 +115,7 @@ char pedir_caracter_input(char *msj)
 char *pedir_str_input(char *msj)
 {
     fflush(stdin);
-    char *buffer = malloc(TAM_RUTA * sizeof(char));
+    char *buffer = (char*)malloc(TAM_RUTA * sizeof(char));
     printf("%s", msj);
     fgets(buffer, TAM_RUTA, stdin);
     if ((strlen(buffer) > 0) && (buffer[strlen(buffer) - 1] == '\n'))
@@ -134,6 +134,41 @@ abrir_archivo(char *ruta, char *modo)
         return NULL;
     }
     return ref_archivo;
+}
+
+char* solicitar_credenciales()
+{
+
+    //char cons_temp [TAM_CONSULTA] = CONSULTA_CREDENCIALES;
+    char* credenciales = calloc(TAM_RUTA,sizeof(char));
+    strcpy(credenciales,CONSULTA_CREDENCIALES);
+    char clave[15];
+    char usuario[20];
+    printf("<USUARIO OPERATIVO> ");
+    scanf(" %s",usuario);
+    printf("<CLAVE DE USUARIO> ");
+    scanf(" %s",clave);
+    strcat(credenciales,usuario);
+    strcat(credenciales,"','");
+    strcat(credenciales,clave);
+    strcat(credenciales,"')");
+    return credenciales;
+
+}
+
+int verificar_credenciales(char *credenciales)
+{
+    realizar_consulta(credenciales);
+    resultado = mysql_store_result(conexion);
+    reg = mysql_fetch_row(resultado);
+    if(atoi(reg[0]))
+    {
+        printf(VERDE "CREDENCIALES ACEPTADOS" END_CLR "\n");
+        ejecutar_opcion_submenu_operativo();
+    }
+    else{
+        printf(ERROR_CREDENCIALES);
+    }
 }
 
 
