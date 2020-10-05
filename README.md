@@ -54,26 +54,23 @@ En caso de ingresar datos inválidos, no podrá acceder al sistema de este menú
 
 Cargar Usuarios
 
+
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-10-32.png width =200 height=100>
 
 
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-09.png width =120 height=140>
 
 
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-09.png width =100 height=150>
-
-
-
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-49.png width =200 height=100>
-
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-49.png width =300 height=120>
 
 
 Estado de vuelo
-
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-20-51.png width =180 height=200>
 
 
 
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-21-18.png width =200 height=130>
+
 
 
 Estadisticas 
@@ -135,6 +132,13 @@ monto_reservacion (in v_id_vuelo int)
 Reciben como parámetro un entero, que en este caso sería el id del vuelo a consultar, 
 devolviendo así la consulta, que será mostrada al usuario posteriormente desde C.
 
+En la funcionalidad de registro de aviones se implementó un procedure y una función, en este caso 
+para mostrar y eliminar aviones respectivamente.
+```
+muestra_aviones(v_marca varchar(20)
+eliminar_avion (v_matricula int)
+```
+
 También se crearon dos procedimientos aparte, para mostrar las estadísticas de los vuelos,
 los cuales no tienen parámetros.
 ```
@@ -151,7 +155,6 @@ que retornan booleanos, también se desarrolló una función para conocer si la 
 ```
 valida_pasajeros (v_pasaporte int)
 conocer_edad (v_pasaporte int)
-valida_cantidad_asientos
 valida_pos_asiento
 ```
 Algunos de los últimos procedimientos fueron para brindarle la información al usuario de la reserva ya sea tanto c, como en el pdf.
@@ -160,9 +163,77 @@ info_reservacion_pdf (in v_pasaporte int)
 clientes_reservacion (in v_id_reservacion int)
 info_reservacion_c (in v_id_reservacion int)
 ```
-
+Se crearon dos procedimientos para realizar la reservación del usuario:
+```
+actualizar_tipo_asiento (in v_id_vuelo int, in v_fila varchar(2), in v_num_asiento int)
+actualiza_reserva_asiento (in v_fila varchar(2), in v_num_asiento int, in v_id_vuelo int, 
+in v_pasaporte int, in v_id_reservacion int)
+```
+Y por último los procedimientos que se encargan de eliminar la reservación del cliente, a los cuales
+les entra el código de la reservación.
+```
+cambiar_tipo_asiento (in v_id_reservacion int)
+eliminar_reserva_asiento (in v_id_reservacion int)
+eliminar_pasajeros_reserva (in v_id_reservacion int)
+eliminar_reservacion (in v_id_reservacion int)
+```
 ##### Funciones en C
+Para lo que es la funcionalidad de registro de aviones se utilizarion las siguientes funciones:
+```
+void ejecutar_opcion_registro_av()
+void insertar_avion(solicitar_datos_av())
+void eliminar_avion()
+void mostrar_aviones()
+avion *solicitar_datos_av()
+```
+Ninguna de ellas retorna nada, y se encargar de lo que es la inserción, eliminación y muestra de aviones, 
+dependiendo de lo que solicite el usuario, a excepción de `solicitar_datos_av()` que retorna la dirección
+de memoria de los datos del avión.
 
+La funcionalidad para cargar usuario está compuesta por las siguientes funciones:
+```
+void cargar_usuarios(char *nombre_archivo)
+FILE* abrir_archivo(ruta_archivo, "r");
+char* obtener_reporte(insertar_usuario(usuario))
+int insertar_usuario(usuario)
+```
+Estas funciones se encargan de interactuar con el txt de ingreso, insertar los usarios en la  base de datos,
+y obtener los resultados de estas inserciones.
+
+El estado de vuelo es nutrida por las siguientes funciones:
+```
+void estado_vuelo()
+void mostrar_info_vuelo(id_vuelo)
+int mostrar_asientos_en_vuelo(id_vuelo)
+void mostrar_reservaciones_en_vuelo(id_vuelo);
+```
+Se encargan de todas las validaciones necesarias para mostrar la información obtenida de los vuelos
+que se encuentran almacenados en la base de datos.
+
+Para mostrar las estadísticas al usuario, se utilizan las siguientes dos funciones:
+```
+void mostrar_estadisticas_reservaciones()
+void mostrar_estadisticas_ventas()
+```
+Estas funciones son alimentadas por otras, que son las encargadas de realizar las consultas
+y mostrar los registos en C.
+```
+int realizar_consulta()
+void mostrar_registros()
+```
+`realizar_consulta()` valida si el `query` es correcto, y `mostrar_registros()` mediante un ciclo imprime 
+las filas y columnas de la tabla. 
+
+Existen también funciones para solicitar y validar las credenciales del usuario operativo.
+```
+char* solicitar_credenciales()
+int verificar_credenciales(char *credenciales)
+```
+los cuales retornan un puntero char con las credenciales del usuario y un int, para validar si son correctos
+o no los datos ingresados por dicho usuario.
+
+En general para realizar las consultas a la base de datos con los datos ingresados por el usuario, fue mediante la 
+concatenación de los chars, que contenían el cuerpo de la consulta, y los datos del usuario, nos apoyamos de las funciones `strcat()`, `strncat()` de la librería `string.h`.
 
 ### Librerías usadas
 Para la correcta funcionalidad de este proyecto, son necesarias las siguientes librerías:
@@ -181,6 +252,7 @@ Para la correcta funcionalidad de este proyecto, son necesarias las siguientes l
 * Estado de vuelos
 * Estadisticas
 * Estas funcionalidades con sus respectivas validaciones
+* Validar el usuario y contraseña del usuario operativo
 
 ### Bitácora
 
