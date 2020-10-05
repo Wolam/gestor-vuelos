@@ -310,7 +310,7 @@ DELIMITER //
 create procedure info_reservacion_c (in v_id_reservacion int)
 begin  
 
-	select mr.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.fecha_reserva, mr.monto_total, v.id_aerolinea, a.nombre_aerolinea, a.hub
+	select mr.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.fecha_reserva, mr.monto_total, a.nombre_aerolinea
 		from vuelo v
 		inner join monto_reservacion mr
 			on v.id_vuelo = mr.id_vuelo
