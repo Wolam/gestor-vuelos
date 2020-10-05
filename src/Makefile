@@ -5,7 +5,7 @@ var_mysql_LIBS := $(shell mysql_config --libs_r)
 var_mysql_FLAGS := $(shell mysql_config --cflags)
 var_gcc_FLAGS := -g -o
 var_ld_FLAGS := -lmcheck
-var_es_FLAGS := -o - | ps2pdf -
+var_es_FLAGS := --quiet -o - | ps2pdf -
 var_encabezado := --header="HORA RESERVACION: $(shell date)" 
 
 compile:
@@ -17,4 +17,5 @@ debug:
 clean:
 	@rm Sistema_vuelos
 pdf:
-	@enscript $(var_encabezado) $(archivo_txt) $(var_es_FLAGS) $(addsuffix _reservacion.pdf,$(archivo_txt:.txt=))
+	@enscript $(var_encabezado) $(archivo_txt) $(var_es_FLAGS) $(addsuffix .pdf,$(archivo_txt:.txt=))
+	@rm $(archivo_txt)

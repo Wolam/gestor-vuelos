@@ -1,3 +1,4 @@
+
 int insertar_usuario(char *usuario)
 {
 	char cons[TAM_CONSULTA] = CONSULTA_INSERCION_USR;

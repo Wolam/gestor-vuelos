@@ -1,23 +1,27 @@
-
-int GLOB_ID_RESV_ACTUAL = 0;
-
 typedef struct reservacion
 {
     char *pasaportes[MAX_PASAPORTES];
     char *asientos[MAX_PASAPORTES];
     char *id_vuelo;
-}reservacion;
+} reservacion;
 
+int GLOB_ID_RESV_ACTUAL = 1;
+char *__INFO_RESERV__[13] = {"RESERVACION ", "VUELO ", "ORIGEN ",
+                             "SALIDA ", "DESTINO ", "LLEGADA ",
+                             "MONTO ", "AEROLINEA "};
 reservacion *ref_reservacion;
 
 int incluir_pasaportes_reserv(char *pasaportes);
-int incluir_asientos_reserv(char *asientos,char* id_vuelo);
+int incluir_asientos_reserv(char *asientos, char *id_vuelo);
 int valida_pasaporte();
 int valida_asiento();
+int mostrar_asientos_en_vuelo(char *id_vuelo);
 char *tipo_pasaporte();
 void formatear_pasaporte(char *consulta, char *pasaporte);
-void formatear_asiento(char *asiento,char* id_vuelo);
-int mostrar_asientos_en_vuelo(char *id_vuelo);
+void formatear_asiento(char *asiento, char *id_vuelo);
+void agregar_info_resv_txt(FILE *ref_archivo_txt);
+void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion);
+void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion);
 
 char *pedir_datos_reserv(char *msj)
 {
@@ -33,9 +37,9 @@ char *pedir_datos_reserv(char *msj)
 void realizar_reservacion()
 {
     //ref_reservacion = (reservacion *)malloc(sizeof(reservacion));
-    printf(VERDE "INGRESE DATOS RESERVACION\n" END_CLR);
-    char* id_vuelo = pedir_datos_reserv("<ID DEL VUELO> ");
-    //ref_reservacion->id_vuelo = 
+    printf(VERDE "INGRESE DATOS RESERVACION\n" END_CLR "<ID VUELO> ");
+    char *id_vuelo;
+    scanf("%s", id_vuelo);
     int asientos = mostrar_asientos_en_vuelo(id_vuelo);
     if (!asientos)
     {
@@ -43,18 +47,17 @@ void realizar_reservacion()
     }
     else
     {
-       // char *paspt = pedir_datos_reserv("<Escriba los pasaportes> ");
-       // int datos_pasaportes = incluir_pasaportes_reserv(paspt);
-       // paspt = NULL;
-      //  free(paspt);
+        // char *paspt = pedir_datos_reserv("<Escriba los pasaportes> ");
+        // int datos_pasaportes = incluir_pasaportes_reserv(paspt);
+        // paspt = NULL;
+        //  free(paspt);
         //if (datos_pasaportes == COD_ERROR_RESRV)
-       // {
+        // {
         //    return;
-       // }else
-      //  {
-        int datos_asientos = incluir_asientos_reserv(pedir_str_input("<Escriba los asientos>"),id_vuelo);
-     }
-        
+        // }else
+        //  {
+        int datos_asientos = incluir_asientos_reserv(pedir_str_input("<Escriba los asientos>"), id_vuelo);
+    }
 }
 //}
 
@@ -89,14 +92,14 @@ int incluir_pasaportes_reserv(char *pasaportes)
     return total_pasaportes;
 }
 
-int incluir_asientos_reserv(char *asientos,char* id_vuelo)
+int incluir_asientos_reserv(char *asientos, char *id_vuelo)
 {
     char *asiento = strtok(asientos, ",");
     int total_asientos = 0;
     int asientos_incluidos = 0;
     while (asiento != NULL)
     {
-        formatear_asiento(asiento,id_vuelo);
+        formatear_asiento(asiento, id_vuelo);
         asientos_incluidos = valida_asiento();
         if (!asientos_incluidos)
         {
@@ -152,9 +155,9 @@ void formatear_pasaporte(char *consulta, char *pasaporte)
     //free(cons_temp_formt);
 }
 
-void formatear_asiento(char *asiento,char* id_vuelo)
+void formatear_asiento(char *asiento, char *id_vuelo)
 {
-    char fila[2];
+    char fila[4];
     fila[0] = asiento[0];
     fila[1] = '\'';
     char *cons_temp_formt = calloc(50, sizeof(char));
@@ -167,4 +170,90 @@ void formatear_asiento(char *asiento,char* id_vuelo)
     realizar_consulta(cons_temp_formt);
     resultado = mysql_store_result(conexion);
     reg = mysql_fetch_row(resultado);
+}
+
+void generar_pdf()
+{
+    char ruta_txt[TAM_RUTA] = {"reportes/"};
+    char id_reservacion[5];
+    sprintf(id_reservacion, "%d", GLOB_ID_RESV_ACTUAL);
+    strcat(ruta_txt, id_reservacion);
+    strcat(ruta_txt, "_reservacion.txt");
+    FILE *ref_archivo_txt;
+    ref_archivo_txt = abrir_archivo(ruta_txt, "w+");
+
+    agregar_info_resv_txt(ref_archivo_txt);
+
+    agregar_adultos_resv_txt(ref_archivo_txt, id_reservacion);
+
+    agregar_infantes_resv_txt(ref_archivo_txt, id_reservacion);
+
+    fclose(ref_archivo_txt);
+
+    char generar_pdf[TAM_RUTA] = GENERAR_PDF;
+    strcat(generar_pdf, ruta_txt);
+    system(generar_pdf);
+}
+void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
+{
+    char cons_temp[TAM_CONSULTA] = ADULT_RESV;
+    strcat(cons_temp, id_reservacion);
+    strcat(cons_temp, ")");
+    realizar_consulta(cons_temp);
+    fputs("FILA \t ASIENTO \t Pasaporte\n", ref_archivo_txt);
+    resultado = mysql_store_result(conexion);
+    while ((reg = mysql_fetch_row(resultado)) != NULL)
+    {
+        for (int col = 0; col < 3; col++)
+        {
+            fputs(reg[col], ref_archivo_txt);
+            fputs("\t\t", ref_archivo_txt);
+        }
+        fputs("\n", ref_archivo_txt);
+    }
+    fputs("\n", ref_archivo_txt);
+
+    mysql_free_result(resultado);
+    mysql_next_result(conexion);
+}
+void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
+{
+    char cons_temp[TAM_CONSULTA] = INFANTES_RESV;
+    strcat(cons_temp, id_reservacion);
+    strcat(cons_temp, ")");
+    realizar_consulta(cons_temp);
+    fputs("INFANTES\n", ref_archivo_txt);
+    resultado = mysql_store_result(conexion);
+    while ((reg = mysql_fetch_row(resultado)) != NULL)
+    {
+        fputs(reg[0], ref_archivo_txt);
+        fputs("\n", ref_archivo_txt);
+    }
+    fputs("\n", ref_archivo_txt);
+
+    mysql_free_result(resultado);
+    mysql_next_result(conexion);
+}
+
+void agregar_info_resv_txt(FILE *ref_archivo_txt)
+{
+
+    char cons_temp[TAM_CONSULTA] = INFO_RESV_PDF;
+    strcat(cons_temp, "2019039864)");
+    //strcat(cons_temp,")");
+    realizar_consulta(cons_temp);
+    resultado = mysql_store_result(conexion);
+    unsigned int col = 0;
+    reg = mysql_fetch_row(resultado);
+    while (col < mysql_field_count(conexion))
+    {
+        fputs(__INFO_RESERV__[col], ref_archivo_txt);
+        fputs(reg[col], ref_archivo_txt);
+        fputs("\n", ref_archivo_txt);
+        col++;
+    }
+    fputs("\n", ref_archivo_txt);
+
+    mysql_free_result(resultado);
+    mysql_next_result(conexion);
 }

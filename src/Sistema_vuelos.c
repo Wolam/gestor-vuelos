@@ -13,7 +13,8 @@ int main()
 {
     realizar_conexion();
     atexit(finalizar_conexion);
-    ejecutar_opcion_menu_principal();
+    //ejecutar_opcion_menu_principal();
+    generar_pdf();
     return 0;
 }
 

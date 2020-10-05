@@ -30,7 +30,7 @@
 #define TAM_USUARIO 200 
 #define TAM_CONSULTA 300
 #define TAM_FECHA 40    
-#define TAM_RUTA 40
+#define TAM_RUTA 60
 #define MAX_PASAPORTES 10
 
 //ERRORES del programa
@@ -78,6 +78,9 @@
 #define CONSULTA_TIPO_PASPT "SELECT conocer_edad("
 #define CONSULTA_CREDENCIALES "SELECT valida_usuarios('"
 #define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
+#define INFO_RESV_PDF "call info_reservacion_pdf("
+#define ADULT_RESV "call adultos_reservacion("
+#define INFANTES_RESV "call infantes_reservacion("
 
 //Opciones de registro de aviones
 #define OPCION_INSERTAR 'I'
@@ -94,6 +97,8 @@
 #define VERDE "\033[0;32m"
 #define END_CLR "\033[0m"
 #define BLUE "\033[0;34m"
+
+//Informacion de txt
 #define GENERAR_PDF "make pdf archivo_txt="
 
 // Funciones de prototipo
