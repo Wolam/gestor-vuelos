@@ -326,28 +326,16 @@ call info_reservacion_c(1);
 # PROCEDIMIENTOS PARA REALIZAR UNA RESERVACION
 
 DELIMITER //
-create procedure actualizar_tipo_asiento (in v_id_vuelo int, in v_fila varchar(2), in v_num_asiento int)
-begin  
-	update asiento 
-		set tipo_asiento = replace(tipo_asiento, "L", "O")
-		where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo;
-end 
-//
-
-call actualizar_tipo_asiento(1, 'B', 2);
-
-DELIMITER //
 create procedure actualiza_reserva_asiento (in v_fila varchar(2), in v_num_asiento int, in v_id_vuelo int, in v_pasaporte int, in v_id_reservacion int)
 begin  
 	update asiento 
-			set pasaporte = v_pasaporte, id_reservacion = v_id_reservacion
+			set pasaporte = v_pasaporte, id_reservacion = v_id_reservacion, tipo_asiento = replace(tipo_asiento, "L", "O")
 			where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo;
 		
 end 
 //
 
 call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
-
 
 
 # PROCEDIMIENTOS PARA CANCELAR RESERVACION
