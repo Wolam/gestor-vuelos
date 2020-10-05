@@ -275,7 +275,7 @@ end
 call info_reservacion_pdf(2019039864);
 
 DELIMITER //
-create procedure  adultos_reservacion (in v_id_reservacion int)
+create procedure adultos_reservacion (in v_id_reservacion int)
 begin  
 
 select a.fila, a.num_asiento, a.pasaporte
@@ -290,7 +290,7 @@ end
 call adultos_reservacion(1);
 
 DELIMITER //
-create procedure  infantes_reservacion (in v_id_reservacion int)
+create procedure infantes_reservacion (in v_id_reservacion int)
 begin  
 
 select r.pasaporte
@@ -328,33 +328,25 @@ call info_reservacion_c(1);
 DELIMITER //
 create procedure actualiza_reserva_asiento (in v_fila varchar(2), in v_num_asiento int, in v_id_vuelo int, in v_pasaporte int, in v_id_reservacion int)
 begin  
-	update asiento 
-			set pasaporte = v_pasaporte, id_reservacion = v_id_reservacion, tipo_asiento = replace(tipo_asiento, "L", "O")
-			where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo;
+	if conocer_edad(v_pasaporte) = 'A' then
+		update asiento 
+				set pasaporte = v_pasaporte, id_reservacion = v_id_reservacion, tipo_asiento = replace(tipo_asiento, "L", "O")
+				where fila = v_fila and num_asiento = v_num_asiento and id_vuelo = v_id_vuelo;
+	end if;
+		
 		
 end 
 //
 
-call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
-
+call actualiza_reserva_asiento('B', 2, 1, 2019039864, 2);
 
 # PROCEDIMIENTOS PARA CANCELAR RESERVACION
-DELIMITER //
-create procedure cambiar_tipo_asiento (in v_id_reservacion int)
-begin  
-	update asiento 
-		set tipo_asiento = replace(tipo_asiento, "O", "L")
-		where id_reservacion = v_id_reservacion;
-end 
-//
-
-call cambiar_tipo_asiento(3);
 
 DELIMITER //
 create procedure eliminar_reserva_asiento (in v_id_reservacion int)
 begin  
 	update asiento 
-			set pasaporte = NULL, id_reservacion = NULL
+			set pasaporte = NULL, id_reservacion = NULL, tipo_asiento = replace(tipo_asiento, "O", "L")
 			where id_reservacion = v_id_reservacion;
 		
 end 
@@ -430,3 +422,15 @@ select monto__total_reserva(1);
 # drop procedure estadistica_ventas;
 # drop procedure estadistica_personas;
 # drop function valida_usuarios;
+# drop function valida_pasajeros;
+# drop function conocer_edad;
+# drop function valida_pos_asiento;
+# drop procedure info_reservacion_pdf;
+# drop procedure adultos_reservacion;
+# drop procedure procedure infantes_reservacion;
+# drop procedure info_reservacion_c;
+# drop procedure procedure actualiza_reserva_asiento;
+# drop procedure eliminar_reserva_asiento;
+# drop procedure eliminar_pasajeros_reserva;
+# drop function monto__total_reserva;
+
