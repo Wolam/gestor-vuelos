@@ -323,7 +323,6 @@ end
 
 call info_reservacion_c(1);
 
-
 # PROCEDIMIENTOS PARA REALIZAR UNA RESERVACION
 
 DELIMITER //
@@ -394,6 +393,43 @@ end
 //
 
 call eliminar_reservacion(1);
+
+# FUNCION PARA CALCULAR MONTO_TOTAL
+DELIMITER //
+create function monto__total_reserva (v_id_reservacion int) returns int
+BEGIN 
+	DECLARE monto_adulto int;
+    DECLARE monto_infante int;
+    DECLARE asiento_mas_caro varchar(3);
+    DECLARE precio int;
+    
+	select sum(c.costo) into monto_adulto
+		from costo c
+        inner join asiento a 
+			on c.id_vuelo = a.id_vuelo
+		where a.id_reservacion = v_id_reservacion and c.tipo_asiento = a.tipo_asiento and c.id_edad = 'A';
+        
+    select c.tipo_asiento, max(c.costo) into asiento_mas_caro, precio
+		from costo c
+        inner join asiento a 
+			on c.id_vuelo = a.id_vuelo
+		where a.id_reservacion = v_id_reservacion and c.tipo_asiento = a.tipo_asiento and c.id_edad = 'A'
+        group by c.tipo_asiento;
+      
+
+    select sum(c.costo) into monto_infante
+		from costo c
+        inner join reservacion r
+		on c.id_vuelo = r.id_vuelo
+	where r.id_edad = 'I' and c.tipo_asiento = asiento_mas_caro and r.id_reservacion = v_id_reservacion and c.id_edad = 'I';
+    
+    return monto_adulto + monto_infante;
+    
+end; //
+
+DELIMITER ;
+
+select monto__total_reserva(1);
 
 # DROPS DE PROCEDIMIENTOS
 
