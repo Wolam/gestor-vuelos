@@ -259,7 +259,7 @@ DELIMITER //
 create procedure info_reservacion_pdf (in v_pasaporte int)
 begin  
 
-	select r.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.monto_total, v.id_aerolinea, a.nombre_aerolinea, a.hub
+	select r.id_reservacion, v.id_vuelo, v.origen, v.salida, v.destino, v.llegada, mr.monto_total, a.nombre_aerolinea
 		from vuelo v
 		inner join reservacion r
 			on v.id_vuelo = r.id_vuelo
