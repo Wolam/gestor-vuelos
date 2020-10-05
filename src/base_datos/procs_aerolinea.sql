@@ -2,7 +2,7 @@ SET SQL_SAFE_UPDATES = 0;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
 
-#PROCEDURE PARA MOTRAR AVIONES FILTRADOS POR MARCA
+# PROCEDURE PARA MOTRAR AVIONES FILTRADOS POR MARCA
 
 DELIMITER //
 create procedure muestra_aviones(v_marca varchar(20))
@@ -14,7 +14,7 @@ BEGIN
 end
 //
 
-CALL muestra_aviones('Boeing');
+# CALL muestra_aviones('Boeing');
 
 # FUNCION PARA ELIMINAR AVION
 
@@ -40,8 +40,7 @@ BEGIN
 end; //
 
 DELIMITER ;
-
-select eliminar_avion(1035);
+# select eliminar_avion(1035);
 
 # PROCEDIMIENTOS PARA MOSTRAR EL ESTADO DE VUELO
   
@@ -54,7 +53,7 @@ begin
 end 
 //
 
-CALL consVuelo(1);
+# CALL consVuelo(1);
 
 DELIMITER //
 create procedure costo_asiento (in v_id_vuelo int)
@@ -65,7 +64,7 @@ begin
 end 
 //
 
-CALL costo_asiento(1);
+# CALL costo_asiento(1);
 
 
 DELIMITER //
@@ -77,7 +76,7 @@ begin
 end 
 //
 
-CALL fila_asiento(1);
+# CALL fila_asiento(1);
 
 
 DELIMITER //
@@ -93,7 +92,7 @@ NATURAL JOIN
     where a.tipo_asiento = '%_O' and a.id_vuelo = v_id_vuelo) as o;
 //
 
-CALL cant_asientos(1);
+# CALL cant_asientos(1);
 
 DELIMITER //
 create procedure reservacion(in v_id_vuelo int)
@@ -108,7 +107,7 @@ select mr.id_reservacion, a.fila, a.tipo_asiento, a.num_asiento, a.pasaporte, u.
 end
 //
 
-CALL reservacion(1);
+# CALL reservacion(1);
 
 DELIMITER //
 create procedure monto_reservacion(in v_id_vuelo int)
@@ -122,7 +121,7 @@ select mr.id_reservacion, mr.monto_total , count(a.num_asiento) as asientos_adqu
 end
 //
 
-CALL monto_reservacion(1);
+# CALL monto_reservacion(1);
 
 
 # PROCEDIMIENTOS CON ESTADISTICAS DE VUELOS
@@ -140,7 +139,7 @@ begin
 end
 //
 
-CALL estadistica_ventas;
+# CALL estadistica_ventas;
 
 
 DELIMITER //
@@ -156,13 +155,13 @@ begin
 end 
 //
 
-CALL estadistica_personas;
+# CALL estadistica_personas;
 
 
 # FUNCION QUE VALIDA EL USUARIO Y LA CONSTRASEÑA
 
 DELIMITER //
-create function valida_usuarios (v_usuario varchar(20), v_contrasenia varchar(20)) returns varchar(20)
+create function valida_usuarios (v_usuario varchar(20), v_contrasenia varchar(20)) returns boolean
 BEGIN 
 	DECLARE usuario varchar(20);
     DECLARE contra BLOB;
@@ -173,18 +172,18 @@ BEGIN
 	
     if usuario is not NULL then
 		if contra is NULL then 
-			return 'CONTRASEÑA INCORRECTA';
+			return false;
 		else
-			return 'CONTRASEÑA CORRECTA';
+			return true;
 		end if;
 	else
-		return 'USUARIO INCORRECTO';
+		return false;
 	end if;
 end; //
 
 DELIMITER ;
 
-select valida_usuarios('dba_avi', 'rastreo416');
+# select valida_usuarios('dba_avi', 'rastreo416');
 
 
 # FUNCION PARA VALIDAR PASAJEROS
@@ -207,7 +206,7 @@ end; //
 
 DELIMITER ;
 
-select valida_pasajeros(2019039864);
+# select valida_pasajeros(2019039864);
 
 # FUNCION PARA EXTRAER LA EDAD DEL CLIENTE
 DELIMITER //
@@ -228,7 +227,7 @@ end; //
 
 DELIMITER ;
 
-select conocer_edad(2048395209);
+# select conocer_edad(2048395209);
 
 # VALIDA LAS POSICIONES DE LOS ASIENTOS INGRESADOS POR EL USUARIO PARA LA RESERVA
 
@@ -251,7 +250,7 @@ end; //
 
 DELIMITER ;
 
-select valida_pos_asiento('A', 1, 1);
+# select valida_pos_asiento('A', 1, 2);
 
 # PROCEDIMIENTOS PARA LA INFORMACION DE LA RESERVA QUE ALIMENTA EL PDF
 
@@ -272,7 +271,7 @@ begin
 end 
 //
 
-call info_reservacion_pdf(2019039864);
+# call info_reservacion_pdf(2019039864);
 
 DELIMITER //
 create procedure adultos_reservacion (in v_id_reservacion int)
@@ -287,7 +286,7 @@ select a.fila, a.num_asiento, a.pasaporte
 end 
 //
 
-call adultos_reservacion(1);
+# call adultos_reservacion(1);
 
 DELIMITER //
 create procedure infantes_reservacion (in v_id_reservacion int)
@@ -302,7 +301,7 @@ select r.pasaporte
 end 
 //
 
-call infantes_reservacion(1);
+# call infantes_reservacion(1);
 
 # PROCEDIMIENTO DE INFORMACION DE RESERVA PARA C
 
@@ -321,7 +320,7 @@ begin
 end 
 //
 
-call info_reservacion_c(1);
+# call info_reservacion_c(1);
 
 # PROCEDIMIENTOS PARA REALIZAR UNA RESERVACION
 
@@ -338,7 +337,7 @@ begin
 end 
 //
 
-call actualiza_reserva_asiento('B', 2, 1, 2019039864, 2);
+# call actualiza_reserva_asiento('B', 2, 1, 2019039864, 2);
 
 # PROCEDIMIENTOS PARA CANCELAR RESERVACION
 
@@ -352,7 +351,7 @@ begin
 end 
 //
 
-call eliminar_reserva_asiento(3);
+# call eliminar_reserva_asiento(3);
 
 DELIMITER //
 create procedure eliminar_pasajeros_reserva (in v_id_reservacion int)
@@ -362,7 +361,7 @@ begin
 end 
 //
 
-call eliminar_pasajeros_reserva(1);
+# call eliminar_pasajeros_reserva(1);
 
 DELIMITER //
 create procedure eliminar_reservacion (in v_id_reservacion int)
@@ -372,7 +371,7 @@ begin
 end 
 //
 
-call eliminar_reservacion(1);
+# call eliminar_reservacion(1);
 
 # FUNCION PARA CALCULAR MONTO_TOTAL
 DELIMITER //
@@ -403,34 +402,42 @@ BEGIN
 		on c.id_vuelo = r.id_vuelo
 	where r.id_edad = 'I' and c.tipo_asiento = asiento_mas_caro and r.id_reservacion = v_id_reservacion and c.id_edad = 'I';
     
-    return monto_adulto + monto_infante;
+    if monto_infante is null then
+		set monto_infante = 0;
+	end if;
+    
+	return monto_adulto + monto_infante;
     
 end; //
 
 DELIMITER ;
 
-select monto__total_reserva(1);
+
+# select monto__total_reserva(1);
 
 # DROPS DE PROCEDIMIENTOS
 
-# drop procedure consVuelo;
-# drop procedure costo_asiento;
-# drop procedure fila_asiento;
-# drop procedure cant_asientos;
-# drop procedure reservacion;
-# drop procedure monto_reservacion;
-# drop procedure estadistica_ventas;
-# drop procedure estadistica_personas;
-# drop function valida_usuarios;
-# drop function valida_pasajeros;
-# drop function conocer_edad;
-# drop function valida_pos_asiento;
-# drop procedure info_reservacion_pdf;
-# drop procedure adultos_reservacion;
-# drop procedure procedure infantes_reservacion;
-# drop procedure info_reservacion_c;
-# drop procedure procedure actualiza_reserva_asiento;
-# drop procedure eliminar_reserva_asiento;
-# drop procedure eliminar_pasajeros_reserva;
-# drop function monto__total_reserva;
+-- drop procedure consVuelo;
+-- drop procedure costo_asiento;
+-- drop procedure fila_asiento;
+-- drop procedure cant_asientos;
+-- drop procedure reservacion;
+-- drop procedure monto_reservacion;
+-- drop procedure estadistica_ventas;
+-- drop procedure estadistica_personas;
+-- drop function valida_usuarios;
+-- drop function valida_pasajeros;
+-- drop function conocer_edad;
+-- drop function valida_pos_asiento;
+-- drop procedure info_reservacion_pdf;
+-- drop procedure adultos_reservacion;
+-- drop procedure infantes_reservacion;
+-- drop procedure info_reservacion_c;
+-- drop procedure actualiza_reserva_asiento;
+-- drop procedure eliminar_reserva_asiento;
+-- drop procedure eliminar_pasajeros_reserva;
+-- drop function monto__total_reserva;
+-- drop procedure muestra_aviones;
+-- drop function eliminar_avion;
+-- drop procedure eliminar_reservacion;
 

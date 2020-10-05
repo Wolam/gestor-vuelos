@@ -168,54 +168,33 @@ values
     (10, 'RJ', 'LUX', 5647, '2016/10/12 2:32', '2016/10/12 23:40', 416);
 
 
-select * from costo;
-
 insert into costo (id_vuelo, tipo_asiento, id_edad, costo)
 values 
-	(1, 'BL', 'A', 1000),
-    (1, 'BL', 'I', 300),
-    (1, 'SL', 'A', 750),
-    (1, 'SL', 'I', 200),
-    (1, 'EL', 'A', 500),
-    (1, 'EL', 'I', 100),
-    (2, 'BL', 'A', 2000),
-    (2, 'BL', 'I', 500),
-    (2, 'SL', 'A', 1750),
-    (2, 'SL', 'I', 300),
-    (2, 'EL', 'A', 700),
-    (2, 'EL', 'I', 250),
-    (3, 'BL', 'A', 700),
-    (3, 'BL', 'I', 200),
-    (3, 'SL', 'A', 550),
-    (3, 'SL', 'I', 100),
-    (3, 'EL', 'A', 300),
-    (3, 'EL', 'I', 75);
-  
-  
-  insert into usuario (pasaporte, nombre_cliente, primer_apellido, segundo_apellido, sexo, fecha_nacimiento)
-  values 
-	(2019039864, 'Joseph', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2015-5-01','%Y-%m-%d')),
-    (2019344555, 'Wilhelm', 'Carstens', 'Soto', 'M', STR_TO_DATE('2001-5-01','%Y-%m-%d')),
-    (2018874521, 'Jeremy', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2017-5-01','%Y-%m-%d')),
-    (2048395209, 'Randox', 'Valenciano', 'Madrigal', 'M', STR_TO_DATE('2020-5-01','%Y-%m-%d'));
-    
-    insert into monto_reservacion (id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea)
-	values 
-	(1, 55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
-
-insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad)
-values 
-	(2019039864, 1, 1, 'A'),
-    (2019344555, 1, 1, 'A'),
-    (2018874521, 1, 1, 'A'),
-    (2048395209, 1, 1, 'I');
+	(1, 'BO', 'A', 1000),
+    (1, 'BO', 'I', 300),
+    (1, 'SO', 'A', 750),
+    (1, 'SO', 'I', 200),
+    (1, 'EO', 'A', 500),
+    (1, 'EO', 'I', 100),
+    (2, 'BO', 'A', 2000),
+    (2, 'BO', 'I', 500),
+    (2, 'SO', 'A', 1750),
+    (2, 'SO', 'I', 300),
+    (2, 'EO', 'A', 700),
+    (2, 'EO', 'I', 250),
+    (3, 'BO', 'A', 700),
+    (3, 'BO', 'I', 200),
+    (3, 'SO', 'A', 550),
+    (3, 'SO', 'I', 100),
+    (3, 'EO', 'A', 300),
+    (3, 'EO', 'I', 75);
     
 
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
-	('A', 'BL', 1, 2019039864, 1, 1),
-    ('A', 'BL', 2, 2019344555, 1, 1),
-    ('A', 'BL', 3, 2018874521, 1, 1),
+	('A', 'BO', 1, NULL, NULL, 1),
+    ('A', 'BO', 2, NULL, NULL, 1),
+    ('A', 'BO', 3, NULL, NULL, 1),
     ('A', 'BL', 4, NULL, NULL, 1),
     ('B', 'BL', 1, NULL, NULL, 1),
     ('B', 'BL', 2, NULL, NULL, 1),
@@ -228,8 +207,8 @@ values
     ('E', 'EL', 2, NULL, NULL, 1),
     ('E', 'EL', 3, NULL, NULL, 1),
     ('E', 'EL', 4, NULL, NULL, 1);
-    
-    
+  
+  
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
 	('A', 'BL', 1, NULL, NULL, 2),
@@ -242,6 +221,7 @@ values
     ('D', 'SL', 2, NULL, NULL, 2),
     ('E', 'EL', 1, NULL, NULL, 2),
     ('E', 'EL', 2, NULL, NULL, 2);
+    
     
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
@@ -260,15 +240,16 @@ values
     ('E', 'EL', 1, NULL, NULL, 3),
     ('E', 'EL', 2, NULL, NULL, 3),
     ('E', 'EL', 3, NULL, NULL, 3);
-    
+       
+-- DROP TABLAS 
+-- drop table costo;
+-- drop table asiento;
+-- drop table monto_reservacion;
+-- drop table reservacion;
+-- drop table vuelo;
+-- drop table aerolinea;
+-- drop table usuario;
+-- drop table ciudad;
+-- drop table avion;
 
-# DROP TABLAS 
-# drop table costo;
-# drop table asiento;
-# drop table monto_reservacion;
-# drop table reservacion;
-# drop table vuelo;
-# drop table aerolinea;
-# drop table usuario;
-# drop table ciudad;
-# drop table avion;
+
