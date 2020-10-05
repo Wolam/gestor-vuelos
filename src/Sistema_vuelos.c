@@ -13,8 +13,8 @@ int main()
 {
     realizar_conexion();
     atexit(finalizar_conexion);
-    //ejecutar_opcion_menu_principal();
-    generar_pdf();
+    ejecutar_opcion_menu_principal();
+    //generar_pdf();
     return 0;
 }
 
@@ -57,11 +57,10 @@ void ejecutar_opcion_submenu_general()
             ejecutar_opcion_menu_principal();
             break;
         case OPCION_RESERVAR_VLOS:
-            //printf("3\n");
             realizar_reservacion();
             break;
         case OPCION_INFO_RESERV:
-            printf("4\n");
+            mostrar_reservacion();
             break;
         case OPCION_SALIR_GENERAL:
             exit(EXIT_SUCCESS);

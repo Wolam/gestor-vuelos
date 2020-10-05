@@ -71,16 +71,20 @@
 #define CONSULTA_COSTO_ASIENTOS "CALL costo_asiento("
 #define CONSULTA_POS_ASIENTOS "CALL fila_asiento("
 #define CONSULTA_CANT_ASIENTOS "CALL cant_asientos("
-#define CONSULTA_VALID_ASIENTO "SELECT valida_pos_asiento('"
+#define CONSULTA_VALID_ASIENTO "SELECT valida_pos_asiento("
 #define CONSULTA_INFO_RESRV_POR_VUELO "CALL reservacion("
 #define CONSULTA_COSTO_RESRV_POR_VUELO "CALL monto_reservacion("
 #define CONSULTA_VALID_PASPT "SELECT valida_pasajeros("
 #define CONSULTA_TIPO_PASPT "SELECT conocer_edad("
 #define CONSULTA_CREDENCIALES "SELECT valida_usuarios('"
 #define CONSULTA_MOSTRAR_AVIONES "CALL muestra_aviones(" 
+#define CONSULTA_MOSTRAR_RESV_POR_ID "CALL info_reservacion_c("
+#define CONSULTA_ACT_ASIENTOS "call actualiza_reserva_asiento("
+#define CONSULTA_MONTO_RESRV "monto_total_reserva("
 #define INFO_RESV_PDF "call info_reservacion_pdf("
 #define ADULT_RESV "call adultos_reservacion("
 #define INFANTES_RESV "call infantes_reservacion("
+
 
 //Opciones de registro de aviones
 #define OPCION_INSERTAR 'I'
@@ -92,6 +96,8 @@
 #define CONSULTA_INSERCION_USR "INSERT INTO usuario VALUES("
 #define CONSULTA_INSERCION_AVION "INSERT INTO avion VALUES("
 #define CONSULTA_ELIMINAR_AVION "SELECT eliminar_avion("
+#define CONSULTA_INSERCION_RESERV "INSERT INTO reservacion VALUES("
+#define CONSULTA_INSERCION_MONTO "INSERT INTO monto_reservacion VALUES("
 
 //Macros adicionales
 #define VERDE "\033[0;32m"

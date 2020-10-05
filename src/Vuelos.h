@@ -1,5 +1,4 @@
-//#include "Datos_sistema.h"
-// VUELO
+
 char *formatear_cons_vuelo(char *consulta, char *id_vuelo)
 {
 	char *cons = calloc(TAM_CONSULTA, sizeof(char));
