@@ -29,7 +29,7 @@ Posteriormente se deben ejecutar los scripts sql, para tener dicha información 
 puede ser desde terminal, aunque puede ser más tedioso, o una mejor opción ejecutarlo de algun IDE 
 como por ejemplo WorkBench. 
 
-Si se cambió de usuario en mysql, se debe ingresar al archivo `Datos_sistema.h` y ubicar donde están estas variables,
+Si se cambió de usuario en mysql, se debe ingresar al archivo `Solicitudes.h` y ubicar donde están estas variables,
 cambiar por las nuevas credenciales y ya se podría ejecutar el código.
 
 Para ejecutar este programa, se debe ingresar al directorio del proyecto y con el comando:
@@ -58,18 +58,28 @@ Cargar Usuarios
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-10-32.png width =200 height=100>
 
 
+
+
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-09.png width =120 height=140>
+
+
 
 
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-49.png width =300 height=120>
 
 
+
+
+
 Estado de vuelo
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-20-51.png width =180 height=200>
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-20-51.png width =160 height=180>
+
+
 
 
 
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-21-18.png width =200 height=130>
+
 
 
 
@@ -235,6 +245,11 @@ o no los datos ingresados por dicho usuario.
 En general para realizar las consultas a la base de datos con los datos ingresados por el usuario, fue mediante la 
 concatenación de los chars, que contenían el cuerpo de la consulta, y los datos del usuario, nos apoyamos de las funciones `strcat()`, `strncat()` de la librería `string.h`.
 
+Para lo que es la conexión a la base de datos se utilizaron las siguientes funciones:
+```
+void realizar_conexion()
+void finalizar_conexion()
+```
 ### Librerías usadas
 Para la correcta funcionalidad de este proyecto, son necesarias las siguientes librerías:
 ```
