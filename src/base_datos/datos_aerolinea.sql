@@ -51,6 +51,7 @@ create table reservacion
 (pasaporte int not null,
 id_reservacion int not null,
 id_vuelo int not null,
+id_edad varchar(2) not null,
 primary key (pasaporte, id_reservacion));
 
 create table monto_reservacion
@@ -73,6 +74,7 @@ primary key (id_vuelo, fila, tipo_asiento, num_asiento));
 create table costo
 (id_vuelo int not null,
 tipo_asiento varchar(3) not null,
+id_edad varchar(2) not null,
 costo int not null);
 
 
@@ -166,27 +168,28 @@ values
     (10, 'RJ', 'LUX', 5647, '2016/10/12 2:32', '2016/10/12 23:40', 416);
 
 
-    
-insert into costo (id_vuelo, tipo_asiento, costo)
+select * from costo;
+
+insert into costo (id_vuelo, tipo_asiento, id_edad, costo)
 values 
-	(1, 'BA', 1000),
-    (1, 'BI', 300),
-    (1, 'SA', 750),
-    (1, 'SI', 200),
-    (1, 'EA', 500),
-    (1, 'EI', 100),
-    (2, 'BA', 2000),
-    (2, 'BI', 500),
-    (2, 'SA', 1750),
-    (2, 'SI', 300),
-    (2, 'EA', 700),
-    (2, 'EI', 250),
-    (3, 'BA', 700),
-    (3, 'BI', 200),
-    (3, 'SA', 550),
-    (3, 'SI', 100),
-    (3, 'EA', 300),
-    (3, 'EI', 75);
+	(1, 'BL', 'A', 1000),
+    (1, 'BL', 'I', 300),
+    (1, 'SL', 'A', 750),
+    (1, 'SL', 'I', 200),
+    (1, 'EL', 'A', 500),
+    (1, 'EL', 'I', 100),
+    (2, 'BL', 'A', 2000),
+    (2, 'BL', 'I', 500),
+    (2, 'SL', 'A', 1750),
+    (2, 'SL', 'I', 300),
+    (2, 'EL', 'A', 700),
+    (2, 'EL', 'I', 250),
+    (3, 'BL', 'A', 700),
+    (3, 'BL', 'I', 200),
+    (3, 'SL', 'A', 550),
+    (3, 'SL', 'I', 100),
+    (3, 'EL', 'A', 300),
+    (3, 'EL', 'I', 75);
   
   
   insert into usuario (pasaporte, nombre_cliente, primer_apellido, segundo_apellido, sexo, fecha_nacimiento)
@@ -200,13 +203,12 @@ values
 	values 
 	(1, 55000, 1, STR_TO_DATE('2020-9-22','%Y-%m-%d'), 416);
 
-  
-insert into reservacion (pasaporte, id_reservacion, id_vuelo)
+insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad)
 values 
-	(2019039864, 1, 1),
-    (2019344555, 1, 1),
-    (2018874521, 1, 1),
-    (2048395209, 1, 1);
+	(2019039864, 1, 1, 'A'),
+    (2019344555, 1, 1, 'A'),
+    (2018874521, 1, 1, 'A'),
+    (2048395209, 1, 1, 'I');
     
 
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
@@ -214,7 +216,7 @@ values
 	('A', 'BL', 1, 2019039864, 1, 1),
     ('A', 'BL', 2, 2019344555, 1, 1),
     ('A', 'BL', 3, 2018874521, 1, 1),
-    ('A', 'BL', 4, 2048395209, 1, 1),
+    ('A', 'BL', 4, NULL, NULL, 1),
     ('B', 'BL', 1, NULL, NULL, 1),
     ('B', 'BL', 2, NULL, NULL, 1),
     ('C', 'SL', 1, NULL, NULL, 1),
