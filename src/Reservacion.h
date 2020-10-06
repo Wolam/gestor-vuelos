@@ -31,14 +31,14 @@ int mostrar_asientos_en_vuelo(char *id_vuelo);
 char tipo_pasaporte();
 void formatear_pasaporte(char *consulta, char *pasaporte);
 void formatear_asiento(char *asiento);
-void actualizar_asientos();
+void actualizar_asientos(int asientos_incluidos, int pasaportes_incluidos);
 void agregar_info_resv_txt(FILE *ref_archivo_txt);
 void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion);
 void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion);
 void actualizar_monto();
 void generar_pdf();
 
- /**
+/**
   * void mostrar_reservacion()
   * Entradas: No recibe parametros
   * Salidas: No retorna nada
@@ -103,21 +103,21 @@ void realizar_reservacion()
         int pasaportes_incluidos = incluir_pasaportes_reserv(paspt);
         if (pasaportes_incluidos == COD_ERROR_RESRV)
         {
-        return;
+            return;
         }
 
         int asientos_incluidos = incluir_asientos_reserv(pedir_str_input("<Escriba los asientos>"));
         if (asientos_incluidos != pasaportes_incluidos || asientos_incluidos == COD_ERROR_RESRV)
-          {
+        {
             printf(ERROR_CONSULTA "<Asientos incorrectos>\n");
-             return;
-         }
-        actualizar_asientos(asientos_incluidos);
+            return;
+        }
+        actualizar_asientos(asientos_incluidos,pasaportes_incluidos);
         actualizar_monto();
     }
-    
-     generar_pdf();
-     GLOB_ID_RESV_ACTUAL++;
+
+    generar_pdf();
+    GLOB_ID_RESV_ACTUAL++;
 }
 
 /**
@@ -151,8 +151,8 @@ int incluir_pasaportes_reserv(char *pasaportes)
 
         total_pasaportes++;
         formatear_pasaporte(CONSULTA_TIPO_PASPT, pasaporte);
-        ref_reservacion->edades[ind_pasp] =tipo_pasaporte();
-        if (ref_reservacion->edades[ind_pasp] =='I')
+        ref_reservacion->edades[ind_pasp] = tipo_pasaporte();
+        if (ref_reservacion->edades[ind_pasp] == 'I')
             total_pasaportes--;
         ref_reservacion->pasaportes[ind_pasp] = (char *)malloc(MAX_PASAPORTES);
         strcpy(ref_reservacion->pasaportes[ind_pasp], pasaporte);
@@ -162,74 +162,76 @@ int incluir_pasaportes_reserv(char *pasaportes)
     return total_pasaportes;
 }
 
- /**
+/**
   * void actualizar_asientos(int asientos_incluidos)
   * Entradas: Un entero
   * Salidas: No retorna nada
   * concatena y llama al procedure de la BD para actualizar los asientos reservados.
   */
 
-void actualizar_asientos(int asientos_incluidos)
+void actualizar_asientos(int asientos_incluidos, int pasaportes_incluidos)
 {
-    char* llamada_procdr = calloc(TAM_CONSULTA,sizeof(char));
-    strcpy(llamada_procdr,CONSULTA_ACT_ASIENTOS);
+    char *llamada_procdr = calloc(TAM_CONSULTA, sizeof(char));
+    strcpy(llamada_procdr, CONSULTA_ACT_ASIENTOS);
 
-    char* consulta_insercion = calloc(TAM_CONSULTA,sizeof(char));
-    strcpy(consulta_insercion,CONSULTA_INSERCION_RESERV);
+    char *consulta_insercion = calloc(TAM_CONSULTA, sizeof(char));
+    strcpy(consulta_insercion, CONSULTA_INSERCION_RESERV);
 
-    for (int i =0; i<asientos_incluidos; i++)
+    char id_reservacion[5];
+    sprintf(id_reservacion, "%d", GLOB_ID_RESV_ACTUAL);
+
+    for (int i = 0; i < asientos_incluidos; i++)
     {
-        char id_reservacion[5];
-        sprintf(id_reservacion, "%d", GLOB_ID_RESV_ACTUAL);
 
         //call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
         //insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad) values (2019039864, 1, 1, 'A');
 
-        strcat(llamada_procdr,ref_reservacion->asientos[i]);
-        strcat(llamada_procdr,",");
+        strcat(llamada_procdr, ref_reservacion->asientos[i]);
+        strcat(llamada_procdr, ",");
 
-        strcat(consulta_insercion,ref_reservacion->pasaportes[i]);
-        strcat(consulta_insercion,",");
+        strcat(llamada_procdr, ref_reservacion->id_vuelo);
+        strcat(llamada_procdr, ",");
 
-        strcat(llamada_procdr,ref_reservacion->id_vuelo);
-        strcat(llamada_procdr,",");
+        strcat(llamada_procdr, ref_reservacion->pasaportes[i]);
+        strcat(llamada_procdr, ",");
 
-        strcat(consulta_insercion,id_reservacion);
-        strcat(consulta_insercion,",");
-
-        strcat(llamada_procdr,ref_reservacion->pasaportes[i]);
-        strcat(llamada_procdr,",");
-        
-        strcat(consulta_insercion,ref_reservacion->id_vuelo);
-        strcat(consulta_insercion,",\'");
-
-        strcat(llamada_procdr,id_reservacion);
-        strcat(llamada_procdr,")");
- 
-        int len = strlen(consulta_insercion);
-        consulta_insercion[len] =ref_reservacion->edades[i];
-        consulta_insercion[len+1] = '\0'; 
-        strcat(consulta_insercion,"\')");
+        strcat(llamada_procdr, id_reservacion);
+        strcat(llamada_procdr, ")");
 
         realizar_consulta(llamada_procdr);
         resultado = mysql_store_result(conexion);
         mysql_free_result(resultado);
-	    mysql_next_result(conexion);
+        mysql_next_result(conexion);
 
+        strcpy(llamada_procdr, CONSULTA_ACT_ASIENTOS);
+    }
+    for (int i = 0; i < pasaportes_incluidos; i++)
+    {
+
+        strcat(consulta_insercion, ref_reservacion->pasaportes[i]);
+        strcat(consulta_insercion, ",");
+
+        strcat(consulta_insercion, id_reservacion);
+        strcat(consulta_insercion, ",");
+
+        strcat(consulta_insercion, ref_reservacion->id_vuelo);
+        strcat(consulta_insercion, ",\'");
+
+        int len = strlen(consulta_insercion);
+        consulta_insercion[len] = ref_reservacion->edades[i];
+        consulta_insercion[len + 1] = '\0';
+        strcat(consulta_insercion, "\')");
 
         realizar_consulta(consulta_insercion);
         resultado = mysql_store_result(conexion);
         mysql_free_result(resultado);
-	    mysql_next_result(conexion);
-       
+        mysql_next_result(conexion);
 
-        strcpy(llamada_procdr,CONSULTA_ACT_ASIENTOS);
-        strcpy(consulta_insercion,CONSULTA_INSERCION_RESERV);
+        strcpy(consulta_insercion, CONSULTA_INSERCION_RESERV);
     }
-
 }
 
- /**
+/**
   * actualizar_monto()
   * Entradas: No recibe parametros
   * Salidas: No retorna nada
@@ -239,34 +241,33 @@ void actualizar_asientos(int asientos_incluidos)
 void actualizar_monto()
 {
 
-    char* consulta_insercion = calloc(TAM_CONSULTA,sizeof(char));
-    strcpy(consulta_insercion,CONSULTA_INSERCION_MONTO);
+    char *consulta_insercion = calloc(TAM_CONSULTA, sizeof(char));
+    strcpy(consulta_insercion, CONSULTA_INSERCION_MONTO);
 
     char llamada_proc[50] = {CONSULTA_MONTO_RESRV};
     char id_reservacion[5];
     sprintf(id_reservacion, "%d", GLOB_ID_RESV_ACTUAL);
-    strcat(llamada_proc,id_reservacion);
-    strcat(llamada_proc,")");
+    strcat(llamada_proc, id_reservacion);
+    strcat(llamada_proc, ")");
 
+    strcat(consulta_insercion, id_reservacion);
+    strcat(consulta_insercion, ",");
 
-    strcat(consulta_insercion,id_reservacion);
-    strcat(consulta_insercion,",");
+    strcat(consulta_insercion, llamada_proc);
+    strcat(consulta_insercion, ",");
 
-    strcat(consulta_insercion,llamada_proc);
-    strcat(consulta_insercion,",");
-
-    strcat(consulta_insercion,ref_reservacion->id_vuelo);
-    strcat(consulta_insercion,",CURDATE(),416)");
+    strcat(consulta_insercion, ref_reservacion->id_vuelo);
+    strcat(consulta_insercion, ",CURDATE(),416)");
 
     realizar_consulta(consulta_insercion);
     resultado = mysql_store_result(conexion);
     mysql_free_result(resultado);
-	mysql_next_result(conexion);
+    mysql_next_result(conexion);
 
-    printf("%s\n",consulta_insercion);
-    printf("%s\n",llamada_proc);
+    printf("%s\n", consulta_insercion);
+    printf("%s\n", llamada_proc);
 
-/*
+    /*
 insert into monto_reservacion (1,monto_total_reserva(1), 1, CURDATE(), 416);
 
 id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea
@@ -274,7 +275,7 @@ id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea
 */
 }
 
- /**
+/**
   * int incluir_asientos_reserv(char *asientos,char* id_vuelo)
   * Entradas: 2 char de tipo puntero
   * Salidas: Un entero
@@ -311,7 +312,7 @@ int incluir_asientos_reserv(char *asientos)
     return total_asientos;
 }
 
- /**
+/**
   * int valida_pasaporte()
   * Entradas: No tiene parametros
   * Salidas: Un entero
@@ -403,7 +404,7 @@ void formatear_asiento(char *asiento)
     strncat(asiento, num_asiento, 2);
 }
 
- /**
+/**
   * void generar_pdf()
   * Entradas: No recibe parametros
   * Salidas: No retorna nada
@@ -465,7 +466,7 @@ void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
     mysql_next_result(conexion);
 }
 
- /**
+/**
   * void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
   * Entradas: Dos punteros de tipo char
   * Salidas: No retorna nada
@@ -491,7 +492,7 @@ void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
     mysql_next_result(conexion);
 }
 
- /**
+/**
   * void agregar_info_resv_txt(FILE *ref_archivo_txt)
   * Entradas: Un punteros de tipo char
   * Salidas: No retorna nada
