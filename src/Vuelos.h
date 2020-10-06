@@ -47,7 +47,7 @@ void mostrar_info_vuelo(char *id_vuelo)
 
 int mostrar_asientos_en_vuelo(char *id_vuelo)
 {
-	printf(VERDE "[ Tipo  ]  [Costo]\n[Asiento]\n" END_CLR);
+	printf(VERDE "[ Class  ]  [Edad]   [Costo]\n[Asiento]\n" END_CLR);
 	realizar_consulta(formatear_cons_vuelo(CONSULTA_COSTO_ASIENTOS, id_vuelo));
 	mostrar_registros();
 

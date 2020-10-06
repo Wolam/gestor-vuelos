@@ -59,7 +59,6 @@ int realizar_consulta(char *consulta)
 {
 
 	/* enviar consulta SQL y verifica si hace error*/
-	printf("%s\n",consulta);
 	if (mysql_query(conexion, consulta))
 	{
 		if (!strncmp(mysql_error(conexion), ERROR_DUP, strlen(ERROR_DUP)))
