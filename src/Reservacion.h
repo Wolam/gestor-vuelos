@@ -8,7 +8,7 @@ typedef struct reservacion
     char edades[MAX_PASAPORTES];
 } reservacion;
 
-int GLOB_ID_RESV_ACTUAL = 5;
+int GLOB_ID_RESV_ACTUAL = 2;
 char *__INFO_RESERV__[8] = {"RESERVACION ", "VUELO ", "ORIGEN ",
                             "SALIDA ", "DESTINO ", "LLEGADA ",
                             "MONTO ", "AEROLINEA "};
@@ -96,7 +96,6 @@ int incluir_pasaportes_reserv(char *pasaportes)
     int total_pasaportes = 0;
     unsigned int ind_pasp = 0;
     int pasaportes_incluidos = 0;
-   // ref_reservacion->edades = (char *)calloc(MAX_PASAPORTES, sizeof(char));
     while (pasaporte != NULL)
     {
         formatear_pasaporte(CONSULTA_VALID_PASPT, pasaporte);
@@ -180,8 +179,6 @@ void actualizar_asientos(int asientos_incluidos)
 	    mysql_next_result(conexion);
        
 
-       // printf("%s\n",consulta_insercion);
-        //printf("%s\n",llamada_procdr);
         strcpy(llamada_procdr,CONSULTA_ACT_ASIENTOS);
         strcpy(consulta_insercion,CONSULTA_INSERCION_RESERV);
     }
@@ -238,7 +235,7 @@ int incluir_asientos_reserv(char *asientos)
         asientos_incluidos = valida_asiento(temp_asiento);
         if (!asientos_incluidos)
         {
-            printf(ERROR_CONSULTA "Asiento [%s] no encontrado\n", asiento);
+            printf(ERROR_CONSULTA "Asiento [%s] no encontrado o reservado\n", asiento);
             return COD_ERROR_RESRV;
         }
         else if (total_asientos > MAX_PASAPORTES)

@@ -172,12 +172,16 @@ int verificar_credenciales(char *credenciales)
     reg = mysql_fetch_row(resultado);
     if(atoi(reg[0]))
     {
+           
         printf(VERDE "CREDENCIALES ACEPTADOS" END_CLR "\n");
         ejecutar_opcion_submenu_operativo();
+            
     }
     else{
         printf(ERROR_CREDENCIALES);
     }
+    mysql_free_result(resultado);
+	mysql_next_result(conexion);
 }
 
 

@@ -41,6 +41,7 @@
 #define REG_VACIOS "\033[0;34mNO HAY DATOS\n \033[0m"
 #define ERROR_CREDENCIALES "\033[1;31mERROR EN LOS CREDENCIALES\033[0m \n"
 
+
 // --- Constantes de MySQL ---
 
 // CODIGOS MySQL en consultas
