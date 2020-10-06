@@ -254,6 +254,8 @@ Para la correcta funcionalidad de este proyecto, son necesarias las siguientes l
 
 ### Bitácora
 
+La bitácora de los commits se encuentran dentro en la ruta `documentacion/` en la cual se ve un detalles de cada avance.
+
 ---
 Autores:
 
