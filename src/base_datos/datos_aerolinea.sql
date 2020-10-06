@@ -77,6 +77,10 @@ tipo_asiento varchar(3) not null,
 id_edad varchar(2) not null,
 costo int not null);
 
+create table indice
+(id int,
+primary key (id));
+
 
 # LLAVES FORANEAS
 
@@ -240,16 +244,18 @@ values
     ('E', 'EL', 1, NULL, NULL, 3),
     ('E', 'EL', 2, NULL, NULL, 3),
     ('E', 'EL', 3, NULL, NULL, 3);
-       
---   DROP TABLAS 
---   drop table costo;
---   drop table asiento;
---   drop table monto_reservacion;
---   drop table reservacion;
---   drop table vuelo;
---   drop table aerolinea;
---   drop table usuario;
---   drop table ciudad;
---   drop table avion;
+     
+insert into indice values (0);
+     
+-- DROP TABLAS 
+-- drop table costo;
+-- drop table asiento;
+-- drop table monto_reservacion;
+-- drop table reservacion;
+-- drop table vuelo;
+-- drop table aerolinea;
+-- drop table usuario;
+-- drop table ciudad;
+-- drop table avion;
 
 
