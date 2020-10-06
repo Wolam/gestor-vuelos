@@ -185,13 +185,9 @@ void actualizar_asientos(int asientos_incluidos, int pasaportes_incluidos)
     int ind_edades = 0;
     for (int i = 0; i < asientos_incluidos; i++)
     {
-        //call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
-        //insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad) values (2019039864, 1, 1, 'A');
+        
         if(ref_reservacion->edades[ind_edades]=='I')
-        {
             i--; 
-            ind_edades++;
-        }
         else{
              strcat(llamada_procdr, ref_reservacion->asientos[i]);
             strcat(llamada_procdr, ",");
@@ -211,7 +207,7 @@ void actualizar_asientos(int asientos_incluidos, int pasaportes_incluidos)
             mysql_next_result(conexion);
 
             strcpy(llamada_procdr, CONSULTA_ACT_ASIENTOS);
-        }
+        }ind_edades++;
        
     }
 
@@ -273,16 +269,6 @@ void actualizar_monto()
     resultado = mysql_store_result(conexion);
     mysql_free_result(resultado);
     mysql_next_result(conexion);
-
-    printf("%s\n", consulta_insercion);
-    printf("%s\n", llamada_proc);
-
-    /*
-insert into monto_reservacion (1,monto_total_reserva(1), 1, CURDATE(), 416);
-
-id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea
-
-*/
 }
 
 /**
