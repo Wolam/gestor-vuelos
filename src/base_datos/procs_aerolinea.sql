@@ -285,6 +285,9 @@ select a.fila, a.num_asiento, a.pasaporte
 end 
 //
 
+select * from asiento;
+call adultos_reservacion(2);
+
 # call adultos_reservacion(1);
 
 DELIMITER //
@@ -418,6 +421,24 @@ end; //
 
 DELIMITER ;
 
+DELIMITER //
+create function crear_id_reservacion () returns int
+BEGIN 
+	DECLARE numero int;
+    
+	update indice 
+		set id = id + 1;
+        
+	select id into numero
+		from indice;
+        
+	return numero;
+    
+end; //
+
+DELIMITER ;
+
+select crear_id_reservacion();
 
 # DROPS DE PROCEDIMIENTOS
 
@@ -444,4 +465,4 @@ DELIMITER ;
 --     drop procedure muestra_aviones;
 --     drop function eliminar_avion;
 --     drop procedure eliminar_reservacion;
-
+--     drop function select crear_id_reservacion;
