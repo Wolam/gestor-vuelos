@@ -15,9 +15,10 @@ typedef struct reservacion
     char *asientos[MAX_PASAPORTES];
     char *id_vuelo;
     char edades[MAX_PASAPORTES];
+    int cant_pasaportes;
 } reservacion;
 
-int GLOB_ID_RESV_ACTUAL = 2;
+int GLOB_ID_RESV_ACTUAL = 20;
 char *__INFO_RESERV__[8] = {"RESERVACION ", "VUELO ", "ORIGEN ",
                             "SALIDA ", "DESTINO ", "LLEGADA ",
                             "MONTO ", "AEROLINEA "};
@@ -159,6 +160,7 @@ int incluir_pasaportes_reserv(char *pasaportes)
         ind_pasp++;
         pasaporte = strtok(NULL, ",");
     }
+    ref_reservacion->cant_pasaportes = ind_pasp;
     return total_pasaportes;
 }
 
@@ -180,32 +182,40 @@ void actualizar_asientos(int asientos_incluidos, int pasaportes_incluidos)
     char id_reservacion[5];
     sprintf(id_reservacion, "%d", GLOB_ID_RESV_ACTUAL);
 
+    int ind_edades = 0;
     for (int i = 0; i < asientos_incluidos; i++)
     {
-
         //call actualiza_reserva_asiento('B', 2, 1, 897498, 2);
         //insert into reservacion (pasaporte, id_reservacion, id_vuelo, id_edad) values (2019039864, 1, 1, 'A');
+        if(ref_reservacion->edades[ind_edades]=='I')
+        {
+            i--; 
+            ind_edades++;
+        }
+        else{
+             strcat(llamada_procdr, ref_reservacion->asientos[i]);
+            strcat(llamada_procdr, ",");
 
-        strcat(llamada_procdr, ref_reservacion->asientos[i]);
-        strcat(llamada_procdr, ",");
+            strcat(llamada_procdr, ref_reservacion->id_vuelo);
+            strcat(llamada_procdr, ",");
 
-        strcat(llamada_procdr, ref_reservacion->id_vuelo);
-        strcat(llamada_procdr, ",");
+            strcat(llamada_procdr, ref_reservacion->pasaportes[ind_edades]);
+            strcat(llamada_procdr, ",");
 
-        strcat(llamada_procdr, ref_reservacion->pasaportes[i]);
-        strcat(llamada_procdr, ",");
+            strcat(llamada_procdr, id_reservacion);
+            strcat(llamada_procdr, ")");
 
-        strcat(llamada_procdr, id_reservacion);
-        strcat(llamada_procdr, ")");
+            realizar_consulta(llamada_procdr);
+            resultado = mysql_store_result(conexion);
+            mysql_free_result(resultado);
+            mysql_next_result(conexion);
 
-        realizar_consulta(llamada_procdr);
-        resultado = mysql_store_result(conexion);
-        mysql_free_result(resultado);
-        mysql_next_result(conexion);
-
-        strcpy(llamada_procdr, CONSULTA_ACT_ASIENTOS);
+            strcpy(llamada_procdr, CONSULTA_ACT_ASIENTOS);
+        }
+       
     }
-    for (int i = 0; i < pasaportes_incluidos; i++)
+
+    for (int i = 0; i < ref_reservacion->cant_pasaportes; i++)
     {
 
         strcat(consulta_insercion, ref_reservacion->pasaportes[i]);
