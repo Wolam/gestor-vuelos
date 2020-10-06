@@ -58,7 +58,7 @@ end
 DELIMITER //
 create procedure costo_asiento (in v_id_vuelo int)
 begin  
-	select tipo_asiento, costo
+	select tipo_asiento, id_edad, costo
 	from costo 
     where id_vuelo = v_id_vuelo;
 end 
@@ -438,7 +438,7 @@ end; //
 
 DELIMITER ;
 
-select crear_id_reservacion();
+# select crear_id_reservacion();
 
 # DROPS DE PROCEDIMIENTOS
 
@@ -465,4 +465,4 @@ select crear_id_reservacion();
 --     drop procedure muestra_aviones;
 --     drop function eliminar_avion;
 --     drop procedure eliminar_reservacion;
---     drop function select crear_id_reservacion;
+--     drop function crear_id_reservacion;
