@@ -192,9 +192,9 @@ values
 
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
-	('A', 'BO', 1, NULL, NULL, 1),
-    ('A', 'BO', 2, NULL, NULL, 1),
-    ('A', 'BO', 3, NULL, NULL, 1),
+	('A', 'BL', 1, NULL, NULL, 1),
+    ('A', 'BL', 2, NULL, NULL, 1),
+    ('A', 'BL', 3, NULL, NULL, 1),
     ('A', 'BL', 4, NULL, NULL, 1),
     ('B', 'BL', 1, NULL, NULL, 1),
     ('B', 'BL', 2, NULL, NULL, 1),
@@ -221,8 +221,8 @@ values
     ('D', 'SL', 2, NULL, NULL, 2),
     ('E', 'EL', 1, NULL, NULL, 2),
     ('E', 'EL', 2, NULL, NULL, 2);
-    
-    
+
+
 insert into asiento (fila, tipo_asiento, num_asiento, pasaporte, id_reservacion, id_vuelo)
 values 
 	('A', 'BL', 1, NULL, NULL, 3),
@@ -241,15 +241,15 @@ values
     ('E', 'EL', 2, NULL, NULL, 3),
     ('E', 'EL', 3, NULL, NULL, 3);
        
--- DROP TABLAS 
--- drop table costo;
--- drop table asiento;
--- drop table monto_reservacion;
--- drop table reservacion;
--- drop table vuelo;
--- drop table aerolinea;
--- drop table usuario;
--- drop table ciudad;
--- drop table avion;
+--   DROP TABLAS 
+--   drop table costo;
+--   drop table asiento;
+--   drop table monto_reservacion;
+--   drop table reservacion;
+--   drop table vuelo;
+--   drop table aerolinea;
+--   drop table usuario;
+--   drop table ciudad;
+--   drop table avion;
 
 

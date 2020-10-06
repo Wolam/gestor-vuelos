@@ -70,9 +70,10 @@ end
 DELIMITER //
 create procedure fila_asiento (in v_id_vuelo int)
 begin  
-	select fila, tipo_asiento
-	from asiento 
-    where id_vuelo = v_id_vuelo;
+	select fila, tipo_asiento,num_asiento
+    from asiento
+    where id_vuelo = v_id_vuelo
+    order by fila,num_asiento;
 end 
 //
 
@@ -89,10 +90,10 @@ from
 NATURAL JOIN
 (select count(a.tipo_asiento) as cantidad_asientos_ocupados
 	from asiento a
-    where a.tipo_asiento = '%_O' and a.id_vuelo = v_id_vuelo) as o;
+    where a.tipo_asiento LIKE '%_O' and a.id_vuelo = v_id_vuelo) as o;
 //
-
-# CALL cant_asientos(1);
+ 
+ # CALL cant_asientos(1);
 
 DELIMITER //
 create procedure reservacion(in v_id_vuelo int)
@@ -351,7 +352,7 @@ begin
 end 
 //
 
-# call eliminar_reserva_asiento(3);
+# call eliminar_reserva_asiento(1);
 
 DELIMITER //
 create procedure eliminar_pasajeros_reserva (in v_id_reservacion int)
@@ -371,11 +372,11 @@ begin
 end 
 //
 
-# call eliminar_reservacion(1);
+#call eliminar_reservacion(1);
 
 # FUNCION PARA CALCULAR MONTO_TOTAL
 DELIMITER //
-create function monto__total_reserva (v_id_reservacion int) returns int
+create function monto_total_reserva (v_id_reservacion int) returns int
 BEGIN 
 	DECLARE monto_adulto int;
     DECLARE monto_infante int;
@@ -413,31 +414,31 @@ end; //
 DELIMITER ;
 
 
-# select monto__total_reserva(1);
+# select monto_total_reserva(1);
 
 # DROPS DE PROCEDIMIENTOS
 
--- drop procedure consVuelo;
--- drop procedure costo_asiento;
--- drop procedure fila_asiento;
--- drop procedure cant_asientos;
--- drop procedure reservacion;
--- drop procedure monto_reservacion;
--- drop procedure estadistica_ventas;
--- drop procedure estadistica_personas;
--- drop function valida_usuarios;
--- drop function valida_pasajeros;
--- drop function conocer_edad;
--- drop function valida_pos_asiento;
--- drop procedure info_reservacion_pdf;
--- drop procedure adultos_reservacion;
--- drop procedure infantes_reservacion;
--- drop procedure info_reservacion_c;
--- drop procedure actualiza_reserva_asiento;
--- drop procedure eliminar_reserva_asiento;
--- drop procedure eliminar_pasajeros_reserva;
--- drop function monto__total_reserva;
--- drop procedure muestra_aviones;
--- drop function eliminar_avion;
--- drop procedure eliminar_reservacion;
+--   drop procedure consVuelo;
+--   drop procedure costo_asiento;
+--   drop procedure fila_asiento;
+--   drop procedure cant_asientos;
+--   drop procedure reservacion;
+--   drop procedure monto_reservacion;
+--   drop procedure estadistica_ventas;
+--   drop procedure estadistica_personas;
+--   drop function valida_usuarios;
+--   drop function valida_pasajeros;
+--   drop function conocer_edad;
+--   drop function valida_pos_asiento;
+--   drop procedure info_reservacion_pdf;
+--   drop procedure adultos_reservacion;
+--   drop procedure infantes_reservacion;
+--   drop procedure info_reservacion_c;
+--   drop procedure actualiza_reserva_asiento;
+--   drop procedure eliminar_reserva_asiento;
+--   drop procedure eliminar_pasajeros_reserva;
+--   drop function monto_total_reserva;
+--   drop procedure muestra_aviones;
+--   drop function eliminar_avion;
+--   drop procedure eliminar_reservacion;
 
