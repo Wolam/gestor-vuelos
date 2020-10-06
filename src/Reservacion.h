@@ -18,7 +18,7 @@ typedef struct reservacion
     int cant_pasaportes;
 } reservacion;
 
-int GLOB_ID_RESV_ACTUAL = 20;
+int GLOB_ID_RESV_ACTUAL;
 char *__INFO_RESERV__[8] = {"RESERVACION ", "VUELO ", "ORIGEN ",
                             "SALIDA ", "DESTINO ", "LLEGADA ",
                             "MONTO ", "AEROLINEA "};
@@ -118,7 +118,7 @@ void realizar_reservacion()
     }
 
     generar_pdf();
-    GLOB_ID_RESV_ACTUAL++;
+    GLOB_ID_RESV_ACTUAL=generar_id();
 }
 
 /**

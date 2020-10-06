@@ -107,6 +107,7 @@
 #define CONSULTA_ELIMINAR_AVION "SELECT eliminar_avion("
 #define CONSULTA_INSERCION_RESERV "INSERT INTO reservacion VALUES("
 #define CONSULTA_INSERCION_MONTO "INSERT INTO monto_reservacion VALUES("
+#define CONSULTA_NUEVO_ID "select crear_id_reservacion()"
 
 //Macros adicionales
 #define VERDE "\033[0;32m"
