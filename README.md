@@ -1,14 +1,13 @@
-# Proyecto-I-Lenguajes / Lenguaje Imperativo
+# Proyecto-I-Lenguajes / Lenguaje Imperativo <img align="right" src=https://wstemproject.eu/files/2019/06/logo-tec-300x158.png width =200 height=120>
 Sistema de gestión de vuelos <img src=https://seeklogo.com/images/A/airplane-logo-6885950420-seeklogo.com.png width =20 height=20>
-
 
 ## Documentación del proyecto
 
 ### Manual de Usuario <img src= https://raw.githubusercontent.com/fabiospampinato/vscode-terminals/master/resources/logo.png width =20 height=20>
 
-Para iniciar a trabajar con nuestro proyecto se debe tener en cuenta que fue desarrollado en ubuntu linux,
+Para iniciar a trabajar con nuestro proyecto se debe tener en cuenta que fue desarrollado en **ubuntu linux**,
 por lo que seguramente si se utiliza en otra arquitectura puede que dé problemas. Además se utiliza como
-motor de base de datos mysql, por lo que sino está instalado en nuestro sistema operativo, debemos seguir
+motor de base de datos **MySQL**, por lo que sino está instalado en nuestro sistema operativo, debemos seguir
 los siguientes pasos en nuestra terminal:
 
 ``` 
@@ -27,7 +26,7 @@ $ sudo mysql -u root -p
 ```
 Posteriormente se deben ejecutar los scripts sql, para tener dicha información almacenada en nuestro computador, 
 puede ser desde terminal, aunque puede ser más tedioso, o una mejor opción ejecutarlo de algun IDE 
-como por ejemplo WorkBench. 
+como por ejemplo `WorkBench`. 
 
 Si se cambió de usuario en mysql, se debe ingresar al archivo `Solicitudes.h` y ubicar donde están estas variables,
 cambiar por las nuevas credenciales y ya se podría ejecutar el código.
@@ -50,45 +49,29 @@ contraseña: rastreo416
 ```
 En caso de ingresar datos inválidos, no podrá acceder al sistema de este menú.
 
-### Pruebas de funcionalidad
+### Pruebas de funcionalidad <img src= https://upload.wikimedia.org/wikipedia/commons/b/b0/Light_green_check.svg width=20 height=20>
 
-Cargar Usuarios
-
-
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-10-32.png width =200 height=100>
+**Cargar Usuarios**
 
 
-
-
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-09.png width =120 height=140>
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-10-32.png width =400 height=300>
 
 
 
-
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-49.png width =300 height=120>
-
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-11-49.png>
 
 
+**Estado de vuelo**
 
+<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-21-18.png >
 
-Estado de vuelo
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-20-51.png width =160 height=180>
-
-
-
-
-
-<img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/Captura%20de%20pantalla%20de%202020-10-02%2019-21-18.png width =200 height=130>
-
-
-
-
-Estadisticas 
+**Estadisticas** 
 
 
 <img src= https://github.com/Wolam/Proyecto-I-Lenguajes/blob/master/documentacion/screenshots/estadisticas.png width =200 height=170>
 
-### Descripción del problema
+### Descripción del problema <img src= https://images.uncyclomedia.co/uncyclopedia/en/0/01/DramaticQuestionMark.png width =20 height=20>
+
 
 Se deberá crear un Sistema de Gestión de Vuelos en C que permita gestionar las principales
 funciones de vuelos, reservas y facturación. El programa se utilizará a través de la consola, no se
@@ -122,7 +105,7 @@ deben habilitar las siguientes funcionalidades (Menú General):
 * Cancelación de reservación
 * Salir
 
-### Diseño del programa
+### Diseño del programa <img src=https://cdn2.iconfinder.com/data/icons/creative-and-design-12/64/Creative-Development-idea-research-design-512.png width=20 height=20>
 
 La implementacion del proyecto se utilizo un modelo de BD que permitiera asociar las entidades necesarias.
 
@@ -250,7 +233,7 @@ Para lo que es la conexión a la base de datos se utilizaron las siguientes func
 void realizar_conexion()
 void finalizar_conexion()
 ```
-### Librerías usadas
+### Librerías usadas <img src=https://image.flaticon.com/icons/png/512/130/130304.png width=20 height=20>
 Para la correcta funcionalidad de este proyecto, son necesarias las siguientes librerías:
 ```
 #include <stdio.h>
