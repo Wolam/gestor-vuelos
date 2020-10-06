@@ -59,6 +59,7 @@ int realizar_consulta(char *consulta)
 {
 
 	/* enviar consulta SQL y verifica si hace error*/
+	printf("%s\n",consulta);
 	if (mysql_query(conexion, consulta))
 	{
 		if (!strncmp(mysql_error(conexion), ERROR_DUP, strlen(ERROR_DUP)))
@@ -142,4 +143,13 @@ int mostrar_registros_asientos()
 	return num_reg;
 }
 
-
+int generar_id()
+{
+	realizar_consulta(CONSULTA_NUEVO_ID);
+	resultado = mysql_store_result(conexion);
+	reg= mysql_fetch_row(resultado);
+	int n_id = atoi(reg[0]);
+	mysql_free_result(resultado);
+	mysql_next_result(conexion);
+	return n_id;
+}

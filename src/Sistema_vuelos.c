@@ -22,8 +22,8 @@ int main()
 {
     realizar_conexion();
     atexit(finalizar_conexion);
+    GLOB_ID_RESV_ACTUAL=generar_id();
     ejecutar_opcion_menu_principal();
-    //generar_pdf();
     return 0;
 }
 
