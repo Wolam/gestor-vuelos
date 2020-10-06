@@ -1,4 +1,11 @@
-//#include "Datos_sistema.h"
+/**
+ * INSTITUTO TECNOLOGICO DE COSTA RICA
+ * I PROYECTO PROGRAMADO DE LENGUAJES DE PROGRAMACION
+ * Estudiantes: Joseph Valenciano / Wilhelm Carstens
+ * Carnets: 2019039864 / 2019344583
+ * Profesor: Allan Rodriguez Davila
+ * Fecha 05/10/2020
+ */
 
 typedef struct avion
 {
@@ -7,6 +14,13 @@ typedef struct avion
 	char *anio;
 	char *matricula;
 } avion;
+
+/**
+  * avion *solicitar_datos_av()
+  * Entradas: no tiene entradas
+  * Salidas: devuelve un puntero al struct 
+  * Pide los datos del avion y los inserta en el struct
+  */
 
 avion *solicitar_datos_av()
 {
@@ -34,6 +48,13 @@ avion *solicitar_datos_av()
     return ref_av;
 }
 
+/**
+  * char *formatear_cons_insercion_avion(avion *av_nuevo)
+  * Entradas: Un puntero que apunta al struct
+  * Salidas: Un char de tipo puntero
+  * Formatea estos datos para poder insertarlos a la base de datos
+  */
+
 char *formatear_cons_insercion_avion(avion *av_nuevo)
 {
 	char *cons;
@@ -46,6 +67,13 @@ char *formatear_cons_insercion_avion(avion *av_nuevo)
 	strcat(cons, ")");
 	return cons;
 }
+
+/**
+  * void insertar_avion(avion *av_nuevo)
+  * Entradas: Un puntero que apunta al struct
+  * Salidas: No devuelve nada
+  * Valida e inserta el avion a la base de datos
+  */
 
 void insertar_avion(avion *av_nuevo)
 {
@@ -65,6 +93,13 @@ void insertar_avion(avion *av_nuevo)
 	av_nuevo->matricula = NULL;
 	free(av_nuevo);
 }
+
+/**
+  * void eliminar_avion()
+  * Entradas: No tiene parametros
+  * Salidas: No devuelve nada
+  * Valida y elimina el avion de la base de datos
+  */
 
 void eliminar_avion()
 {
@@ -88,6 +123,13 @@ void eliminar_avion()
 	}
 	free(cons);
 }
+
+/**
+  * void mostrar_aviones()
+  * Entradas: No tiene parametros
+  * Salidas: No devuelve nada
+  * Muestra los aviones al usuario, filtrados por la marca.
+  */
 
 void mostrar_aviones()
 {

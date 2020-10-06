@@ -1,3 +1,12 @@
+/**
+ * INSTITUTO TECNOLOGICO DE COSTA RICA
+ * I PROYECTO PROGRAMADO DE LENGUAJES DE PROGRAMACION
+ * Estudiantes: Joseph Valenciano / Wilhelm Carstens
+ * Carnets: 2019039864 / 2019344583
+ * Profesor: Allan Rodriguez Davila
+ * Fecha 05/10/2020
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <mysql.h>
@@ -7,6 +16,13 @@
 MYSQL *conexion;
 MYSQL_RES *resultado;
 MYSQL_ROW reg;
+
+/**
+  * void realizar_conexion()
+  * Entradas: No recibe parametros
+  * Salidas: No retorna nada
+  * Realiza la conexion con mysql.
+  */
 
 void realizar_conexion()
 {
@@ -20,10 +36,24 @@ void realizar_conexion()
 	}
 }
 
+ /**
+  * void finalizar_conexion()
+  * Entradas: No recibe parametros
+  * Salidas: No retorna nada
+  * Cierra la conexion con mysql.
+  */
+
 void finalizar_conexion()
 {
 	mysql_close(conexion);
 }
+
+ /**
+  * int realizar_consulta(char *consulta)
+  * Entradas: Un puntero de tipo char
+  * Salidas: Retorna un int
+  * Valida y realiza la consulta a mysql.
+  */
 
 int realizar_consulta(char *consulta)
 {
@@ -49,6 +79,13 @@ int realizar_consulta(char *consulta)
 	}
 }
 
+  /**
+  * void mostrar_registros()
+  * Entradas: No recibe parametros
+  * Salidas: No retorna nada
+  * Muestra los registros de la consulta al usuario.
+  */
+
 void mostrar_registros()
 {
 	resultado = mysql_store_result(conexion);
@@ -72,6 +109,12 @@ void mostrar_registros()
 	mysql_next_result(conexion);
 }
 
+/**
+  * int mostrar_registros_asientos()
+  * Entradas: No recibe parametros
+  * Salidas: retorna un entero
+  * Imprime los asientos tabulados.
+  */
 
 int mostrar_registros_asientos()
 {

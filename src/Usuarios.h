@@ -1,3 +1,18 @@
+/**
+ * INSTITUTO TECNOLOGICO DE COSTA RICA
+ * I PROYECTO PROGRAMADO DE LENGUAJES DE PROGRAMACION
+ * Estudiantes: Joseph Valenciano / Wilhelm Carstens
+ * Carnets: 2019039864 / 2019344583
+ * Profesor: Allan Rodriguez Davila
+ * Fecha 05/10/2020
+ */
+
+/**
+  * int insertar_usuario(char *usuario)
+  * Entradas: Un puntero de tipo char
+  * Salidas: retorna un entero
+  * Inserta el usuario en la base de datos.
+  */
 
 int insertar_usuario(char *usuario)
 {
@@ -6,6 +21,14 @@ int insertar_usuario(char *usuario)
 	strcat(cons, formatear_fecha(strcat(strrchr(usuario, ','), "','%Y-%m-%d'))")));
 	return realizar_consulta(cons);
 }
+
+/**
+  * void cargar_usuarios(char *nombre_archivo)
+  * Entradas: Un puntero de tipo char
+  * Salidas: No retorna nada
+  * Se encarga de cargar el usuario de manera general 
+  * llama a todas las funciones necesarias para formatear e insertar el usuario.
+  */
 
 void cargar_usuarios(char *nombre_archivo)
 {
@@ -40,6 +63,12 @@ void cargar_usuarios(char *nombre_archivo)
     }
 }
 
+/**
+  * char *obtener_reporte(int res_consulta)
+  * Entradas: Un entero
+  * Salidas: Un char de tipo puntero
+  * Genera el reporte de la carga de los usuarios
+  */
 
 char *
 obtener_reporte(int res_consulta)
@@ -56,6 +85,13 @@ obtener_reporte(int res_consulta)
     return reporte;
 }
 
+ /**
+  * char *formatear_fecha(char *fecha)
+  * Entradas: Un char de tipo puntero
+  * Salidas: Un char de tipo puntero
+  * Concatena la fecha, para poder realizar la consulta a mysql
+  */
+
 char *formatear_fecha(char *fecha)
 {
     fecha[0] = '\'';
@@ -64,6 +100,13 @@ char *formatear_fecha(char *fecha)
     strcat(func_fecha, fecha);
     return func_fecha;
 }
+
+  /**
+  * char *formatear_usuario(char *usuario)
+  * Entradas: Un char de tipo puntero
+  * Salidas: Un char de tipo puntero
+  * Concatena el usuario, para poder realizar la consulta a mysql
+  */
 
 char *formatear_usuario(char *usuario)
 {

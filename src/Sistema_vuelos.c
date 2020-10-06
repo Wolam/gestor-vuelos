@@ -1,3 +1,12 @@
+/**
+ * INSTITUTO TECNOLOGICO DE COSTA RICA
+ * I PROYECTO PROGRAMADO DE LENGUAJES DE PROGRAMACION
+ * Estudiantes: Joseph Valenciano / Wilhelm Carstens
+ * Carnets: 2019039864 / 2019344583
+ * Profesor: Allan Rodriguez Davila
+ * Fecha 05/10/2020
+ */
+
 #include "Solicitudes.h"
 #include "Reservacion.h"
 #include "Aviones.h"
@@ -106,12 +115,26 @@ void ejecutar_opcion_submenu_operativo()
     } while (opcion != OPCION_SALIR_OPERATIVO);
 }
 
+ /**
+  * void mostrar_menu(char *tipo_menu)
+  * Entradas: char de tipo puntero
+  * Salidas: Ninguna
+  * Muestra el tipo de menu que le entre como parametro al usario.
+  */
+
 void mostrar_menu(char *tipo_menu)
 {
     char abrir_menu[20] = "cat menus/menu_";
     strcat(abrir_menu, tipo_menu);
     system(abrir_menu);
 }
+
+ /**
+  * char pedir_caracter_input(char *msj)
+  * Entradas: char de tipo puntero
+  * Salidas: devuelve un char
+  * Retorna un char ingresado por el usario.
+  */
 
 char pedir_caracter_input(char *msj)
 {
@@ -121,6 +144,14 @@ char pedir_caracter_input(char *msj)
     getchar();
     return opcion;
 }
+
+/**
+  * char *pedir_str_input(char *msj)
+  * Entradas: char de tipo puntero
+  * Salidas: devuelve un char puntero
+  * Retorna un puntero donde se encuentra el mensaje ingresado por usuario.
+  */
+
 char *pedir_str_input(char *msj)
 {
     fflush(stdin);
@@ -131,6 +162,13 @@ char *pedir_str_input(char *msj)
         buffer[strlen(buffer) - 1] = '\0';
     return buffer;
 }
+
+ /**
+  * FILE *abrir_archivo(char *ruta, char *modo)
+  * Entradas: 2 char de tipo puntero
+  * Salidas: devuelve un char puntero
+  * Se encarga de abrir el archivo que le ingrese como parametro.
+  */
 
 FILE *
 abrir_archivo(char *ruta, char *modo)
@@ -144,6 +182,13 @@ abrir_archivo(char *ruta, char *modo)
     }
     return ref_archivo;
 }
+
+/**
+  * char* solicitar_credenciales()
+  * Entradas: no tiene entradas
+  * Salidas: devuelve un char puntero
+  * Solicita usuario y contraseña al usuario operativo.
+  */
 
 char* solicitar_credenciales()
 {
@@ -165,6 +210,13 @@ char* solicitar_credenciales()
 
 }
 
+ /**
+  * int verificar_credenciales(char *credenciales)
+  * Entradas: Un char puntero
+  * Salidas: devuelve un entero
+  * Valida si el usario y la constraseña son correcto.
+  */
+
 int verificar_credenciales(char *credenciales)
 {
     realizar_consulta(credenciales);
@@ -184,6 +236,12 @@ int verificar_credenciales(char *credenciales)
 	mysql_next_result(conexion);
 }
 
+ /**
+  * void ejecutar_opcion_registro_av()
+  * Entradas: no tiene entradas
+  * Salidas: no devuelve nada
+  * Verifica si se quiere insertar, mostrar o eliminar un avion.
+  */
 
 void ejecutar_opcion_registro_av()
 {

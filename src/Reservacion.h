@@ -1,3 +1,12 @@
+/**
+ * INSTITUTO TECNOLOGICO DE COSTA RICA
+ * I PROYECTO PROGRAMADO DE LENGUAJES DE PROGRAMACION
+ * Estudiantes: Joseph Valenciano / Wilhelm Carstens
+ * Carnets: 2019039864 / 2019344583
+ * Profesor: Allan Rodriguez Davila
+ * Fecha 05/10/2020
+ */
+
 char *formatear_cons_vuelo(char *consulta, char *id_vuelo);
 
 typedef struct reservacion
@@ -29,6 +38,13 @@ void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion);
 void actualizar_monto();
 void generar_pdf();
 
+ /**
+  * void mostrar_reservacion()
+  * Entradas: No recibe parametros
+  * Salidas: No retorna nada
+  * Muestra la reservacion al usuario.
+  */
+
 void mostrar_reservacion()
 {
 
@@ -45,6 +61,13 @@ void mostrar_reservacion()
     mostrar_registros();
 }
 
+/**
+  * char *pedir_datos_reserv(char *msj)
+  * Entradas: Un char de tipo puntero
+  * Salidas: Un char de tipo puntero
+  * Pide los datos al usuario de la reservacion.
+  */
+
 char *pedir_datos_reserv(char *msj)
 {
     fflush(stdin);
@@ -55,6 +78,13 @@ char *pedir_datos_reserv(char *msj)
         buffer_datos[strlen(buffer_datos) - 1] = '\0';
     return buffer_datos;
 }
+
+/**
+  * void realizar_reservacion()
+  * Entradas: No tiene parametros
+  * Salidas: No devuelve nada
+  * Llama los procedimientos de la base de datos que se encargan de la insercion.
+  */
 
 void realizar_reservacion()
 {
@@ -90,6 +120,13 @@ void realizar_reservacion()
      GLOB_ID_RESV_ACTUAL++;
 }
 
+/**
+  * int incluir_pasaportes_reserv(char *pasaportes)
+  * Entradas: Un char de tipo puntero
+  * Salidas: Un entero
+  * Valida y añade los pasaportes a la reservacion.
+  */
+
 int incluir_pasaportes_reserv(char *pasaportes)
 {
     char *pasaporte = strtok(pasaportes, ",");
@@ -124,6 +161,13 @@ int incluir_pasaportes_reserv(char *pasaportes)
     }
     return total_pasaportes;
 }
+
+ /**
+  * void actualizar_asientos(int asientos_incluidos)
+  * Entradas: Un entero
+  * Salidas: No retorna nada
+  * concatena y llama al procedure de la BD para actualizar los asientos reservados.
+  */
 
 void actualizar_asientos(int asientos_incluidos)
 {
@@ -184,6 +228,14 @@ void actualizar_asientos(int asientos_incluidos)
     }
 
 }
+
+ /**
+  * actualizar_monto()
+  * Entradas: No recibe parametros
+  * Salidas: No retorna nada
+  * concatena e inserta a la base de datos el monto total de la reservacion.
+  */
+
 void actualizar_monto()
 {
 
@@ -222,6 +274,13 @@ id_reservacion, monto_total, id_vuelo, fecha_reserva, id_aerolinea
 */
 }
 
+ /**
+  * int incluir_asientos_reserv(char *asientos,char* id_vuelo)
+  * Entradas: 2 char de tipo puntero
+  * Salidas: Un entero
+  * Valida y actualiza los asientos reservados.
+  */
+
 int incluir_asientos_reserv(char *asientos)
 {
     char *asiento = strtok(asientos, ",");
@@ -252,6 +311,13 @@ int incluir_asientos_reserv(char *asientos)
     return total_asientos;
 }
 
+ /**
+  * int valida_pasaporte()
+  * Entradas: No tiene parametros
+  * Salidas: Un entero
+  * Valida que existan los pasaportes.
+  */
+
 int valida_pasaporte()
 {
     //reg = mysql_fetch_row(resultado);
@@ -260,6 +326,13 @@ int valida_pasaporte()
     mysql_next_result(conexion);
     return pasaporte_validado;
 }
+
+/**
+  * int valida_asiento()
+  * Entradas: No tiene parametros
+  * Salidas: Un entero
+  * Valida que existan los asientos.
+  */
 
 int valida_asiento(char *asiento)
 {
@@ -277,6 +350,14 @@ int valida_asiento(char *asiento)
     mysql_next_result(conexion);
     return asiento_valido;
 }
+
+/**
+  * char *tipo_pasaporte()
+  * Entradas: No tiene parametros
+  * Salidas: Un char de tipo puntero
+  * Convierte el pasaporte en un char.
+  */
+
 char tipo_pasaporte()
 {
     char tp = reg[0][0];
@@ -284,6 +365,13 @@ char tipo_pasaporte()
     mysql_next_result(conexion);
     return tp;
 }
+
+/**
+  * void formatear_pasaporte(char *consulta, char *pasaporte)
+  * Entradas: Dos punteros de tipo char
+  * Salidas: No retorna nada
+  * Concatena el cuerpo de la consulta con el pasaporte.
+  */
 
 void formatear_pasaporte(char *consulta, char *pasaporte)
 {
@@ -296,6 +384,13 @@ void formatear_pasaporte(char *consulta, char *pasaporte)
     reg = mysql_fetch_row(resultado);
 }
 
+/**
+  * void formatear_asiento(char *asiento,char* id_vuelo)
+  * Entradas: Dos punteros de tipo char
+  * Salidas: No retorna nada
+  * Concatena el cuerpo de la consulta con el asiento y el id_vuelo.
+  */
+
 void formatear_asiento(char *asiento)
 {
     char fila[4] = {"\'"};
@@ -307,6 +402,15 @@ void formatear_asiento(char *asiento)
     strcpy(asiento, fila);
     strncat(asiento, num_asiento, 2);
 }
+
+ /**
+  * void generar_pdf()
+  * Entradas: No recibe parametros
+  * Salidas: No retorna nada
+  * Funcion general para crear el pdf, genera un txt y
+  * llama a otras funciones para escribir la info sobre 
+  * y posteriormente convertir con una llamada al sistema.
+  */
 
 void generar_pdf()
 {
@@ -330,6 +434,14 @@ void generar_pdf()
     strcat(generar_pdf, ruta_txt);
     system(generar_pdf);
 }
+
+/**
+  * void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
+  * Entradas: Dos punteros de tipo char
+  * Salidas: No retorna nada
+  * Escribe los adultos de la reservacion en el txt que recibe de parametro.
+  */
+
 void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
 {
     char cons_temp[TAM_CONSULTA] = ADULT_RESV;
@@ -352,6 +464,14 @@ void agregar_adultos_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
     mysql_free_result(resultado);
     mysql_next_result(conexion);
 }
+
+ /**
+  * void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
+  * Entradas: Dos punteros de tipo char
+  * Salidas: No retorna nada
+  * Escribe los infantes de la reservacion en el txt que recibe de parametro.
+  */
+
 void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
 {
     char cons_temp[TAM_CONSULTA] = INFANTES_RESV;
@@ -370,6 +490,13 @@ void agregar_infantes_resv_txt(FILE *ref_archivo_txt, char *id_reservacion)
     mysql_free_result(resultado);
     mysql_next_result(conexion);
 }
+
+ /**
+  * void agregar_info_resv_txt(FILE *ref_archivo_txt)
+  * Entradas: Un punteros de tipo char
+  * Salidas: No retorna nada
+  * Escribe la info de la reservacion en el txt que recibe de parametro.
+  */
 
 void agregar_info_resv_txt(FILE *ref_archivo_txt)
 {
