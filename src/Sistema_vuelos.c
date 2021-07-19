@@ -124,7 +124,7 @@ void ejecutar_opcion_submenu_operativo()
 
 void mostrar_menu(char *tipo_menu)
 {
-    char abrir_menu[20] = "cat menus/menu_";
+    char abrir_menu[20] = "cat res/menu_";
     strcat(abrir_menu, tipo_menu);
     system(abrir_menu);
 }
