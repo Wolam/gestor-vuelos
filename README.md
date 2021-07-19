@@ -24,7 +24,7 @@ $ sudo mysql -u root -p
 
 Posteriormente se deben ejecutar los scripts sql, para tener dicha información almacenada en nuestro computador, 
 puede ser desde terminal, aunque puede ser más tedioso, o una mejor opción ejecutarlo de algun IDE 
-como por ejemplo (WorkBench)[https://www.mysql.com/products/workbench/]. 
+como por ejemplo [WorkBench](https://www.mysql.com/products/workbench/). 
 
 Si se cambió de usuario en mysql, se debe ingresar al archivo `Solicitudes.h` y ubicar donde están estas variables,
 cambiar por las nuevas credenciales y ya se podría ejecutar el código.
